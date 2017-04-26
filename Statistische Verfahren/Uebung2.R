@@ -23,8 +23,10 @@ var = (0.5)^2
 
 k = 5
 
-y = (1/k)*
-runif()
+y = sum(runif(k))/k
+for (i in 1:999) {
+  new_element = sum(runif(k))/k
+  y = c(y,new_element)}
 
 ########################
 ### 3.
