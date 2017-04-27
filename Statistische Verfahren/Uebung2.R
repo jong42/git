@@ -21,7 +21,7 @@ library(stats)
 
 
 E = 0.5
-var = (0.5)^2
+var = (0.5)^2  ###richtig: var = 1/(12k)
 
 ### k=5
 k = 5
@@ -32,10 +32,15 @@ for (i in 1:999) {
   new_element = sum(runif(k))/k
   y = c(y,new_element)}
 
-hist(y)
-plot(y,dnorm(y,E,var))
-distribution = ecdf(y)
 
+hist(y, freq=F)
+
+### Vergleich mit Normalverteilung:
+z = seq(0,1,0.01)
+points(z, dnorm(z, mean= 1/2, sd=sqrt(1/(12*k))), type="l")
+
+plot (ecdf(y))
+points(z, pnorm(z, mean= 1/2, sd=sqrt(1/(12*k))), type="l", col=2)
 
 ### k=10
 k = 10
@@ -45,9 +50,11 @@ for (i in 1:999) {
   new_element = sum(runif(k))/k
   y = c(y,new_element)}
 
-hist(y)
-plot(y,dnorm(y,E,var))
-distribution = ecdf(y)
+z = seq(0,1,0.01)
+points(z, dnorm(z, mean= 1/2, sd=sqrt(1/(12*k))), type="l")
+
+plot (ecdf(y))
+points(z, pnorm(z, mean= 1/2, sd=sqrt(1/(12*k))), type="l", col=2)
 
 
 
@@ -56,8 +63,20 @@ distribution = ecdf(y)
 ### 3.
 ########################
 
-d = read.csv("/home/xi86xev/git/git/Statistische Verfahren/2017_SS_7_2_3_soilrespiration1.csv", sep = ";")
+beta0 = 4.3
+beta1 = 0.075
+sigma2 = 0.07
+
+d = read.csv("C:/Users/xi86xev/Desktop/git/Statistische Verfahren/2017_SS_7_2_3_soilrespiration1.csv", sep = ";")
+
+x = d$temp
+y = log(d$resp)
+
+plot (x,y, pch=16, col=1)
+
+set.seed(13)  
+y.sim = rnorm(76,mean=beta0+beta1*x, sd=sqrt(sigma2))
+
+points(x,y.sim, pch = 16, col=2)
 
 
-
-  
