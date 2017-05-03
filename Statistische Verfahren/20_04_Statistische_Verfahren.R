@@ -14,3 +14,6 @@ points(x,dnorm(x),type="l",col=2)
 
 # Verteilungsfunktion F(t) = P(Z <= t)
 plot(x, pnorm(x), type="l")
+
+plot(ecdf(z))
+plot(x,pnorm(x), type="l")
