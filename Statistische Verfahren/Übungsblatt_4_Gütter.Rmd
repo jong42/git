@@ -1,0 +1,84 @@
+---
+title: "Übungsblatt_4"
+author: "Jonas Gütter"
+date: "7 Mai 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Aufgabe 1
+
+Die Poisson-Verteilung ist eine diskrete Verteilung unabhängiger Ereignisse. Erwartungstreue bedeutet, dass der Schätzer für Theta sich bei wachsender Stichprobengröße dem wahren Wert von Theta annähert.
+
+#### ML-Schätzer
+
+Zu beweisen: 
+
+$1/n * sum(P(x_i)) = theta$ für n --> unendlich
+
+
+$$
+P(x) = (theta^x/x!)*e^{(-theta)}
+$$
+$$
+[P(x_1) + P(x_2) + P(x_3) + ... + P(x_n)]/n = theta
+$$
+$$
+[(theta^{x_1}/x_1!)*e^{(-theta)} + (theta^{x_2}/x_2!)*e^{(-theta)} +...+(theta^{x_n}/x_n!)*e^{(-theta)}]/n = theta
+$$
+
+...
+...
+...
+
+Die Poisson-Verteilung ist symmetrisch um Theta. Bei einer sehr großen Anzahl von Ereignissen wird es 
+annähernd gleich viele Ereignisse unter und über Theta geben, deren Werte durch die Symmetrie auch 
+annähernd die gleiche Differenz zu Theta haben:
+
+$sum(P(x_i)-theta)$  für alle $x_i < theta = -sum(P(x_i)-theta)$  für alle $x_i > theta$
+
+                                   
+Beim Aufsummieren dieser beiden Mengen ergibt sich somit eine Differenz von Theta zu null:
+
+$sum(P(x_i)-theta)$ für alle $x_i < theta -sum(P(x_i)-theta)$ für alle $x_i > theta = sum(P(x_i)-theta) = 0$
+
+was bedeutet, dass die Summe aller Werte geteilt durch deren Anzahl (wodurch der ML-Schätzer definiert ist) genau Theta ergibt:
+
+$1/n * sum(P(x_i)) = theta$
+
+w.z.b.w
+
+#### Bestimmung der Varianz
+
+
+$var (theta_{ml}) = var ((1/n)*sum(x_i)) = (1/n^2)*var(sum(x_i)) = 1/n^2 * sum(  var(x_i)) = 1/n^2 * n * sigma^2 = sigma^2/n$
+
+## Aufgabe 2
+
+#### Simulation der ML-Schätzer
+```{r }
+n = seq(10,200,10)
+theta = 2;
+simlength = 10000
+
+d = array(dim = c(simlength,n[20],20));
+
+for (i in 1:simlength) {
+  for (j in 1:(n[20]/10)){
+    for (k in 1:20){
+      d[i,j,k] = rexp(k,theta)[j]
+    }
+  }
+}
+
+theta_ML = vector(length=simlength)
+
+for (i in 1:simlength) {
+  theta_ML[i] = n/sum(d[i,])
+}
+
+
+```
