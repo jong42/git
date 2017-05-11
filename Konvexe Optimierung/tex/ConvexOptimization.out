@@ -1,0 +1,20 @@
+\BOOKMARK [0][-]{chapter.1}{Einf\374hrung in die Optimierung}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Grundlagen}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Beispiele}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Portfolio-Optimierung}{section.1.2}% 4
+\BOOKMARK [2][-]{subsection.1.2.2}{Optimale Steuerung - Raketenauto}{section.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.2.3}{Lineare Regression}{section.1.2}% 6
+\BOOKMARK [0][-]{chapter.2}{Konvexe Optimierungsprobleme}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Konvexe Mengen}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.1.1}{Beispiele}{section.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.1.2}{Schnitt, Skalierung und Verschiebung}{section.2.1}% 10
+\BOOKMARK [1][-]{section.2.2}{Konvexe Funktionen}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.2.1}{Charakterisierungen konvexer Funktionen}{section.2.2}% 12
+\BOOKMARK [0][-]{chapter.3}{Optimierungsverfahren f\374r allgemeine Probleme}{}% 13
+\BOOKMARK [1][-]{section.3.1}{Das Schrittweitenverfahren von Armijo}{chapter.3}% 14
+\BOOKMARK [2][-]{subsection.3.1.1}{Konvergenz des Verfahrens}{section.3.1}% 15
+\BOOKMARK [1][-]{section.3.2}{Das Gradientenverfahren}{chapter.3}% 16
+\BOOKMARK [2][-]{subsection.3.2.1}{Funktionenklassen}{section.3.2}% 17
+\BOOKMARK [2][-]{subsection.3.2.2}{Konvergenz des Gradientenverfahrens}{section.3.2}% 18
+\BOOKMARK [0][-]{appendix.A}{Mathematische Grundlagen}{}% 19
+\BOOKMARK [0][-]{appendix.B}{Optimisational English}{}% 20

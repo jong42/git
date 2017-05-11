@@ -1,0 +1,45 @@
+\select@language {ngerman}
+\contentsline {chapter}{\numberline {1}Einf\"uhrung in die Optimierung}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Grundlagen}{5}{section.1.1}
+\contentsline {paragraph}{\nonumberline Die Nebenbedingungen}{5}{section*.4}
+\contentsline {paragraph}{\nonumberline Einfache Beispiele}{5}{section*.5}
+\contentsline {paragraph}{\nonumberline Einfache Beispiele}{7}{section*.8}
+\contentsline {paragraph}{\nonumberline Maximierung}{7}{section*.9}
+\contentsline {section}{\numberline {1.2}Beispiele}{7}{section.1.2}
+\contentsline {paragraph}{\nonumberline Portfolio-Optimierung}{7}{section*.12}
+\contentsline {paragraph}{\nonumberline Optimale Steuerung eines Raketenautos}{7}{section*.13}
+\contentsline {paragraph}{\nonumberline Data Fitting}{8}{section*.14}
+\contentsline {subsection}{\numberline {1.2.1}Portfolio-Optimierung}{8}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Optimale Steuerung - Raketenauto}{9}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}Lineare Regression}{9}{subsection.1.2.3}
+\contentsline {chapter}{\numberline {2}Konvexe Optimierungsprobleme}{11}{chapter.2}
+\contentsline {paragraph}{\nonumberline Probleme mit Gleichungs- und Ungleichungsrestriktionen}{11}{section*.17}
+\contentsline {section}{\numberline {2.1}Konvexe Mengen}{11}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Beispiele}{12}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Schnitt, Skalierung und Verschiebung}{13}{subsection.2.1.2}
+\contentsline {paragraph}{\nonumberline Beispiele f\"ur Kegel}{14}{section*.20}
+\contentsline {paragraph}{\nonumberline Wichtige Kegel}{15}{thmt@dummyctr.dummy.15}
+\contentsline {section}{\numberline {2.2}Konvexe Funktionen}{15}{section.2.2}
+\contentsline {paragraph}{\nonumberline Beispiele konvexer Funktionen}{16}{section*.22}
+\contentsline {subsection}{\numberline {2.2.1}Charakterisierungen konvexer Funktionen}{16}{subsection.2.2.1}
+\contentsline {paragraph}{\nonumberline Rechenregeln f"ur konvexer Funktionen}{17}{section*.23}
+\contentsline {chapter}{\numberline {3}Optimierungsverfahren f\IeC {\"u}r allgemeine Probleme}{19}{chapter.3}
+\contentsline {paragraph}{\nonumberline Beispiel f\IeC {\"u}r nicht konvergierende Probleme}{19}{section*.24}
+\contentsline {paragraph}{\nonumberline M\IeC {\"o}gliche Schrittweitenstrategien}{19}{section*.25}
+\contentsline {section}{\numberline {3.1}Das Schrittweitenverfahren von Armijo}{20}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Konvergenz des Verfahrens}{21}{subsection.3.1.1}
+\contentsline {paragraph}{\nonumberline Beispiel zur Lipschitz-Stetigkeit}{21}{section*.26}
+\contentsline {section}{\numberline {3.2}Das Gradientenverfahren}{21}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Funktionenklassen}{22}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Konvergenz des Gradientenverfahrens}{23}{subsection.3.2.2}
+\contentsline {paragraph}{\nonumberline Theorem}{23}{section*.27}
+\contentsline {chapter}{\numberline {A}Mathematische Grundlagen}{25}{appendix.A}
+\contentsline {chapter}{\numberline {B}Optimisational English}{27}{appendix.B}
+\contentsline {paragraph}{\nonumberline $\ldots $ program}{27}{section*.28}
+\contentsline {paragraph}{\nonumberline convex}{27}{section*.29}
+\contentsline {paragraph}{\nonumberline set}{27}{section*.30}
+\contentsline {paragraph}{\nonumberline function}{27}{section*.31}
+\contentsline {paragraph}{\nonumberline mapping, map}{27}{section*.32}
+\contentsline {paragraph}{\nonumberline cone}{27}{section*.33}
+\contentsline {paragraph}{\nonumberline hull}{27}{section*.34}
+\contentsline {paragraph}{\nonumberline continuous}{27}{section*.35}

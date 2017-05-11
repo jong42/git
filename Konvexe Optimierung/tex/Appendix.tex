@@ -1,0 +1,46 @@
+\chapter{Mathematische Grundlagen}
+
+\begin{Definition}
+  Eine symmetrische Matrix $A \in \R^{n \times n}$ hei\ss t \emph{positiv definit}, wenn
+  \begin{gather*}
+    x\tr A x > 0 \quad \forall x \in \R^n\,,\; x \neq 0_n
+  \end{gather*}
+  gilt. Die Matrix~$A$ hei\ss t \emph{positiv semidefinit}, wenn
+  \begin{gather*}
+    x\tr A x \geq 0 \quad \forall x \in \R^n
+  \end{gather*}
+  gilt.
+\end{Definition}
+\begin{Beispiel}
+ $ A=I_2 = \begin{bmatrix}
+		1 & 0\\ 0 & 1
+ \end{bmatrix}
+ $
+ \begin{eqnarray*}
+	x\tr A x & = &\begin{pmatrix}x_1\\x_2
+	\end{pmatrix}\tr\begin{pmatrix}1 & 0\\ 0 & 1\end{pmatrix}\begin{pmatrix}x_1 \\ x_2\end{pmatrix}\\ & = &\begin{pmatrix}x_1 \\ x_2\end{pmatrix}\tr \begin{pmatrix}x_1 \\ x_2\end{pmatrix}\\ & = & x_1^2+x_2^2 > 0 ,
+\end{eqnarray*}
+$ \text{ wobei } \begin{pmatrix}x_1\\x_2\end{pmatrix} \neq \begin{pmatrix}0\\0\end{pmatrix}$.
+\end{Beispiel}
+%
+\begin{Definition}[Differenzierbarkeit]
+\label{def:diffbarkeit}
+  Seien $f\colon D\to\R$ und $D\subseteq\R^n$ offen und existiere der Gradient
+  \begin{equation*}
+    \nabla f(x) = \left( \frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n} \right)\tr
+  \end{equation*}
+  \noindent
+  f\"ur alle $x \in D$.
+  Dann hei\ss t $f$ \emph{differenzierbar} auf $D$.
+\end{Definition}
+%
+\begin{Definition}[zweimalige Differenzierbarkeit]
+\label{def:2diffability}
+  Seien $f\colon D\to\R$ und $D\subseteq\R^n$ offen und existiere die Hessematrix $\nabla^2 f(x)\subseteq\mathcal{S}^n$ mit
+  \begin{equation*}
+    \nabla^2 f(x) = \left( \frac{\partial^2 f}{\partial x_i \partial x_j} \right)_{i, j \in [n]}
+  \end{equation*}
+  \noindent
+  f\"ur alle $x \in D$.
+  Dann hei"st $f$ \emph{zweimal differenzierbar} auf $D$.
+\end{Definition}
