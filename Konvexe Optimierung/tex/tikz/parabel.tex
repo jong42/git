@@ -1,0 +1,9 @@
+\begin{center}
+     \begin{tikzpicture}[xscale=0.5,yscale=0.5]
+       \draw[->,thick] (0,0) -- (7,0) node[below]{$x$};
+       \draw[->,thick] (1,0) -- (0,0) -- (0,25) node[left]{$y$};
+			 \draw (1,1) node{$\circ$} node[below right]{\footnotesize{$(x_0)$}};
+			 \draw[blue] plot (\x,{(\x)^2});
+     \end{tikzpicture}
+		\captionof{figure}{Beispiel fuer nicht konvergierendes Problem bei unguenstig gewaehlter Schrittweite}
+\end{center}
