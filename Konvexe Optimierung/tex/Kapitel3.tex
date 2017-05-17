@@ -1,40 +1,35 @@
 \chapter{Optimierungsverfahren für allgemeine Probleme}
 
 Allgemeine, unrestringierte Probleme mit \textbf nichtlinearer, differenzierbarer Zielfunktion vom Typ
-\begin{equation}
+$
 			\begin{aligned}
 				\min_{x\in\R^n}
 				& & & f(x) & & &
-			\end{aligned}
-\end{equation}
-lassen sich mit den im vorigen Kapitel behandelten Verfahren nicht lösen. Der negative Gradient als Richtung des steilsten Abstiegs ist immer noch als Abstiegsrichtung geeignet, allerdings kann keine exakte \textbf {Schrittweite}\index{Schrittweite} mehr bestimmt werden.
-
+			\end{aligned} $ lassen sich mit den im vorigen Kapitel behandelten Verfahren nicht lösen. Der negative Gradient als Richtung des steilsten Abstiegs ist immer noch als Abstiegsrichtung geeignet, allerdings kann keine exakte Schrittweite mehr bestimmt werden.\\
 Sei $x^{(k)}$ ein Iterationspunkt mit einer Abstiegsrichtung $d^{(k)}$. Bei hinreichend kleiner Schrittweite $\sigma_k$ gilt:
 \begin{equation}
 	f(x^{(k+1)}) = f(x^{(k)} + \sigma_kd^{(k)}) < f(x^{(k)})
 \end{equation}
-, die Folge ${f(x^{(k)})}$ ist streng monoton fallend. Das muss jedoch nicht bedeuten, dass das Problem konvergiert.
-
+Die Folge ${f(x^{(k)})}$ ist streng monoton fallend. Das muss jedoch nicht bedeuten, dass das Problem konvergiert.
 \paragraph{Beispiel für nicht konvergierende Probleme}
 
 $f(x)= x^2$, $x^{(0)} = 1$
 
 \input{tikz/parabel}
-
 $d^{(0)} = -1$ \\
-Abstiegsrichtung: $\nabla f(x^{(k)})^T d^{(k)}$
-$=  -2x^{(k)} < 0 \forall x^{(k)} > 0$
+Abstiegsrichtung: $\nabla f(x^{(k)})^T d^{(k)}$\\
+\noindent\hspace*{32mm}%
+ $=  -2x^{(k)} < 0 \, \, \, \, \forall x^{(k)} > 0$\\
+Betrachte Schrittweite $\sigma_k = 1/2^{k+2} \, \, \, \, \forall k \geq 0$
 
-Betrachte Schrittweite $\sigma_k = 1/2^{k+2} \forall k \geq 0$
 
-\begin{equation}
-x^{(k-1)} = x^k + \sigma_k d^{(k)} \\
-= x^{(k)} - \sigma_k \\
-= x^{(k)} - (1/2)^{(k+2)} \\
-= x^{(0)} - \sum\limits_{i=1}^k (1/2)^{(i+2)} \\
-= 1 - \sum\limits_{i=1}^k (1/2)^{(i+2)} \\
-= 1/2 + (1/2)^{(k+2)}  \underbrace{\Rightarrow}_{k\Rightarrow \infty} 1/2
-\end{equation}
+$x^{(k-1)} = x^k + \sigma_k d^{(k)}$ \\
+$= x^{(k)} - \sigma_k$ \\
+$= x^{(k)} - (1/2)^{(k+2)}$ \\
+$= x^{(0)} - \sum\limits_{i=1}^k (1/2)^{(i+2)}$ \\
+$= 1 - \sum\limits_{i=1}^k (1/2)^{(i+2)}$ \\
+$= 1/2 + (1/2)^{(k+2)}  \underbrace{\Rightarrow}_{k\Rightarrow \infty} 1/2$
+
 
 Die Folge $x^{(k)}$ konvergiert nicht gegen $x^{*} = 0$.
 
