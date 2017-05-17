@@ -3,16 +3,14 @@
 #include <math.h>
 
 //device code
-__global__ void add(int a[], int c[]){
-	int index = threadIdx.x + blockIdx.x * blockDim.x;
-	int c[index] = a[2*index]+a[2*index+1];
+__global__ void add(int a[], int mod_val){
+	int my_id = threadIdx.x + blockIdx.x * blockDim.x;
+	if ((my_id%mod_val) == (mod_val-1))
+	{
+		a[my_id] += a[mod_val/2];
+	}
 	
-}
-
-__global__ void set_new_input(int new_input[], int old_output[]){
-	int index = threadIDx.x + blockIdx.x * blockDim.x;
-	new_input[index] = old_output[index];
-
+	
 }
 
 //host code
@@ -24,34 +22,26 @@ int main(){
 	}
 	length = sizeof(zahlenfolge)/sizeof(zahlenfolge[0]);
 	// allocate memory
-	// variablen vorher definieren
-	int *d_input;
 	int *d_output;
 	int size = sizeof(zahlenfolge);
-	cudaMalloc((void **)&d_input, size);
-    cudaMalloc((void **)&d_output, size/2);
+	cudaMalloc((void **)&d_output, size);
     // initialize variables for loop
-    int h_input [] = zahlenfolge;
-    int input_length = length;
-    int h_output[length/2];
+    int h_output [] = zahlenfolge;
     // Copy array from host to device
-    cudaMemcpy (d_input, h_input,length*sizeof(int)), cudaMemcpyHostToDevice);
     cudaMemcpy (d_output, h_output,length*sizeof(int)), cudaMemcpyHostToDevice);
     // invoke kernel
-    // Annahme: Länge der Eingabe ist 2er-Potenz
     for (int i = 0; i< log2(length);i++) {
-		add <<<1,input_length/2>>>(&d_input,&d_output);
+		int mod_val = 2;
+		add <<<1,input_length/mod_val>>>(&d_output, mod_val);
 		// update variables for next loop instance
-		set_new_input <<<1,input_length/2>>>(&d_input,&d_output);
-		input_length = sizeof(d_input)/sizeof(d_input[0]);
+		mod_val *= 2;
 	}
 	// Copy result from device to host
 	cudaMemcpy (h_output, d_output, length*sizeof(int), cudaMemcpyDeviceToHost);
 
-	printf("Praefixsumme:%a",h_output[0]);
+	printf("Praefixsumme:%a",h_output);
 	
 	// Free device memory
-	cudaFree(d_input);
 	cudaFree(d_output);
 	
 	return 0;
