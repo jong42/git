@@ -168,6 +168,7 @@ A^T =
 3 & 6 & 9 
 \end {bmatrix}
 \end{equation}
+Wenn die Einträge einer Matrix spiegelsymmetrisch zu ihrer Hauptdiagonalen sind, die Transponierte der Matrix also wieder die Matrix selbst ist, ist die Matrix spiegelsymmetrisch.
 \subsection{Die Inverse einer Matrix}
 Die Inverse einer Matrix ist eine Matrix, die multipliziert mit der ursprünglichen Matrix die Einheitsmatrix ergibt. Nur quadratische Matrizen können invertiert werden, und nicht für jede quadratische Matrix muss eine Inverse existieren. Matrizen, für die eine Inverse existiert, werden reguläre Matrizen genannt.\\
 \\
@@ -194,7 +195,12 @@ Eine Matrix heißt idempotent, wenn sie mit sich selbst multipliziert wieder sic
 A * A = A
 \end{equation}
 \subsection{Eigenwerte und Eigenvektoren}
- Ein Eigenvektor einer Matrix ist ein vom Nullvektor verschiedener Vektor, dessen Richtung durch Multiplikation mit der Matrix nicht verändert wird, d.h. der Vektor nach der Multiplikation ist ein Vielfaches des Vektors vor der Multiplikation. Das dazugehörige Vielfache ist der Eigenwert.\\
+ Ein Eigenvektor einer Matrix ist ein vom Nullvektor verschiedener Vektor, dessen Richtung durch Multiplikation mit der Matrix nicht verändert wird, d.h. der Vektor nach der Multiplikation ist ein Vielfaches des Vektors vor der Multiplikation. Das dazugehörige Vielfache ist der Eigenwert:\\
+\\
+\begin{equation}
+A * x = \lambda * x
+\end{equation}
+wobei x ein Eigenvektor und  $\lambda$  der Eigenwert ist.\\
 \\
 Beispiel:
 \begin{equation}
@@ -233,7 +239,7 @@ $3*\begin{bmatrix}
 \end {bmatrix}
 $.\\
 \\
-Ein Eigenwert hat unendlich viele zugehörige Eigenvektoren, während ein Eigenvektor immer nur zu einem Eigenwert gehören kann. Eigenwerte und Eigenvektoren können nur für quadratische Matrizen berechnet werden.
+Ein Eigenwert hat unendlich viele zugehörige Eigenvektoren, während ein Eigenvektor immer nur zu einem Eigenwert gehören kann. Eigenwerte und Eigenvektoren können nur für quadratische Matrizen berechnet werden. Eigenwerte werden berechnet, indem man die Formel $A*x = \lambda * x$ als Gleichungssystem schreibt, alle Terme auf die linke Seite bringt, dann die Determinante der Koeffizienten angibt und diese gleich null setzt. Die Lösungen sind die Eigenwerte der Matrix.
 \subsection{Rang einer Matrix}
 Der Rang einer Matrix gibt die Anzahl an linear unabhängigen Zeilenvektoren (und Spaltenvektoren) an. Man kann den Rang einer Matrix bestimmen, indem man sie in die Zeilenstufenform bringt. Der Rang einer Matrix ändert sich nicht, wenn man sie in diese Form bringt. In der Zeilenstufenform entspricht der Rang einer Matrix der Anzahl an Zeilenvektoren, die ungleich null sind.\\
 \\
@@ -257,7 +263,7 @@ A = \begin{bmatrix}
 Eine Norm ordnet einem Objekt, beispielsweise einer Matrix, eine Zahl zu, die in gewisser Weise die Größe des Objekts beschreiben soll.
 Die p-Norm einer Matrix A ist definiert als
 \begin{equation}
-||A||_p = (\Sigma_{i=1}^m \Sigma_{j=1}^n |a_{ij}|^p)^{1/p}
+||A|| = (\Sigma_{i=1}^m \Sigma_{j=1}^n |a_{ij}|^p)^{1/p}
 \end{equation}
 , also die Summe über die Beträge aller Einträge der Matrix exponiert mit p,  exponiert mit 1/p. p ist dabei eine reelle Zahl zwischen 1 und unendlich. Wichtige Normen sind die 1-Norm(Summennorm) für p=1 und die 2-Norm(euklidische Norm) für p=2.
 \subsection{Determinante}
@@ -295,4 +301,8 @@ Eine quadratische Matrix heißt orthogonal, wenn das Produkt mit ihrer Transponi
 A^T * A = E
 \end{equation}
 Bei orhtogonalen Matrizen sind sowohl die Zeilen- als  auch die Spaltenvektoren linear unabhängig zueinander.
+\subsection{Konditionszahl einer Matrix}
+Die Konditionszahl einer Matrix gibt an, wie stark bei der Lösung des Gleichungssystems $Ax=b$ Änderungen in der Matrix A sich auf das Ergebnis x auswirken. Allgemein bezeichnet die Kondition die Robustheit gegenüber Störungen.
+\subsection{Positive Definitheit}
+Eine quadratische Matrix ist positiv definit, wenn alle Eigenwerte größer als null sind. Wenn alle Eigenwerte größer gleich null sind, ist die Matrix positiv semidefinit.
 \end{document}
