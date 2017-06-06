@@ -23,8 +23,6 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
 
 \declaretheorem[style=definition,qed=$\diamond$,numberwithin=chapter]{Definition}
 \declaretheorem[style=definition,qed=$\diamond$,sibling=Definition]{Beispiel}
@@ -46,6 +44,7 @@
 \newcommand{\midd}{\mathrel{}\middle|\mathrel{}}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\N}{\mathcal{N}}
 
 \begin{document}
 
@@ -54,7 +53,9 @@
 \maketitle
 \tableofcontents
 \input{Kapitel1}
+\input{Kapitel2}
 \input{Kapitel3}
+\input{Kapitel4}
 \appendix
 \input{Appendix}
 \input{english-glossary}
