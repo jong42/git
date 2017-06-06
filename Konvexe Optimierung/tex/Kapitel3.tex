@@ -1,241 +1,137 @@
-\chapter{Optimierungsverfahren für allgemeine Probleme}
-
-Allgemeine, unrestringierte Probleme mit \textbf nichtlinearer, differenzierbarer Zielfunktion vom Typ
-$
-			\begin{aligned}
-				\min_{x\in\R^n}
-				& & & f(x) & & &
-			\end{aligned} $ lassen sich mit den im vorigen Kapitel behandelten Verfahren nicht lösen. Der negative Gradient als Richtung des steilsten Abstiegs ist immer noch als Abstiegsrichtung geeignet, allerdings kann keine exakte Schrittweite mehr bestimmt werden.\\
-Sei $x^{(k)}$ ein Iterationspunkt mit einer Abstiegsrichtung $d^{(k)}$. Bei hinreichend kleiner Schrittweite $\sigma_k$ gilt:
-\begin{equation}
-	f(x^{(k+1)}) = f(x^{(k)} + \sigma_kd^{(k)}) < f(x^{(k)})
-\end{equation}
-Die Folge ${f(x^{(k)})}$ ist streng monoton fallend. Das muss jedoch nicht bedeuten, dass das Problem konvergiert.
-\paragraph{Beispiel für nicht konvergierende Probleme}
-
-$f(x)= x^2$, $x^{(0)} = 1$
-
-\input{tikz/parabel}
-$d^{(0)} = -1$ \\
-Abstiegsrichtung: $\nabla f(x^{(k)})^T d^{(k)}$\\
-\noindent\hspace*{32mm}%
- $=  -2x^{(k)} < 0 \, \, \, \, \forall x^{(k)} > 0$\\
-Betrachte Schrittweite $\sigma_k = 1/2^{k+2} \, \, \, \, \forall k \geq 0$
-
-
-$x^{(k-1)} = x^k + \sigma_k d^{(k)}$ \\
-$= x^{(k)} - \sigma_k$ \\
-$= x^{(k)} - (1/2)^{(k+2)}$ \\
-$= x^{(0)} - \sum\limits_{i=1}^k (1/2)^{(i+2)}$ \\
-$= 1 - \sum\limits_{i=1}^k (1/2)^{(i+2)}$ \\
-$= 1/2 + (1/2)^{(k+2)}  \underbrace{\Rightarrow}_{k\Rightarrow \infty} 1/2$
-
-
-Die Folge $x^{(k)}$ konvergiert nicht gegen $x^{*} = 0$.
-
-
-\paragraph{Mögliche Schrittweitenstrategien}
-
+\chapter{Optimierungsverfahren: Grundlagen}
 \begin{itemize}
-	\item Konstante Schrittweite $\sigma_k = \sigma > 0$
-	\item Kleiner werdende Schrittweiten, z.B. $\sigma_k = 1/k$
-	\item Exakte Schrittweiten, z.B. $\sigma_k = arg \min {\sigma \geq 0} f(x^{(k)} + \sigma d^{(k)})$
-	\item  Armijo-Verfahren
+\item Nichtlineare Optimierungsprobleme können i.\,d.\,R. nicht analytisch gelöst werden $\Rightarrow$ \textbf{numerische Lösung}
+\item Berechne für das Problem \eqref{eq:P} ausgehend von einem Startpunkt $x^{(0)}$ eine Folge ${x^{(k)}}, k = 1, 2,\ldots, $ mit dem Ziel, dass die Folge gegen die Lösung $x^*$ konvergiert
+\item Naheliegendes Ziel bei den Iterationen:
+\begin{align*}
+f(x^{(k+1)}) < f (x^{(k)}) \,,
+\end{align*}
+solche Verfahren nennt man \textbf{Abstiegsverfahren}, da die Folge der Funktionswerte $\lbrace f(x^{(k)})\rbrace_{k \in N}$ eine absteigende Folge ist
+\item Wenn möglich startet man mit einem zulässigen Punkt $x^{(0)} \in \F$ und versucht, dass $x^{(k)} \in \F$ für alle $k \in N$ gilt - \textbf{Verfahren zulässigen Punkte}
+\item Abstiegsverfahren benutzen zur Berechnung von $x^{(k+1)}$ eine \textbf{Abstiegsrichtung} $d^{(k)}$ mit der Eigenschaft
+\begin{align*}
+f(x^{(k)} + \sigma_k d^{(k)}) < f(x^{(k)})
+\end{align*}
+für eine hinreichend kleine \textbf{Schrittweite} $\sigma_k$
+\item Die Schrittweite $\sigma_k$ ist so zu bestimmen, dass man eine möglichst große Abnahme des Zielfunktionswertes erhält
+\item Neuer Iterationspunkt: $x^{(k+1)} = x^{(k)} + \sigma_k d^{(k)}$
 \end{itemize}
 
-\section{Das Schrittweitenverfahren von Armijo}
-
-Seien x und eine Abstiegsrichtung d von f in x gegeben. Weiter sei
-$c_1 \in ]0, 1[$ eine von x und d unabhängige Konstante. Zur Berechnung
-einer effizienten Schrittweite $\sigma$ soll die Abstiegsbedingung
-$f(x + \sigma d) \leq f(x) + c_1 \sigma \nabla f(x)^Td$
-erfüllt werden. Damit die Schrittweite nicht zu klein wird, fordert man
-zusätzlich mit einer von x und d unabhängigen Konstante $c_2 > 0$, dass
-
-\begin{equation}
-\sigma \geq -c_2 (\nabla f(x)^Td) / ||d||^2 
-\end{equation}
-
-Abbildung einfügen
-
-
-Gegeben seien von x und d unabhängige Konstanten:
-$\delta \in ]0, 1[$, $\gamma > 0$ und $0 < \beta_1 \leq \beta_2 < 1$
-
-\begin{enumerate}
-	\item  Wähle eine Startschrittweite $\sigma_0$, für die mit $c_2 = \gamma$ gilt:
-	\begin{equation}
-	\sigma \geq - \gamma (\nabla f(x)^Td)/||d||^2
-	\end{equation}
-	Setze $j = 0$.
-	\item Ist die Abstiegsbedingung
-	 $f(x + \sigma d) \leq f(x) + \delta \sigma_j \nabla f(x)^Td$
-	 erfüllt, dann setze $\sigma_A = \sigma_j$ und stoppe das Verfahren.
-	\item Wähle $\sigma_j+ 1 \in [\beta_1 \sigma_j , \beta_2 \sigma_j ]$.
-	\item Setze $j = j + 1$ und gehe zu 2.
-\end{enumerate}
-
-
-Praktisch haben sich folgende Werte bewährt:
-\begin{itemize}
-\item $\delta$ sollte klein sein; Größenordnung: $\delta = 0.01$
-\item$\gamma$ sollte so gewählt werden, dass die Schrittweite 1 und die exakte
-Schrittweite nicht ausgeschlossen werden. $\gamma = 10^{-4}$
-\item $\sigma_0 = 1$ oder als Approximation der exakten Schrittweite:
-\begin{equation}
-\sigma_0 = - (\nabla f(x)^T d) / (2 (f(x + d) - f(x) - \nabla f(x)^T d))
-\end{equation}
-\item Zur Berechnung von $\sigma_j,j \geq 1$ kann man $\beta_1 = \beta_2 = \beta$ wählen:
-\begin{equation}
-\sigma_j = \beta^j \sigma_0 
-\end{equation}
-$j = 1, 2, . . .$
-
-\end{itemize}
-Oft wählt man $\beta = 1/2$
-
-\subsection{Konvergenz des Verfahrens}
-
-Die theoretische Version des Armijo-Verfahrens konvergiert nach endlich
-vielen Schritten, falls die Standard-Voraussetzung erfüllt ist und die
-Ableitung der Zielfunktion Lipschitz-stetig ist, d. h., es gibt ein $L > 0$ mit
-\begin{equation}
-|| \nabla f(x) - \nabla f(y)|| \leq L ||x - y|| \forall x,y \in N_0
-\end{equation}
-
-Bei einer praktischen Implementierung mit der diskutierten
-Parameterwahl ist jedoch endliche Konvergenz nicht sichergestellt.
-Daher sollte eine maximale Iterationszahl vorgegeben werden. Sollte
-keine Konvergenz eintreten, kann das Verfahren mit anderen Parametern
-neugestartet werden.
-
-\paragraph{Beispiel zur Lipschitz-Stetigkeit}
-
-$f(x_1,x_2) = (x_1)^2 + (x_2)^2 $
-$\nabla f(x_1,x_2) = \begin{bmatrix}2x_1\\2x_2\end{bmatrix}$
-
-$\nabla f(x_1,x_2)$ ist $\infty$ mal stetig differenzierbar
-
-\begin{equation}
-|| \nabla f(x) - \nabla f(y) || = || 2 \begin{bmatrix}x_1\\x_2\end{bmatrix} -2 \begin{bmatrix}y_1\\y_2\end{bmatrix} ||\\
-= ||2 \begin{bmatrix}x_1 -y_1\\x_2 - y_2\end{bmatrix} ||\\
-\leq 2 ||x-y||
-\end{equation}
-
-$\nabla f$ ist lipschitz-stetig mit L=2
-
-Die Lipschitz-Stetigkeit kann als ein Verhältnis zwischen Funktionswerten und Argumenten interpretiert werden.
-
-\section{Das Gradientenverfahren}
-
-Suchrichtung: $d^{(k)} = -\nabla f(x^{(k)})$
-\begin{itemize}
-	\item Wähle einen Startpunkt $x^{(0)} \in R^n$ und setze k = 0.
-	\item Ist $\nabla f(x^{(k)}) = 0_n$ , dann stoppe das Verfahren.
-	\item Berechne eine effiziente Schrittweite $\sigma_k$ (bspw. Armijo) und setze
-	$x^{(k+1)} = x{(k)} - \sigma_k \nabla f(x^{(k)})$ .
-	\item Setze $k = k + 1$ und gehe zu 2.
-\end{itemize}
-
-Der negative Gradient ist die eindeutig bestimmte Lösung des quadratischen Problems
-\begin{equation}
-	\min_{d\in\R^n} \underbrace{f(x^{(k)}) + \nabla f(x^{(k)})^Td}_{Taylor-Approximation 1. Ordnung} + \underbrace{1/2 d^Td}_{\underbrace{1/(2\sigma)||x^{(k+1)} - x^{(k)}||^2}_{Abstand x^{(k+1)} zu x^{(k)}}}
-\end{equation}
-	
-$x^{(k+1)} = x^{(k)} + \sigma d$
-	
-$d = (x^{(k+1)}-x^{(k)})/\sigma$
-	
-für: $Q=I_n$
-$q = \nabla f(x^{(k)})$
-$Qd + q = 0$
-$Id + \nabla f(x^{(k)}) = 0$   <=> $d=-\nabla f(x^{(k)})$
-
-\subsection{Funktionenklassen}	
-
-$\mathcal{F}_L^{k,l} (R^n)$
-
-Menge aller konvexen Funktionen	$\mathcal{F}:R^n \Rightarrow R$, die k mal stetig differenzierbar sind und deren l-te ABleitung lipschitz-stetig mit Konstante L ist, d.h.
-
-\begin{equation}
-||f^{(l)} (x) - f^{(l)} (y)|| \leq L ||x-y|| \forall x,y \in R^n
-\end{equation}
-
-\begin{itemize}
-	\item Offensichtlich ist $k \geq l$
-	\item $\mathcal{F}_L^{k_1,l} \leq \mathcal{F}_L^{k_2,l}, k_1 \geq k_2$
-	\item $f_1 \in \mathcal{F}_{L_1}^{k,l}, f_2 \in \mathcal{F}_{L_2}^{k,l}, \alpha, \beta \geq 0$
-\end{itemize}
-
-$\Rightarrow \alpha f_1 + \beta f_2 \in \mathcal{F}_{\alpha L_1 + \beta L_2}^{k,l}$
-
-
-$\mathcal{F}^k \Rightarrow$ Menge aller konvexen Funktionen, die k mal stetig differenzierbar sind.
-
-Für Gradientenverfahren relevant:   $\mathcal{F}^{1,1}_L$
-Eigenschaft von $\mathcal{F}^1$: Für $f \in \mathcal{F}^1$ gilt:\\
-
-\begin{equation}
-	f(y) \geq f(x+ \nabla f(x)^T (y-x)
-\end{equation}
-
-Eigenschaften von $\mathcal{F}^{1,1}_L$: Für $f \in \mathcal{F}^{1,1}_L$ gilt:\\
-\begin{itemize}
-	\item $f(y) \leq f(x) + \nabla f(x)^T (y-x) + L/2 ||x-y||^2$
-	\item $f(x) + \nabla f(x)^T (y-x) + 1/(2L) || \nabla f(x) - \nabla f(y)||^2 \leq f(y)$
-	\item $ 1/L || \nabla f(x) - \nabla f(y)||^2 \leq (\nabla f(x) - \nabla f(y))^T (x-y)$
-	\item $(\nabla f(x) - \nabla f(y))^T (x-y) \leq L ||x-y||^2$
-	\item $ \alpha f(x) + (1-\alpha) f(y) \geq f(\alpha x + (1-\alpha)y) + (\alpha(1-\alpha))/(2L) || \nabla f(x) - \nabla f(y)||^2$
-	\item $\alpha f(x) + (1-\alpha) f(y) \geq f(\alpha x + (1-\alpha)y) + \alpha (1-\alpha) L/2 ||x-y||^2$
-\end{itemize}
-
-\begin{Definition}
-Eine stetig differenzierbare Funktion f heißt gleichmäßig konvex mit Konvexitätsparameter $\mu > 0 (f \in S_\mu^1)$, wenn $f(y) \geq \nabla f(x)^T (y-x) + (1/2) \mu ||y-x||^2 $
-\end{Definition}
-
-Wir definieren den Raum $S_{\mu,L}^{k,l}$ analog zu$ \mathcal{F}_L^{k,l} $
-
-Eigenschaften:
-$f_1 \in S_{\mu_1}^1, f_2 \in S_{\mu_2}^1, \alpha, \beta \geq 0 $
-
-$\Rightarrow  \alpha f_1 + \beta f_2 \in S^{1}_{\alpha mu_1 + \beta mu_2}$
-
+Mit einer \textbf{differenzierbaren Zielfunktion} $f: \R^n \rightarrow \R$ betrachten wir das unrestringierte Optimierungsproblem
+	\begin{gather*} 
+	\label{eq:PU}
+  		\tag{PU}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x)
+  			\end{aligned}
+	\end{gather*}
+Zur Herleitung und Untersuchung numerischer Verfahren zur Lösung des Problems \eqref{eq:PU} benötigen wir die folgende Standard-Voraussetzung:
+(V) Mit gegebenem $x^{(0)} \in \R^n$ ist die Niveaumenge
+\begin{align*}
+N_0 = N (f, f(x^{(0)})) = {x \in \R^n | f (x)  \leq f(x^{(0)})}
+\end{align*}
+kompakt.
+Damit existiert eine globale Lösung $x^*$ von \eqref{eq:PU} und es gilt 
+\begin{align*}
+nabla f(x^* ) = 0_n \,.
+\end{align*}
 
 \begin{Lemma}
-	Eine zweimal stetig differenzierbare Funktion f gehört zu $S^{2}_{\mu}$
+Die Funktion $f : \R^n \rightarrow \R$ sei differenzierbar in $x$. Weiter sei $d \in \R^n$ mit
+\begin{align*}
+\nabla f(x)^Td < 0\,.
+\end{align*}
+Dann gibt es ein $\sigma > 0$ mit $f(x + \sigma d) < f (x)$ für alle $\sigma \in ]0, \sigma[$.
+\end{Lemma}
+\begin{proof}
+$f$ ist differenzierbar in $x$:
+\begin{align*}
+\nabla f(x)^Td=\lim_{\sigma\searrow 0 \frac{f(x+\sigma d)-f(x)}{\sigma}}
+\end{align*}
+Nach Voraussetzung ist $\nabla f(x)^T<0$.
+\begin{align*}
+\Rightarrow f(x+\sigma d)-f(x)< 0\\
+\Leftrightarrow f(x+\sigma d)<f(x) \text{für hinreichend kleines } \sigma \,.
+\end{align*}
+\end{proof}
+Ein solcher Vektor $d$ heißt \textbf{Abstiegsrichtung} von $f$ im Punkt $x$
+
+\paragraph{Beispiel}
+a) Ist $f : \R^n \rightarrow \R$ differenzierbar in $x$ und ist $\nabla f(x) \neq 0_n$ , dann gilt
+\begin{align*}
+\nabla f(x)^T (-\nabla f(x)) = - \norm[\nabla f(x)]^2< 0 \,,
+\end{align*}
+d.\,h., der \textbf{negative Gradient} ist eine Abstiegsrichtung in $x$.
+b) Ist $A$ eine beliebige positiv definite $n \times n$-Matrix, dann ist die Richtung
+\begin{align*}
+d = -A-1 \nabla f(x)
+\end{align*}
+eine Abstiegsrichtung in $x$.
+
+\section{Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}
+\begin{itemize}
+\item[1.] Wähle einen Startpunkt $x^{(0)} \in \R^n$ und setze $k = 0$.
+\item[2.] Ist $\nabla f(x^{(k)}) = 0_n$, dann stoppe das Verfahren.
+\item[3.] Berechne eine Abstiegsrichtung $d^{(k)}$, eine Schrittweite $\sigma_k > 0$ mit
+\begin{align*}
+f (x^{(k)} + \sigma_k d^{(k)}) < f (x^{(k)})
+\end{align*}
+und setze $x^{(k+1)} = x^{(k)} + \sigma_k d^{(k)}$.
+\item[4.] Setze $k = k + 1$ und gehe zu 2.
+\end{itemize}
+
+Ist Voraussetzung (V) erfüllt, dann ist $\N_0$ beschränkt, und $f$ ist auf $\N_0$ beschränkt. Da für das allgemeine Abstiegsverfahren
+\begin{align*}
+f (x^{(k+1)}) < f(x^{(k)})
+\end{align*}
+ist, folgt $x^{(k)} \in \N_0$ für alle $k \in \mathbb N$. Daher sind die Folgen ${x^{(k)}}$ und
+${f(x^{(k)}}$ beschränkt.
+\subsection*{Abbruchkriterien}
+Das Abbruchkriterium $\nabla f(x^{(k)}) = 0_n$ in Schritt 2 ist nur für theoretische Zwecke sinnvoll. Praktisch gibt man \textbf{Toleranzen} $\varepsilon_i > 0$ vor, wobei man $\varepsilon_i = 10^{-p}$ wählt, wenn das Ergebnis auf $p$ Stellen genau sein soll. \textbf{Typische Abbruchkriterien} sind:
+\begin{itemize}
+\item $f(x^{(k)}) - f (x^{(k+1)})  \leq \varepsilon_1 \max\lbrace 1, |f (x^{(k)})|\rbrace$
+\item $ \norm{x^{(k+1)} - x^{(k)}}  \leq \varepsilon_2 \max\lbrace 1, \norm{x^{(k)}}\rbrace$ mit $\varepsilon_2 = \sqrt{\varepsilon_1}$
+\item $\norm{\nabla f(x^{(k)})}  \leq \varepsilon_3 \max\lbrace1, |f (x^{(k)})|\rbrace$ mit $\varepsilon_3 =\sqrt{\varepsilon_1}$
+Da die Abbruchkriterien nicht immer erfüllt werden können, sollte man zusätzlich eine \textbf{maximale Iterationszahl} vorgeben.
+\end{itemize}
+
+Wir betrachten zunächst das Lösen \textbf{unrestringierter, quadratischer Optimierungsprobleme}
+der Form
+\begin{gather*} 
+	\label{eq:QU}
+  		\tag{QU}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x)=\frac{1}{2}x^TQx+q^Tx \,.
+  			\end{aligned}
+	\end{gather*}
+Hierfür verwenden wir das \textbf{Gradientenverfahren}, welches auf eine Arbeit von \textbf{Louis Augustin Cauchy} aus dem Jahr \textbf{1847} zurückgeht.
+Für Probleme vom Typ \eqref{eq:QU} geben wir eine Abstiegsrichtung $d^{(k)}$ und eine \textbf{Schrittweitenstrategie} $\sigma_k$ an, welche wir in das allgemeine Abstiegsverfahren von Folie 6-6 einsetzen. Wir beweisen anschließend die \textbf{Konvergenz} des resultierenden Verfahrens.
+
+Der \textbf{negative Gradient $\nabla f(x)$} ist nicht nur eine Abstiegsrichtung der Zielfunktion im Punkt $x$, sondern definiert sogar die \textbf{Richtung des steilsten Abstiegs}
+wie folgendes Resultat zeigt.
+\begin{Lemma}
+Sei $f: \R^n \rightarrow \R$ in $x$ differenzierbar mit $\nabla f(x) \neq 0_n$. Dann ist
+\begin{align*}
+\overline{d}=-\frac{\nabla f(x)}{\norm{\nabla f(x)}}
+\end{align*}
+Lösung des Optimierungsproblems
+\begin{gather*} 
+  			\begin{aligned}
+    			\min_{d \in \R^n}
+    			& & & \nabla f(x)^Td \\
+    			s.t. 
+    			& & & \norm{d}=1
+  			\end{aligned}
+	\end{gather*}
 \end{Lemma}
 
-$\Leftrightarrow f^n(x) \geq \mu*I_n  \forall x \in R^n$
-
-Für $f \in S_{\mu,L}^{2,1}$ gilt:\\
-$\mu I_n \leq f''(x) \leq L I_n$
-
-\begin{Definition}
-$Q = L/\mu$ ist die Kondition der Funktion f.
-\end{Definition}
-
-Bei kleinen Q führen kleine Änderungen im Problem zu kleinen Änderungen im Funktionswert.
-	
-\subsection{Konvergenz des Gradientenverfahrens}	
-
-Der Einfachheit halber betrachten wir nur die konstante
-Schrittweitenstrategie $\sigma_k = \sigma$.
-
-\paragraph{Theorem}
-Sei $f : R^n \Rightarrow R$ konvex und stetig differenzierbar und die Ableitung $\nabla f$
-Lipschitz-stetig mit Lipschitzkonstante $L > 0$. Dann gilt für das
-Gradientenverfahren mit konstanter Schrittweite $0 < \sigma \leq 1/L$
-
-\begin{equation}
-f(x^{(k)}) - f(x^{*}) \leq (||x^{(0)} - x^{*}||^2)/2\sigma k
-\end{equation}
-
-aufgehört bei 08-15
-
-
-
-
-
-
-
-
+\begin{proof}
+Für beliebiges $d\in\R^n$ ist $\nabla f(x)^T d \geq -\norm{\nabla f(x)} \norm{d}$ (Chauchy-Schwarz). Daher ist $\nabla f(x)^T d \geq \underbrace{-\norm{\nabla f(x)}}_{\text{Untere Schranke der ZF}} \forall d\in\R^n, \norm{d}=1$.\\
+Für $\overline{d}$ gilt:
+\begin{align*}
+\nabla f(x)^Td=-\frac{f(x)^T \nabla f(x)}{\norm{\nabla f(x)}}=-\frac{\norm{\nabla f(x)}^2}{\norm{\nabla f(x)}}=-\norm{\nabla f(x)}\,.
+\end{align*}
+Damit ist die Behauptung bewiesen.
+\end{proof}
