@@ -188,6 +188,17 @@ Beispiel:
 \end {bmatrix}
 = diag(1,2,3)
 \end{equation}
+
+\subsection{Weitere spezielle Matrizen}
+\begin{itemize}
+\item Tridiagonalmatrix
+\item Obere/Untere Bidiagonalmatrix
+\item Obere/Untere Dreiecksmatrix
+\item Normierte obere/untere Dreiecksmatrix
+\item Obere/Untere Hessenberg-Matrix
+\item Bandmatrix
+\item Permutationsmatrix
+\end{itemize}
 \section{Matrix-Eigenschaften und Kenngrößen}
 \subsection{Idempotenz}
 Eine Matrix heißt idempotent, wenn sie mit sich selbst multipliziert wieder sich selbst als Ergebnis hat.
@@ -240,6 +251,13 @@ $3*\begin{bmatrix}
 $.\\
 \\
 Ein Eigenwert hat unendlich viele zugehörige Eigenvektoren, während ein Eigenvektor immer nur zu einem Eigenwert gehören kann. Eigenwerte und Eigenvektoren können nur für quadratische Matrizen berechnet werden. Eigenwerte werden berechnet, indem man die Formel $A*x = \lambda * x$ als Gleichungssystem schreibt, alle Terme auf die linke Seite bringt, dann die Determinante der Koeffizienten angibt und diese gleich null setzt. Die Lösungen sind die Eigenwerte der Matrix.
+\subsection{Kern und Bild}
+Der Kern einer Matrix $A \in R^{(mxn)}$ ist definiert als: \\
+$Kern(A) := \{x \in R^m|Ax=0\}$,\\ also alle x, für die gilt: Ax = 0.\\
+\\
+Das Bild einer Matrix $A \in R^{(mxn)}$ ist definiert als \\
+$Bild(A) := \{y \in R^m|\exists x \in R^n: Ax=y\}$,\\ also alle y, für die es mindestens ein x gibt, für das gilt: Ax = y.
+
 \subsection{Rang einer Matrix}
 Der Rang einer Matrix gibt die Anzahl an linear unabhängigen Zeilenvektoren (und Spaltenvektoren) an. Man kann den Rang einer Matrix bestimmen, indem man sie in die Zeilenstufenform bringt. Der Rang einer Matrix ändert sich nicht, wenn man sie in diese Form bringt. In der Zeilenstufenform entspricht der Rang einer Matrix der Anzahl an Zeilenvektoren, die ungleich null sind.\\
 \\
