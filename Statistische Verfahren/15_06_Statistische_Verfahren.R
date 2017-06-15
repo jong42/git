@@ -85,7 +85,8 @@ for (i in 1:10)
 
 # Zerlegung mit leaps-package
 library(leaps)
-cities.subsets = regsubsets(y~1+x1+x2+x3+x4+x5+x6, data=d)
+cities.subsets = regsubsets(y~1+x1+x2+x3+x4+x5+x6), data=d)
+cities.subsets = regsubsets(y~(1+x1+x2+x3+x4+x5+x6)^2, data=d)
 # kleinster cp-Wert ist am besten geeignetes Modell
 summary(cities.subsets)$cp
 summary(cities.subsets)$which
