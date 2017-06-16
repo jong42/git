@@ -25,110 +25,51 @@ __global__ void kernelAx(DTYPE *a, DTYPE *x, DTYPE *y, int size)
 
 
 
-__global__ void kernelAx_sm_versuch1(DTYPE *a, DTYPE *x, DTYPE *y, int size, int k)
-{
-   //Hier soll die GPU A*x=y mit shared memory berechnen.
-	// Funktioniert mit dieser Implementierung nur für Matrizen mit size<=1024 aufgrund maximaler 		// Threadanzahl
-
-	int tid = threadIdx.x;    //lokaler Thread Index
-    int bid = blockIdx.x;     //Index des Blockes
-    int bdim= blockDim.x;     //Anzahl an Threads pro Block
-    
-    int i = tid+bid*bdim;     //Globale Adresse
-    
-    __shared__ float sm[1024];
-    sm[tid]=0.0;
-    __syncthreads();
-
-    // Jeder Thread rechnet ein Produkt aus
-    //sm[tid] = a[i*k]*x[tid];
-    for (int l=0;l<a[i*k];l++)
-    {
-		atomicAdd(&sm[tid],x[tid]);
-	}
-    __syncthreads();
-    
-    // Für jeden Block werden die Produkte aufsummiert
-    for (int j=blockDim.x/2;j>0; j/=2)
-    {
-		if (tid<j)
-		{
-			//sm[tid] += sm [tid+j];
-			atomicAdd(&sm[tid],sm[tid+j]);
-		}
-		__syncthreads();
-	}		
-	if (tid == 0)
-	 {
-		//y[k] += sm[0];
-		atomicAdd(&y[k],sm[0]);
-	 }
-	 __syncthreads();
-}
-
-__global__ void kernelAx_sm_3(DTYPE *a, DTYPE *x, DTYPE *y, int size, int k)
+__global__ void kernelAx_sm(DTYPE *a, DTYPE *x, DTYPE *y, int size, int k)
 {
 	int tid = threadIdx.x;    //lokaler Thread Index
     int bid = blockIdx.x;     //Index des Blockes
     int bdim= blockDim.x;     //Anzahl an Threads pro Block
     
-    int i = tid+bid*bdim;     //Globale Adresse
+    int gid = tid+bid*bdim;     //Globale Adresse
+      
+    // shared mem-Grösse gleich der Blockanzahl
+    __shared__ float sm[1024/512];
     
-    __shared__ float sm[512];
-    sm[tid]=0.0;
-        
-	for (int j=0;j<a[tid+k*size];j++)
-	{
-		atomicAdd(&sm[j],x[tid]);
-	}
-	__syncthreads();
-	
-	// Für jeden Block werden die Produkte aufsummiert
-    for (int j=blockDim.x/2;j>0; j/=2)
+    if (tid==0)
     {
-		if (tid<j)
-		{
-			//sm[tid] += sm [tid+j];
-			atomicAdd(&sm[tid],sm[tid+j]);
-		}
-		__syncthreads();
-	}		
-	if (tid == 0)
-	 {
-		//y[k] += sm[0];
-		atomicAdd(&y[k],sm[0]);
-	 }
-	 __syncthreads();
-	
-	y[k]=sm;
-	
-}
-
-__global__ void kernelAx_sm_versuch2(DTYPE *a, DTYPE *x, DTYPE *y, int size)
-{
-   //Hier soll die GPU A*x=y mit shared memory berechnen.
-
-	int tid = threadIdx.x;    //lokaler Thread Index
-    int bid = blockIdx.x;     //Index des Blockes
-    int bdim= blockDim.x;     //Anzahl an Threads pro Block
-    
-    int i = tid+bid*bdim;     //Globale Adresse
-  
-    __shared__ float sm[512];
-	sm[tid]=0.0;
-	// Jeder Thread rechnet eine Zeile aus
-	for (int j = 0; j < size; j++){
-        sm[tid] += a[i*size+j]*x[j];
-        //atomicAdd(&sm[tid],a[i*size+j]*x[j]);
+		sm[bid] = 0;
     }
-	__syncthreads();
+    __syncthreads();
+    
+    // Jeder Block rechnet ein Zwischenergebnis aus
+    atomicAdd (&sm[bid],a[gid+k*size]*x[gid]);
+    __syncthreads();
+    
+    // Reduktion der Zwischenergebnisse
+    
+    for (int i=(size/blockDim.x)/2;i>0;i/=2)
+    {
+		if (bid<i)
+		{
+			sm[bid] += sm[bid+i];
+			//atomicAdd (&sm[bid],sm[bid+i]);
+		}
+		__syncthreads();
+	}
+	
+	// Übertragen des Ergebnisses
+	if (gid==0)
+	{
+		y[k] = sm[0];
+	}
+	
 
-	// Reduktion
-	y[i] = sm[tid];
+
+    
+
+	
 }
-
-
-
 
 
 __global__ void kernelATx(DTYPE *a, DTYPE *x, DTYPE *y, int size)
@@ -304,11 +245,11 @@ int main(int argc, char**argv)
 	// kernelAx_sm mit shared memory ausführen und Zeit messen
 	cudaMemset(y_dev, 0,size*sizeof(DTYPE));
 	cudaEventRecord(start);
+	//printf("xedv: %d", x_dev);
 	for (int k=0;k<size;k++)
 	{
-		kernelAx_sm_3<<<grid,threads>>>(a_dev,x_dev,y_dev,size,k);
+		kernelAx_sm<<<grid,threads>>>(a_dev,x_dev,y_dev,size,k);
 	}
-	//kernelAx_sm<<<grid,threads>>>(a_dev,x_dev,y_dev,size);
 	cudaEventRecord(end);
 	cudaEventSynchronize(end);
 	cudaEventElapsedTime(&kernelA_sm_time,start,end);
@@ -335,7 +276,7 @@ int main(int argc, char**argv)
 	cudaEventSynchronize(end);
 	cudaEventElapsedTime(&dth_time,start,end);
 
-   //: kernelATx_sm mi shared memory ausführen und Zeit messen
+   //: kernelATx_sm mit shared memory ausführen und Zeit messen
    	cudaMemset(y_dev, 0,size*sizeof(DTYPE));
    	cudaEventRecord(start);
    	kernelATx_sm<<<grid,threads>>>(a_dev,x_dev,y_dev,size);
