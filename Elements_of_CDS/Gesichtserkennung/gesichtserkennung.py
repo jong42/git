@@ -1,6 +1,7 @@
 import numpy as np
 import Image 
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 def main():
 
@@ -58,18 +59,18 @@ def main():
 	im9 = im9.resize(target_res, Image.ANTIALIAS)
 	im10 = im10.resize(target_res, Image.ANTIALIAS)
 	
-	### convert colours to black and white
-	im1 = im1.convert('1')
-	im2 = im2.convert('1')
-	im3 = im3.convert('1')
-	im4 = im4.convert('1')
-	im5 = im5.convert('1')
-	im6 = im6.convert('1')
-	im7 = im7.convert('1')
-	im8 = im8.convert('1')
-	im9 = im9.convert('1')
-	im10 = im10.convert('1')
-
+	### convert colours to grey levels
+	im1 = im1.convert("L")
+	im2 = im2.convert("L")
+	im3 = im3.convert("L")
+	im4 = im4.convert("L")
+	im5 = im5.convert("L")
+	im6 = im6.convert("L")
+	im7 = im7.convert("L")
+	im8 = im8.convert("L")
+	im9 = im9.convert("L")
+	im10 = im10.convert("L")
+	
 	### convert images to matrix
 	
 	vec1 = np.asarray(im1).flatten()
@@ -88,15 +89,26 @@ def main():
 	
 	### SVD Zerlegung (dauert einige Minuten)
 
-	U, s, V = np.linalg.svd(X_ele,full_matrices=0, compute_uv=1)
+	U_ele, s_ele, V_ele = np.linalg.svd(X_ele,full_matrices=0, compute_uv=1)
+	U_gir, s_gir, V_gir = np.linalg.svd(X_gir,full_matrices=0, compute_uv=1)
+	
+	#plt.imshow(U_gir.T[4].reshape(100,100), cmap='gray', interpolation='nearest')
+	#plt.show()
+	
+	### plot singular values
+
+	plt.plot(V_ele[0],V_ele[1],'b.',V_gir[0],V_gir[1],'y.',markersize=8)
+	plt.show()
+	
+	###
 	
 	#print (X_ele.shape)
-	#print (U.shape)
-	#print (s.shape)
-	#print (V.shape)
+	#print (U_ele.shape)  # Eigenvektoren
+	#print (s_ele.shape)
+	#print (V_ele.shape)
 	
 
-	print (s)
+	
 
 
 if __name__ == '__main__':
