@@ -189,6 +189,17 @@ Beispiel:
 = diag(1,2,3)
 \end{equation}
 
+\subsection{Frobeniusmatrix}
+Eine Forbeniusmatrix ist eine Matrix, auf deren Hauptdiagonale nur Einsen stehen, und bei der in höchstens einer Spalte unter der Hauptdiagonalen beliebige Werte stehen und in allen anderen EInträgen die Null steht: Beispiel:
+\begin{equation}
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 4 & 1 & 0 \\
+0 & 2 & 0 & 1
+\end {bmatrix}
+\end{equation}
+
 \subsection{Weitere spezielle Matrizen}
 \begin{itemize}
 \item Tridiagonalmatrix
@@ -323,4 +334,31 @@ Bei orhtogonalen Matrizen sind sowohl die Zeilen- als  auch die Spaltenvektoren 
 Die Konditionszahl einer Matrix gibt an, wie stark bei der Lösung des Gleichungssystems $Ax=b$ Änderungen in der Matrix A sich auf das Ergebnis x auswirken. Allgemein bezeichnet die Kondition die Robustheit gegenüber Störungen.
 \subsection{Positive Definitheit}
 Eine quadratische Matrix ist positiv definit, wenn alle Eigenwerte größer als null sind. Wenn alle Eigenwerte größer gleich null sind, ist die Matrix positiv semidefinit.
+
+
+\section{Matrizen-Zerlegung}
+\subsection{Gauss-Verfahren}
+
+Das Gauss-Verfahren ist ein Algorithmus zur Lösung eines Gleichungssystems der Form $Ax=b$. Es macht sich die Eigenschaft zunutze, dass bei elementaren Umformungen der Matrix die Lösung erhalten bleibt. Das Gauss-Verfahren besteht daraus, die Matrix zuerst auf Stufenform zu bringen und dann die Lösungen von unten nach oben einzusetzen.
+
+\subsection{LR-Zerlegung}
+
+Das Lösen des für das Gauss-Verfahren genannten LGS lässt sich als Computerprogramm besser umsetzen, wenn die Matrix A in die zwei Matrizen L und R zerlegt wird. Dabei ist L eine untere Dreiecksmatrix mit Einsen auf der Diagonalen und R eine obere Dreiecksmatrix. Nicht für jede Matrix A ist diese Zerlegung möglich, jedoch kann jede reguläre Matrix A durch Multiplikation mit einer Permutationsmatrix P so abgeändert werden, dass die Zerlegung möglich ist. Es gilt also für jede reguläre Matrix A:
+\begin{equation}
+P * A = L * R
+\end{equation}
+
+P besteht nur aus Nullen und Einsen.
+
+
+\subsection{Cholesky-Zerlegung}
+
+Eine symmetrische positiv definite Matrix kann mit der Cholesky-Zerlegung in das Produkt einer unteren Dreiecksmatrix und deren Transponierter zerlegt werden: \\
+\\
+$A = GG^T$ \\
+\\
+Dabei ist A eine beliebige symmetrische positiv definite Matrix und G der sogenannte Cholesky-Faktor, eine untere Dreiecksmatrix. Jedes Element von A lässt sich  also folgendermaßen schreiben: \\
+\\
+$a_{ij} =\sum\nolimits_{k=1}^j g_{ik}g_{jk} , i >= j$ \\
+
 \end{document}
