@@ -136,7 +136,7 @@ Die Division zweier Matrizen ist das selbe wie die Multiplikation mit der Invers
 \section{Spezielle Matrizen}
 \subsection{Die Einheitsmatrix}
 Eine Einheitsmatrix ist eine quadratische Matrix, bei der die Hauptdiagonalenelemente eins und alle anderen Elemente null sind.
-Die Einheitsmatrix wird auch Identitätsmatrix genannt und meistens mit $E$ oder $I$ bezeichnet.\\
+Die Einheitsmatrix wird auch Identitätsmatrix genannt und meistens mit $E$ oder $I$ bezeichnet. Das Produkt einer Matrix A mit der Einheitsmatrix ergibt wieder die Matrix A.\\
 \\
 Beispiel:
 \begin{equation}
@@ -146,6 +146,9 @@ E =
 0 & 1 & 0 \\
 0 & 0 & 1 
 \end {bmatrix}
+\end{equation}\\
+\begin{equation}
+E*A = A*E = A
 \end{equation}
 \subsection{Die Transponierte einer Matrix}
 Beim Transponieren einer Matrix werden deren Zeilen und Spalten vertauscht.\\
@@ -168,7 +171,11 @@ A^T =
 3 & 6 & 9 
 \end {bmatrix}
 \end{equation}
-Wenn die Einträge einer Matrix spiegelsymmetrisch zu ihrer Hauptdiagonalen sind, die Transponierte der Matrix also wieder die Matrix selbst ist, ist die Matrix spiegelsymmetrisch.
+Wenn die Einträge einer Matrix spiegelsymmetrisch zu ihrer Hauptdiagonalen sind, die Transponierte der Matrix also wieder die Matrix selbst ist, ist die Matrix spiegelsymmetrisch.\\
+Rechenregel:
+\begin{equation}
+(AB)^T =B^T * A^T
+\end{equation}
 \subsection{Die Inverse einer Matrix}
 Die Inverse einer Matrix ist eine Matrix, die multipliziert mit der ursprünglichen Matrix die Einheitsmatrix ergibt. Nur quadratische Matrizen können invertiert werden, und nicht für jede quadratische Matrix muss eine Inverse existieren. Matrizen, für die eine Inverse existiert, werden reguläre Matrizen genannt.\\
 \\
