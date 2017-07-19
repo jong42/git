@@ -59,39 +59,43 @@ def subgradientenverfahren(c,y,x,subgrad,start,tolx,tolg):
 
     return wb_new;
 
-def newtonverfahren(func,gradient,epsilon,hessematrix,delta,beta):
+def newtonverfahren(func,gradient,hessematrix,start,c,y,x,tolx,tolg):
+	delta = 0.5
+	beta = 0.5
 	# Setze Startpunkt und Zaehler
 	k = 0
 	finish = False
-	x = np.array([[1]],dtype=np.float);
+	wb = start
 	while (finish == False):
 		# Pruefe, ob Minimum bereits erreicht ist
-		if (not np.any(gradient(x))):
+		if (not np.any(gradient(wb,c,y,x))):
 			break
 		# Pruefe, ob Abbruchkriterium bereits erfuellt ist
-		if (np.linalg.norm(gradient(x))<epsilon):
+		if (np.linalg.norm(gradient(wb,c,y,x))<=tolx):
 			break
+		elif (np.linalg.norm(s,ord=2)<=tolg):
+		    break
 		# Pruefe, ob maximale Iterationszahl erreicht ist
 		if (k>1000):
 			break
 		# Berechne Newton-Richtung
-		d = np.linalg.solve(-hessematrix(x),gradient(x))
+		d = np.linalg.solve(-hessematrix(wb,c,y,x),gradient(wb,c,y,x))
 		# Berechne Armijo-Schrittweite
 		sigma = 1
 		finish_2 = False
 		while (finish_2 == False):
         	# Pruefe, ob Bedingung erfuellt ist
-			x_new = x+sigma*d
-			if(func(x_new) <= func(x)+(delta*sigma*(gradient(x).T)).dot(d)):
+			wb_new = wb+sigma*d
+			if(func(wb_new,c,y,x) <= func(wb,c,y,x)+(delta*sigma*(gradient(wb,c,y,x).T)).dot(d)):
 				break
 			sigma = beta*sigma
 		# Berechne naechsten Versuchs-Punkt
-		x = x + sigma*d
+		wb = wb + sigma*d
 		# inkrementiere Zaehlvariable
 		k+=1
 
 	#print("k:"+str(k))
-	return x;
+	return wb;
 
 def linfunc(z,c,y,x):
     interim_res = 0
@@ -167,9 +171,15 @@ def grad_logfunc(z,c,y,x):
 
 def hessemat_logfunc(z,c,x,y):
   A = np.array([[1,0,0],[0,1,0],[0,0,0]])
-  h = -((1+math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**-2) * (exp(-y[i]*np.array([x.T[i]]).dot(z)))**2 * (y[i]*np.array([x.T[i]]).T)
-  g = exp(-y[i]*np.array([x.T[i]]).dot(z))* ((-y[i])*np.array([x.T[i]]).T)
-  res = A + c * sum([(-y[i]*np.array([x.T[i]]).T).T * (h+g)  for i in range(0,len(x[1]))])
+  def h(z,i,x,y):
+      res_h = -((1+math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**-2) * (math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**2 * (y[i]*np.array([x.T[i]]).T)
+      return res_h
+  
+  def g(z,i,x,y):    
+      res_g = math.exp(-y[i]*np.array([x.T[i]]).dot(z))* ((-y[i])*np.array([x.T[i]]).T)
+      return res_g
+      
+  res = A + c * sum([(-y[i]*np.array([x.T[i]]).T).T * (h(z,i,x,y)+g(z,i,x,y))  for i in range(0,len(x[1]))])
   return res
 
 def main():
@@ -213,9 +223,9 @@ def main():
     plt.legend(loc=0)
     
     ## Logistischer Fehler
-    print(hessemat_logfunc(start,c,x,y))
-    #print(grad_logfunc(start,c,y,x))
-    #print(grad_quadfunc(start,c,y,x))
+    ret_log = newtonverfahren(logfunc,grad_logfunc,hessemat_logfunc,c,y,x,start,tolx,tolg)
+    
+    ##
     #plt.show()
 
 if __name__ == '__main__':
