@@ -165,8 +165,11 @@ def grad_logfunc(z,c,y,x):
   res = A.dot(z) +c*sum([h(z,i,x,y)*g(z,i,x,y)*(-y[i])*np.array([x.T[i]]).T for i in range(0,len(x[1]))])
   return res
 
-def hessemat_logfunc():
-  res = 1
+def hessemat_logfunc(z,c,x,y):
+  A = np.array([[1,0,0],[0,1,0],[0,0,0]])
+  h = -((1+math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**-2) * (exp(-y[i]*np.array([x.T[i]]).dot(z)))**2 * (y[i]*np.array([x.T[i]]).T)
+  g = exp(-y[i]*np.array([x.T[i]]).dot(z))* ((-y[i])*np.array([x.T[i]]).T)
+  res = A + c * sum([(-y[i]*np.array([x.T[i]]).T).T * (h+g)  for i in range(0,len(x[1]))])
   return res
 
 def main():
@@ -210,8 +213,9 @@ def main():
     plt.legend(loc=0)
     
     ## Logistischer Fehler
-    print(grad_logfunc(start,c,y,x))
-    print(grad_quadfunc(start,c,y,x))
+    print(hessemat_logfunc(start,c,x,y))
+    #print(grad_logfunc(start,c,y,x))
+    #print(grad_quadfunc(start,c,y,x))
     #plt.show()
 
 if __name__ == '__main__':
