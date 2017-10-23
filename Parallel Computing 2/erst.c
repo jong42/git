@@ -1,0 +1,9 @@
+#include <stdio.h>
+
+int main (void) {
+#pragma omp parallel
+{
+printf ("Hallo!\n");
+}
+return 0;
+}
