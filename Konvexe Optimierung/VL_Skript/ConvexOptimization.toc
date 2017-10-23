@@ -1,0 +1,72 @@
+\select@language {ngerman}
+\contentsline {chapter}{\numberline {1}Einf\"uhrung in die Optimierung}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Grundlagen}{5}{section.1.1}
+\contentsline {paragraph}{\nonumberline Die Nebenbedingungen}{5}{section*.4}
+\contentsline {paragraph}{\nonumberline Einfache Beispiele}{5}{section*.5}
+\contentsline {paragraph}{\nonumberline Einfache Beispiele}{7}{section*.8}
+\contentsline {paragraph}{\nonumberline Maximierung}{7}{section*.9}
+\contentsline {section}{\numberline {1.2}Beispiele}{7}{section.1.2}
+\contentsline {paragraph}{\nonumberline Portfolio-Optimierung}{7}{section*.12}
+\contentsline {paragraph}{\nonumberline Optimale Steuerung eines Raketenautos}{7}{section*.13}
+\contentsline {paragraph}{\nonumberline Data Fitting}{8}{section*.14}
+\contentsline {subsection}{\numberline {1.2.1}Portfolio-Optimierung}{8}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Optimale Steuerung - Raketenauto}{9}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}Lineare Regression}{9}{subsection.1.2.3}
+\contentsline {chapter}{\numberline {2}Konvexe Optimierungsprobleme}{11}{chapter.2}
+\contentsline {paragraph}{\nonumberline Probleme mit Gleichungs- und Ungleichungsrestriktionen}{11}{section*.17}
+\contentsline {section}{\numberline {2.1}Konvexe Mengen}{11}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Beispiele}{12}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Schnitt, Skalierung und Verschiebung}{13}{subsection.2.1.2}
+\contentsline {paragraph}{\nonumberline Beispiele f\"ur Kegel}{14}{section*.20}
+\contentsline {paragraph}{\nonumberline Wichtige Kegel}{15}{thmt@dummyctr.dummy.15}
+\contentsline {section}{\numberline {2.2}Konvexe Funktionen}{15}{section.2.2}
+\contentsline {paragraph}{\nonumberline Beispiele konvexer Funktionen}{16}{section*.22}
+\contentsline {subsection}{\numberline {2.2.1}Charakterisierungen konvexer Funktionen}{16}{subsection.2.2.1}
+\contentsline {paragraph}{\nonumberline Rechenregeln f"ur konvexer Funktionen}{17}{section*.23}
+\contentsline {section}{\numberline {2.3}Globale L\IeC {\"o}sungen und Eindeutigkeit}{18}{section.2.3}
+\contentsline {section}{\numberline {2.4}Existenz von L"osungen}{19}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Karush-Kuhn-Tucker-Bedingungen (KKT-Bed.)}{22}{subsection.2.4.1}
+\contentsline {chapter}{\numberline {3}Optimierungsverfahren: Grundlagen}{25}{chapter.3}
+\contentsline {paragraph}{\nonumberline Beispiele}{26}{section*.36}
+\contentsline {section}{\numberline {3.1}Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}{26}{section.3.1}
+\contentsline {chapter}{\numberline {4}Das Gradientenverfahren f\IeC {\"u}r quadratische Optimierungsprobleme}{29}{chapter.4}
+\contentsline {section}{\numberline {4.1}Problemstellung und Abstiegsrichtung}{29}{section.4.1}
+\contentsline {section}{\numberline {4.2}Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}{29}{section.4.2}
+\contentsline {section}{\numberline {4.3}Das Gradientenverfahren}{29}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Funktionenklassen}{30}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Konvergenz des Gradientenverfahrens}{31}{subsection.4.3.2}
+\contentsline {section}{\numberline {4.4}Die Richtung des steilsten Abstiegs}{36}{section.4.4}
+\contentsline {section}{\numberline {4.5}Das Schrittweitenverfahren von Armijo}{37}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Konvergenz des Verfahrens}{38}{subsection.4.5.1}
+\contentsline {paragraph}{\nonumberline Beispiel zur Lipschitz-Stetigkeit}{38}{section*.42}
+\contentsline {section}{\numberline {4.6}Gradientenverfahren f\IeC {\"u}r quadratische Probleme}{38}{section.4.6}
+\contentsline {section}{\numberline {4.7}Die exakte Schrittweite}{38}{section.4.7}
+\contentsline {section}{\numberline {4.8}Gradientenverfahren f\IeC {\"u}r quadratische Probleme}{39}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}Konvergenz des Verfahrens}{40}{subsection.4.8.1}
+\contentsline {subsection}{\numberline {4.8.2}Das Verfahren konjugierter Gradienten}{42}{subsection.4.8.2}
+\contentsline {subsection}{\numberline {4.8.3}Q-orthogonale Vektoren}{42}{subsection.4.8.3}
+\contentsline {subsection}{\numberline {4.8.4}CG-Verfahren}{42}{subsection.4.8.4}
+\contentsline {subsection}{\numberline {4.8.5}Konvergenz des CG-Verfahren}{42}{subsection.4.8.5}
+\contentsline {section}{\numberline {4.9}Optimierungsverfahren f\IeC {\"u}r allgemeine Probleme}{43}{section.4.9}
+\contentsline {paragraph}{\nonumberline Beispiel f\IeC {\"u}r nicht konvergierende Probleme}{43}{section*.45}
+\contentsline {paragraph}{\nonumberline M\IeC {\"o}gliche Schrittweitenstrategien}{44}{section*.46}
+\contentsline {chapter}{\numberline {5}Untere Schranken f\IeC {\"u}r das Gradientenverfahren}{45}{chapter.5}
+\contentsline {section}{\numberline {5.1}Untere Schranken f\IeC {\"u}r $\mathcal {F}_L^{\infty , 1}$}{45}{section.5.1}
+\contentsline {section}{\numberline {5.2}Untere Schranken f\IeC {\"u}r $\mathcal {S}_{\mu , L}^{\infty , 1}$}{49}{section.5.2}
+\contentsline {section}{\numberline {5.3}Optimale Methoden f\IeC {\"u}r das Gradientenverfahren (Nesterov 1983)}{50}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Nesterov's Accelerated Gradient Method (NAGM)}{50}{subsection.5.3.1}
+\contentsline {chapter}{\numberline {6}\textsc {Newton}-Verfahren}{53}{chapter.6}
+\contentsline {section}{\numberline {6.1}Das \textsc {Newton}-Verfahren}{53}{section.6.1}
+\contentsline {section}{\numberline {6.2}Das ged\IeC {\"a}mpfte \textsc {Newton}-Verfahren}{54}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Konvergenz des ged\IeC {\"a}mpften \textsc {Newton}-Verfahrens}{54}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Vergleich des ged\IeC {\"a}mpften \textsc {Newton}-Verfahrens mit dem Gradientenverfahren}{56}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3}Das Quasi-\textsc {Newton}-Verfahren}{57}{section.6.3}
+\contentsline {section}{\numberline {6.4}Das BFGS-Verfahren}{57}{section.6.4}
+\contentsline {chapter}{\numberline {7}Nichtglatte Optimierung}{61}{chapter.7}
+\contentsline {section}{\numberline {7.1}Einleitung}{61}{section.7.1}
+\contentsline {section}{\numberline {7.2}Probleme}{61}{section.7.2}
+\contentsline {section}{\numberline {7.3}Operationen mit konvexen Funktionen}{62}{section.7.3}
+\contentsline {section}{\numberline {7.4}Das Subdifferential}{63}{section.7.4}
+\contentsline {section}{\numberline {7.5}Das Subgradientenverfahren}{65}{section.7.5}
+\contentsline {section}{\numberline {7.6}Laufzeitanalyse}{67}{section.7.6}
+\contentsline {chapter}{\numberline {A}Mathematische Grundlagen}{69}{appendix.A}

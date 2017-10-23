@@ -1,0 +1,455 @@
+\chapter{Nichtglatte Optimierung}
+\section{Einleitung}
+Wir betrachten weiter Probleme der Form
+\begin{equation}
+ \min_{f\in\mathbb{R}^n} f(x)
+\end{equation}
+wobei $f:\mathbb{R}^n\rightarrow \mathbb{R}$ konvex ist, aber nicht zwingend differenzierbar.
+
+\begin{Beispiel}[Lineare Regression]
+Bisher haben wir uns die quadrierte L2-Norm betrachtet:
+\begin{equation}
+ \min_{x_1,x_2} \sum\limits_{i=1}^m(x_1\xi_i +x_2 +\eta_i)^2.
+\end{equation}
+Diese wird nun durch die Summe der Fehlerbeträge (L1-Norm) ersetzt:
+\begin{equation}
+ \min_{x_1,x_2} \sum\limits_{i=1}^m\underbrace{|x_1\xi_i +x_2 +\eta_i|}_{=:f_1(x_1,x_2)}.
+\end{equation}
+Ein weiteres Beispiel ist es die maximale Abweichung zu minimieren ($\text{L}^\infty$-Norm):
+\begin{equation}
+ \min_{x_1,x_2} \max_{i=1,\dots,m}\underbrace{|x_1\xi_i +x_2 +\eta_i|}_{=:f_\infty(x_1,x_2)}.
+\end{equation}
+Sowohl $f_1$ als auch $f_\infty$ sind konvexe Funktionen, die jedoch nicht überall differenzierbar sind.
+\end{Beispiel}
+
+
+\begin{Satz}
+ Sei $f:\mathbb{R}^n\rightarrow\mathbb{R}$ eine konvexe Funktionen.
+ Dann ist $f$ fast überall (bis auf Lesbesgue-Nullmengen) differenzierbar.
+ In der konvexen Optimierung nennt man fast überall differenzierbare Funktionen \textbf{nicht glatt}. 
+\end{Satz}
+
+Aufgrund dieses Satzes könnte man vermuten, dass Verfahren für differenzierbare Zielfunktionen im allgemeinen 
+konvexen Fall funktionieren. Dies ist jedoch in der Regen nicht richtig.
+
+\section{Probleme}
+Die theoretischen Voraussetzungen für die Konvergenz sind nicht erfüllt. Weiter ist das Abbruchkriterium $\nabla 
+f(x)=0_n$ nicht anwendbar.
+
+\begin{Beispiel}[Wolfe-Funktion]
+\begin{equation}
+ f(x_1,x_2) =
+ \begin{cases}
+  5\cdot\sqrt{9x_1^2+16x_2^2} 	& ,x_1\geq |x_2|\\
+  9x_1+16|x_2| 			& ,0<x_1<|x_2|\\
+  9x_1+16|x_2|-x_1^9 		& ,x_1\leq 0
+ \end{cases}
+\end{equation}
+Die Funktion ist konvex und stetig, aber auf der Lesbegue-Nullmenge $M=\{(x_1,x_2)|x_1\leq 0,x_2=0\}$ nicht 
+differenzierbar. Das eindeutig bestimmte Minimum ist $x^*=(-1,0)\in M$.
+
+Verwendet man das Gradientenverfahren mit exakter Schrittweite, dann konvergiert dieses für jeden Startpunkt 
+$x^{(0)}\in S$, wobei $S=\{(x_1,x_2)|x_1>|x_2|>(\frac{9}{16})^2|x_1|\}$ ,gegen den nicht optimalen Punkt 
+$\bar{x}=(0,0)$.
+
+Zur Konstruktion effizienter numerischer Verfahren für nicht glatte Probleme muss man möglichst viele 
+Eigenschaften konvexer Funktionen ausnutzen.
+\end{Beispiel}
+
+\begin{Beispiel}[Transformation von Problemen]
+ \begin{align*}
+  \min f_\infty(x_1,x_2) \Leftrightarrow & \min z\\
+  & \text{s.t.} & -z-\xi_i x_1-x_2 \leq -\eta_i & & i = 1,\dots,m\\
+  & & -z-\xi_i x_1+x_2 \leq \eta_i & & i = 1,\dots,m
+ \end{align*}
+ Diese Transformation erzeugt war ein glattes, lineares Problem, benötigt dafür aber zusätzliche Variablen und 
+$2\cdot m$ Nebenbedingungen.
+\end{Beispiel}
+
+\section{Operationen mit konvexen Funktionen}
+\begin{Lemma}
+ Sind $f_1,\dots,f_n$ konvexe Funktionen und $t_1,\dots,t_m$ positive reelle Zahlen und es gibt ein 
+$\bar{x}\in\mathbb{R}^n$ mit $f_j(\bar{x})<+\infty,j=1,\dots,m$, dann ist auch 
+\begin{equation}
+ f:=\sum\limits_{j=1}^m t_j\cdot f_j
+\end{equation}
+konvex.
+\end{Lemma}
+
+\begin{Lemma}
+ Ist $J$ eine beliebige Indexmenge, $\{f_j\}_{j \in J}$ eine Familie konvexer Funktionen und es gibt ein $\bar{x} 
+\in\mathbb{R}^n$ mit $\sup\limits_{j\in J} f_j(\bar{x}) < +\infty$ dann ist auch $f:=\sup\limits_{j\in J} f_j$ konvex.
+\end{Lemma}
+
+\begin{Beispiel}
+ $a_1,\dots,a_m,t_1,\dots,t_m\in\mathbb{R}, t_i\geq 0,i=1,\dots,m$.
+ Wir definieren: 
+ \begin{equation}
+  f(x) := \sum\limits_{i=1}^mt_i|x-a_i|.
+ \end{equation}
+ Wir definieren weiter:
+ \begin{equation}
+  f_i(x):=|x-a_i|= \max\{x-a_i,-x+a_i\}.
+ \end{equation}
+Dann folgt, dass alle $f_i$ konvexe Funktionen sind und somit auch $f$.
+\end{Beispiel}
+
+\begin{Bemerkung}
+ Offensichtlich ist das Minimum zweier konvexer Funktionen im Allgemeinen nicht konvex.
+\end{Bemerkung}
+
+\section{Das Subdifferential}
+\begin{Definition}[Subdifferential]
+ Sei $f:\mathbb{R}\rightarrow\mathbb{R}$ konvex. Dann heißt $s\in\mathbb{R}^n$ \textbf{Subgradient} von $f$ in $x$, 
+wenn 
+ \begin{equation}
+  f(y) \geq f(x) + <s,y-x>, \forall y\in\mathbb{R}^n
+ \end{equation}
+gilt.
+Das \textbf{Subdifferential} von $f$ in $x$ bezeichnet mit $\partial f(x)$, ist die Menge aller Subgradienten von $f$ in 
+$x$.
+\end{Definition}
+
+\begin{Beispiel}[$f(x) = |x|$]
+ Für $x=0$ und $s\in[-1,+1]$ und $y\in\mathbb{R}$ gilt
+ \begin{equation}
+  f(y) = |y| \geq sy = f(x)+<s,y-x> \Rightarrow [-1,+1]\in\partial f(0).
+ \end{equation}
+ Das Subdifferential von $f$ ist hierbei:
+ \begin{equation}
+  \partial f(x) = 
+  \begin{cases}
+   +1 & ,x > 0 \\
+   [-1,+1] & ,x=0\\
+   -1 & ,x < 0
+  \end{cases}
+ \end{equation}
+\end{Beispiel}
+
+\begin{Satz}
+ Für eine konvexe Funktion $f:\mathbb{R}^n\rightarrow\mathbb{R}$ ist das Subdifferential $\partial f(x)$ nichtleer, 
+konvex und kompakt.
+\end{Satz}
+
+\begin{Satz}
+ Ist $f:\mathbb{R}^n\rightarrow\,\mathbb{R}$ konvex und differenzierbar, dann ist $\partial f(x) = \{\nabla f(x)\}$ 
+einelementig.
+\end{Satz}
+
+\begin{Satz}
+ Seien $f_1,f_2:\mathbb{R}^n\rightarrow\mathbb{R}$ konvex und überall endlich, und $t_1,t_2\in\mathbb{R};t_1,t_2\geq 
+0$. Dann:
+\begin{equation}
+ \partial(t_1f_1+t_2f_2)(x) = t_1\partial f_1(x) + t_2\partial f_2(x), \forall x\in\mathbb{R}^n.
+\end{equation}
+\end{Satz}
+
+\begin{Bemerkung}
+ Dies ist erweiterbar auf 
+ \begin{equation}
+  \partial(\sum\limits_{i=1}^m t_if_i) = \sum_{i=1}^m f_i\partial f_i(x) 
+ \end{equation}
+Um also einen Subgradienten $s\in\partial f(x)$ zu erhalten, kann man beliebige Subgradienten $s^i\in\partial f_i(x)$ 
+wählen und dann $s=\sum\limits_{i=1}^m t_is^i$ setzen.
+\end{Bemerkung}
+
+In vielen Anwendungen spielen Maximumfunktionen eine wichtige Rolle.
+
+\begin{Satz}
+ Mit konvexen Funktionen $f_i:\mathbb{R}^n\rightarrow\mathbb{R}, i=1,\dots,m$, sei die Funktion
+ \begin{equation}
+  f(x) = \max_{i=1,\dots,m} f_i(x), \forall x\in\mathbb{R}^n
+ \end{equation}
+ definiert.
+
+ Für $x\in\mathbb{R}^n$ sei $I(x):=\{1\leq i\leq m|f(x)= f_i(x)\}$ die Menge der aktiven Indizes.
+ Dann gilt für alle $x\in\mathbb{R}^n$:
+ \begin{align}
+  \partial f(x) & = \co\bigcup_{i\in I(x)}\partial f_i(x) \nonumber \\
+  & = \left\{\sum\limits_{i\in I(x)} \alpha_i s^i | \alpha_i 
+\geq 0, s^i \in \partial f_i(x), i\in I(x), \sum\limits_{i \in I(x)} \alpha_i = 1\right\}
+ \end{align}
+\end{Satz}
+
+Um einen speziellen Subgradienten $s\in\partial f(x)$ zu berechnen, kann man also zunächst beliebige Subgradienten 
+$s^i\in\partial f_i(x), i \in I(x)$, berechnen und dann eine Konvexkombination
+\begin{align}
+ s = \sum\limits_{i\in I(x)} \alpha_i s^i & & ,\alpha_i\geq 0, \sum\limits_{i\in I(x)} \alpha_i = 1
+\end{align}
+bilden. Insbesondere gilt: $s^i\in \partial f(x), \forall i \in I(x)$.
+
+\begin{Korollar}
+ Sind zusätzlich die Funktionen $f_i$, $i=1,\dots,m$ differenzierbar. dann gilt für alle $x\in\mathbb{R}^n$:
+ \begin{equation}
+  \partial f(x) = \co\{\nabla f_i(x)|i\in I(x)\}.
+ \end{equation}
+\end{Korollar}
+
+\begin{Beispiel}[Maxq-Funktion]
+ Sei $f:\R^n\rightarrow\R$, $f(x) = \max\limits_{1\leq i\leq n} x_i^2$ und $x = (x_1,\dots,x_n)\tr$
+ Hier ist $f_i(x) = x_i^2, i=1,\dots,n$ und der Subgradient
+ \begin{align}
+  \partial f(x) = \co\{\nabla f_i(x)|i\in I(x)\} & & I(x) = \{1\leq i \leq n|f(x) = x_i^2\}
+ \end{align}
+Speziell gilt $\nabla f_i(x) \in \partial f(x), \forall i \in I(x)$.
+\end{Beispiel}
+
+\begin{Korollar}\label{kor:affin:nonsmooth}
+ Zusätzlich seien die $f_i$ affine Funktionen, d.h $f_i(x) = <s^i,x> + r_i$ mit $s^i\in\R^n$, $r_i\in\R$, 
+$i\in\{1,\dots,m\}\Rightarrow \partial f(x) = \co\{s^i|i\in I(x)\}$.
+\end{Korollar}
+
+\begin{Beispiel}[$\text{L}^\infty$-Norm]
+ Sei $f_\infty(x_1,x_2)) = \max\limits_{1=1,\dots,m} |\xi_i x_1+x_2-\eta_i|$.
+ 
+ Mit $g_i(x) = \xi_i x_1 +x_2 -\eta_i, i\in\{1,\dots,m\}$. $g_i$ kann dann auch geschrieben werden als $g_i(x) = 
+<s,x>-\eta_i$, $s_i=(\xi_i,1)\tr$. Weiter sei $h_i(x) = |g_i(x)| = \max\{g_i(x),-g_i(x)\}$. $f_\infty$ kann nun 
+geschrieben werden als:
+\begin{equation}
+ f_\infty(x) = \max\limits_{i=1,\dots,m} h_i(x)
+\end{equation}
+Laut Korollar \ref{kor:affin:nonsmooth} gilt:
+\begin{equation}
+ \partial  h_i(x) = 
+ \begin{cases}
+  \{s^i\} & ,g_i(x) > 0\\
+  \{-s^i\} & ,g_i(x) < 0\\
+  [-s^i,s^i] & ,g_i(x) = 0
+ \end{cases}
+\end{equation}
+
+Wir definieren nun $\epsilon_i(x) \in \{1,-1\}$, genauer:
+\begin{equation}
+ \epsilon_i(x) = 
+ \begin{cases}
+  +1 & ,g_i(x) \geq 0\\
+  -1 & ,g_i(x) < 0
+ \end{cases}
+\end{equation}
+Daraus folgt $\epsilon_i(x) \cdot s^i \in\partial h_i(x).$ Mit $I(x) = \{1\leq i\leq m|f_\infty (x) = h_i(x)\}$ 
+folgt $\co\{\epsilon_i(x)\cdot s^i|i\in I(x)\}\subseteq \partial f_\infty(x)$. Speziell gilt $\epsilon_i(x) \cdot 
+s^i\in\partial f_\infty(x)$ für alle $i\in I(x)$.
+\end{Beispiel}
+
+\begin{Satz}
+ Für eine konvexe Funktion $f:\R^n\rightarrow\R$ sind folgende Aussagen äquivalent:
+ \begin{enumerate}
+  \item[(1)] $x^*$ ist Lösung von $\min\limits_{x\in\R^n} f(x)$
+  \item[(2)] $O_n\in\partial f(x^*)$.
+ \end{enumerate}
+\end{Satz}
+
+\begin{proof}
+ Es gilt $f(x)\geq f(x^*), \forall x\in\R^n$ genau dann, wenn (Definition Subgradient)
+ \begin{equation}
+  f(x) \geq f(x^*) + <0_n,x-x^*>, \forall x\in\R^n,
+ \end{equation}
+ was äquivalent zu $O_n\in\partial f(x^*)$ ist.
+\end{proof}
+
+\begin{Beispiel}[$f(x) = \norm{x}$]
+ Es gilt $f(x) = 0 = f(0) + <O_n,x-0>\Rightarrow O_n\in\partial f(0_n)$. Daraus folgt $0_n$ ist ein Minimum von $f$.
+\end{Beispiel}
+
+\section{Das Subgradientenverfahren}
+\begin{description}
+ \item[Annahme:] Zu jedem Vektor $x\in\R^n$ kann man (mindestens) einen Subgradienten $s(x) \in\partial f(x)$ berechnen.
+ \item[Verfahren:] Wähle einen Startpunkt $x^{(0)}\in\R^n, k=0$
+ \begin{enumerate}
+  \item Berechnen einen Subgradienten $s^{(k)}\in\partial f(x^{(k)}$
+  \item Abbruchkriterium: Ist $s^{(k)} = 0_n$ (d.h. $0_n\in\partial f(x^{(k)})$), dann stoppe das Verfahren
+  \item Setze 
+  \begin{equation}
+   d^{(k)} = -\frac{s^{(k)}}{\norm{s^{(k)}}}.
+  \end{equation}
+ Wähle eine Schrittweite $\sigma_k > 0 $  und setze 
+ \begin{equation}
+  x^{(k+1)} = x^{(k)}+\sigma_k\cdot d^{(k)}.
+ \end{equation}
+\item Setze $k=k+1$ und gehe zu $1.$
+ \end{enumerate}
+\end{description}
+
+\begin{Bemerkung}
+ Anstatt des Abbruchkriteriums $s^{(k)} = 0_n$ sollte in der Praxis 
+ \begin{equation}
+ \norm{x^{(k+1)}-x^{(k)}}\leq \epsilon 
+ \end{equation}
+ und eine maximale Iterationszahl genutzt werden. Weiter sollte die Abbruchbedingung 
+ \begin{equation}
+ \norm{f(x^{(k+1)})-f(x^{(k)})}\leq \epsilon 
+ \end{equation}
+ nicht genutzt werden. Die Schrittweite sollte nicht mit dem Armijo-Verfahren berechnet werden sondern mit
+\begin{equation}
+ \sigma_k = \frac{\sigma}{k+h}
+\end{equation} 
+oder
+\begin{equation}
+ \sigma_k = \frac{\sigma}{\sqrt k}
+\end{equation} 
+berechnet werden.
+\end{Bemerkung}
+
+\begin{Bemerkung}[Nachteile des Subgradientenverfahren]\
+\begin{itemize}
+  \item Die Suchrichtung $-s^{(k)}$ muss keine Abstiegsrichtung sein. 
+  \begin{itemize}
+   \item Die Schrittweise $\sigma_k$ kann nicht durch das Armijo-Verfahren bestimmt werden
+   \item $\{f(x^{(k)}\}$ muss nicht monoton fallend sein 
+  \end{itemize}
+  $\Rightarrow$ kein Abstiegsverfahren
+  \item Abbruchkriterium ist unrealistisch und praktisch nie erfüllt
+ \end{itemize}
+\end{Bemerkung}
+
+\begin{Beispiel}[$f(x) = \norm{x}$]
+ Das eindeutig bestimmte Minimum: $x^* = 0$.
+ Starte das Verfahren in $x^{(0)} = x^* = 0$ und wähle $s^{(0)}\neq 0\Rightarrow$ Abbruchkriterium nicht erfüllt. D.h. 
+im nächsten Schritt würde man sich sogar von der Lösung entfernen.
+\end{Beispiel}
+
+\begin{Lemma}
+ Ist $f_\R^n\rightarrow\R$ konvex, $x^*$ ein beliebiges Minimum von $f$ und $x^{(k)}$ kein Minimum von $f$. Dann gibt 
+es ein $T_k>0$, so dass für das Subgradientenverfahren gilt:
+\begin{equation}
+ \norm{x^{(k+1)}-x^*} < \norm{x^{(k)} - x^*}, \forall \sigma_k\in (0,T_k).
+\end{equation}
+\end{Lemma}
+
+\begin{Bemerkung}[Geometrische Interpretation]
+ Der Winkel zwischen der Richtung $-s^{(k)}$, in der wir uns ausgehend von $x^{(k)}$ bewegen und der Idealrichtung 
+$x^*-x^{(k)}$ ist kleiner als $90^\circ$. D.h., bewegt man sich von $x^{(k)}$ aus Richtung $-s^{(k)}$ nicht zu weit, so 
+ist $x^{(k+1)}$ näher an $x^*$ als 
+$x^{(k)}$. Da man dieses $T_k$ praktisch nicht kennt, weiß man nur, dass die Schrittweite $\sigma_k$ hinreichend klein 
+sind muss. 
+Man verlangt daher
+\begin{equation}
+ \lim_{k\rightarrow\infty} \sigma_k = 0.
+\end{equation}
+Das allein reicht jedoch noch nicht aus. 
+Ist nämlich $r:=\sum\limits_{k=0}^\infty \sigma_k < \infty$, dann gilt für alle $k$
+\begin{equation}
+ \norm{x^{(0)}-x^{(k)}} \leq \sum\limits_{i=0}^{k-1}\norm{x^{(i)}-x^{(i+1)}} = \sum\limits_{i=0}^{k-1} \sigma_i \leq r.
+\end{equation}
+D.h. alle $x^{(k)}$ liegen in der Kugel $\bar{B}(x^{(0)},r)$.
+Um $x^*$ erreichen zu können muss $r$ hinreichend groß sein. Dies ist sichergestellt, wenn man 
+\begin{equation}
+ \sum\limits_{k=0}^\infty \sigma_k = \infty
+\end{equation}
+verlangt. Damit wird (aber nur) die Konvergenz der besten Funktionswerte garantiert.
+\end{Bemerkung}
+
+\begin{Bemerkung}
+ Statt $\sum \sigma_k = \infty$ zu fordern kann man auch $\sum \sigma_k^2 < \infty$ fordern.
+\end{Bemerkung}
+
+\begin{Beispiel}
+\begin{itemize}
+ \item $\sigma_k = \frac{\sigma}{k+b}$ für festes $\sigma,b>0$\\(Spezialfall: $\sigma_k = \frac{1}{k})$
+ \item $\sigma_k = \frac{\sigma}{\sqrt{k}}$ für festes $\sigma>0$\\(Spezialfall: $\sigma_k = \frac{1}{\sqrt k})$
+\end{itemize}
+\end{Beispiel}
+
+\begin{Bemerkung}
+ Im Gegensatz zum Gradientenverfahren, werden hier die Schrittweiten offline gesteuert.
+ Ein Sinnvolles Abbruchkriterium ist demnach $\norm{x^{(k+1)}-x^{(k)}}\leq \epsilon_1$ ($\norm{s^{(k)} \leq 
+\epsilon_2}$ oder die maximale Iterationszahl.
+\end{Bemerkung}
+
+\section{Laufzeitanalyse}
+Sei $f\in\mathcal{F}^{0,0}_L$, d.h. $|f(x) - f(y)|\leq L\cdot\norm{x-y}$, konvex und Lipschitz stetig 
+genau dann wenn $\norm{s}\leq L$ für alle $s\in\partial f(x), \forall x$.
+\begin{align*}
+ \norm{x^{(k+1)}-x^*}^2  & = \norm{x^{(k)} - \sigma_k\frac{s^{(k)}}{\norm{s^{(k)}}}-x^*}^2 \\
+ & = 
+\norm{x^{(k)}-x^*}-2\sigma_k\frac{s^{(k)}}{\norm{s^{(k)}}}\tr(x^{(k)}-x^*)+\sigma_k^2 \frac{{s^{(k)}}^2}{\norm
+{s^{(k)}}^2}\\
+& \leq \norm{x^{(k)}-x^*}^2-2\frac{\sigma_k}{\norm{s^{(k)}}}(f(x^{(k)})-f(x^*))+\sigma_k^2 \text{ (da Subgradient)}\\
+& \overset{\norm{s^{(k)}}\leq L}{\leq}\norm{x^{(k)}-x^*}-2\frac{\sigma_k}{L}(f(x^{(k)})-f(x^*))+\sigma_k^2\\
+\end{align*}
+Das Aufsummieren von $i=0,\dots,k$ ergibt:
+\begin{align*}
+ 0 &\leq \underbrace{\norm{x^{(k+1)}-x^*}^2}_{\geq 0}\\
+ & \leq \norm{x^{(0)}-x^*}^2 - \frac{2}{L}\sum\limits_{i=0}^k\sigma_i(f(x^{(i)})-f(x^*))+\sum\limits_{i=0}^k \sigma_i^2
+\end{align*}
+Daraus folgt:
+\begin{equation}
+ \frac{2}{L}\sum\limits_{i=0}^k\sigma_i(f(x^{(i)})-f(x^*))\leq \norm{x^{(0)}-x^*}^2 +\sum\limits_{i=0}^k\sigma_i^2
+\end{equation}
+Es gilt:
+\begin{align*}
+ & & \left(\sum\limits_{i=0}^k\sigma_i\right)\min_i\{f(x^{(i)})-f(x^*)\} & \leq 
+\sum\limits_{i=0}^k\sigma_i(f(x^{(i)})-f(x^*))\\
+& \Rightarrow & 
+\frac{2}{L}\left(\sum\limits_{i=0}^k\sigma_i\right)\min_i\{f(x^{(i)})-f(x^*)\} & \leq 
+\norm{x^{(0)}-x^*}^2+\sum\limits_{i=0}^k\sigma_i^2 
+\end{align*}
+Dies wird nun umgeschrieben als:
+\begin{equation}
+ f_{best}^{(k)}-f(x^*) := \min_i f(x^{(i)})-f(x^*) \leq \frac{L}{2} 
+\frac{\norm{x^{(0)}-x^*}^2 \sum\limits_{i=0}^k\sigma_i^2}{\sum\limits_{i=0}^ksigma_i}
+\end{equation}
+Die beste Strategie bei genau $k$ Iterationen ist:
+\begin{equation}
+ \sigma_i = \frac{\norm{x^{(0)} - x^*}}{\sqrt{k+1}}
+\end{equation}
+Woraus folgt:
+\begin{equation}
+ f_{best}^{(k)}-f(x^*) \leq \frac{L}{2}\frac{\norm{x^{(0)}-x^*}}{\sqrt{k+1}}
+\end{equation}
+Falls die Anzahl der Iterationen unbekannt ist wird $\sigma_i$ berechnet als:
+\begin{equation}
+ \sigma_i = \frac{h}{\sqrt{i+1}}
+\end{equation}
+Woraus folgt:
+\begin{equation}
+ f_{best}^{(k)} - f(x^*) \leq \frac{L}{2}\frac{\norm{x^{(0)}-x^*}^2\cdot h\cdot \log(k+1)}{h\cdot\sqrt{k+1}}
+\end{equation}
+Insgesamt kann nach $k$ Iterationen höchstens ein Fehler $\mathcal{O}\left(\frac{1}{\sqrt{k}}\right)$
+erhalten werden. Soll stattdessen
+\begin{equation}
+ f_{best}^{(k)}-f(x^*) \leq \epsilon
+\end{equation}
+gelten, werden mindestens $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ Iterationen benötigt ($\epsilon = 
+\frac{1}{\sqrt{k}} \Leftrightarrow k = \frac{1}{\epsilon^2})$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
