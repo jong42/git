@@ -1,0 +1,285 @@
+\chapter{Untere Schranken für das Gradientenverfahren}
+
+\section{Untere Schranken für $\F_L^{\infty, 1}$}
+
+Im letzten Kapitel wurden obere Schranken für die Konvergenzgeschwindigkeiten betrachtet, jetzt soll es um untere Schranken gehen.
+
+\textit{Modell:}
+\begin{align*}
+\min_{x \in \R^n} f(x) \quad , f \in \F^{\infty,1}_L
+\end{align*}
+
+\textit{Orakel:} Orakel 1. Ordnung, d.h. nur $f(x)$ und $f'(x)$ sind bekannt.
+
+\textit{approximative Lösung:} $\bar{x} \in \R^n : f(\bar{x}) - f^* \leq \epsilon$
+
+\noindent
+\textit{Annahme}: eine iterative Methode generiert eine Folge von Testpunkten $\{x^{(k)}\}_k$, für die gilt:
+\begin{align*}
+x^{(k)} \in x^{(0)} + span\{f'(x^{(0)}), f'(x^{(1)}), …, f'(x^{(k-1)})\}, \quad k \geq 1.
+\end{align*}
+
+\begin{Bemerkung}
+Diese Annahme ist nicht unbedingt notwendig, macht aber den Beweis einfacher.
+\end{Bemerkung}
+
+Sei $L>0$. Dann betrachte folgende Familie von Funktionen (für $x = (x_1,x_2,…,x_n)\in\R^n$):
+\begin{align*}
+f_k(x) &= \frac{L}{4} \left( \frac{1}{2} \left[ x_1^2 + \sum_{i=1}^{k-1}(x_i-x_{i+1})^2 + x_2^2 \right] - x_1\right)\\
+       &= \frac{L}{4} \left( \frac{1}{2} x\tr A_k x - e_1\tr x \right)
+\text{mit}\,A_k \in \R^{n \times n}, A_k =
+\left(
+\begin{array}{c}
+\begin{array}{rrrr|c}
+2  & -1     &        &    & 0\\
+-1 & \ddots & \ddots &    & \\
+   & \ddots & \ddots & -1 & \\
+   &        &   -1   & 2  & \\
+\end{array}\\
+\hline
+\begin{array}{rrrr|c}
+\phantom{-}0  & \phantom{-1}  & \phantom{-1} & \phantom{-1} & 0 \\
+\end{array}
+\end{array}
+\right)\raisebox{0.5\normalbaselineskip}{%
+$\left.\rule{0pt}{2.5\normalbaselineskip}\right\}k\,\text{Zeilen}$}
+\end{align*}
+
+\paragraph*{Eigenschaften dieser Funktion}
+\begin{itemize}
+\item $f_k''(x) = \frac{L}{4} A_k$
+\item $s\tr f_k''(x)s \geq 0 \; \forall s$, denn $f_k''(x)$ ist positiv semidefinit
+\item $s\tr f_k''(x)s \leq L \norm{s}_2^2$
+\end{itemize}
+
+Daraus folgt $LI_n \geq f_k''(x)$ und somit ist $f_k \in \F^{\infty,1}_L$.
+
+Für das Optimum von $f_k$ muss gelten $f_k'(x^*) = 0 = \frac{L}{4}(A_k x - e_1)$.
+
+Es gibt eine Lösung $x^* \in \R^n$ mit
+\begin{align*}
+x_i^* = \begin{cases}
+1 - \frac{i}{k+1} & \text{für}\, i=1,\dots,k\\
+0 & \text{für}\, i=k+1,\dots,n
+\end{cases}
+\end{align*}
+
+Damit ergibt sich der optimale Funktionswert zu
+\begin{align*}
+f^* = f_k(x^*)
+&= \frac{L}{4} \left( \frac{1}{2} (x^*)\tr A_k x^* - e_1\tr x^* \right)\\
+&= \frac{L}{4} \left( \frac{1}{2} (x^*)\tr \underbrace{( A_k x^* - e_1)}_{=0} - \frac{1}{2}e_1\tr x^* \right)\\
+&= \frac{L}{4} \left( -\frac{1}{2}e_1\tr x^* \right)\\
+&= -\frac{L}{8}x_1^*\\
+&= -\frac{L}{8} \left( 1- \frac{1}{k+1} \right).
+\end{align*}
+
+Mit der Abschätzung $\displaystyle \sum_{i=1}^{k}i^2 = \frac{k(k+1)(2k+1)}{6} \leq \frac{(k+1)^3}{3}$ folgt nun:
+\begin{align*}
+\norm{x}^2 &= \sum_{i=1}^{n} (x_i^*)^2\\
+&\leq \sum_{i=1}^{k} (x_i^*)^2\\
+&= \sum_{i=1}^{k} (1-\frac{i}{k+1})^2\\
+&= k - \frac{2}{k+1} \sum_{i=1}^{k}i + \frac{1}{(k+1)^2} \sum_{i=1}^{k}i^2\\
+&\leq k - \frac{2}{k+1} \cdot \frac{k(k+1)}{2} + \frac{1}{(k+1)^2} \cdot \frac{(k+1)^3}{3}\\
+&= \frac{k+1}{3}.
+\end{align*}
+
+\begin{Definition}
+Sei $\R^{k,n} = \{x\in\R^n | x_i = 0, k+1 \leq i \leq n \}$ der Teilraum des $\R^n$, bei dem die ersten $k$ Komponenten $\neq 0$ sein können.
+\end{Definition}
+
+Es gilt für alle $x \in \R^{k,n}$, dass $f_p(x) = f_k(x)$  für $p = k,…,n$ (da $x_p=0$ für $p<k$).
+
+Sei nun $p$ fest mit $1 \leq p \leq n$.
+
+\begin{Lemma}
+Sei $x^{(0)} = 0$. Dann gilt für jede Folge $\{x^{(k)}\}_{k=0}^p$ mit
+\begin{align*}
+x^{(k)} \in \L_k = x^{(0)} + span\{ f'(x^{(0)}), f'(x^{(1)}), …, f'(x^{(k-1)})\}
+\end{align*}
+dass $\L_k \subseteq \R^{k,n}$.
+\end{Lemma}
+\begin{proof} (per Induktion über k)
+\begin{itemize}
+\item[IA:]
+Wegen $x^{(0)}=0$ gilt $f'_p(x^{(0)}) = -\frac{L}{4}e_1 \in \R^{1,n}$. Daraus folgt $\L_1 \subseteq \R^{1,n}$.
+\item[IV:]
+Sei $\L_k \subseteq \R^{k,n}$ für $k \leq p$.
+\item[IB:]
+Es gelte $\L_{k+1} \subseteq \R^{k+1,n}$ für $k \leq p$.
+\item[IS:]
+Da $A_k$ tridiagonal ist, gilt für jedes $x \in \R^{k,n}$ dass $f'_p(x) \in \R^{k+1,n}$. Daraus folgt $\L_{k+1} \subseteq \R^{k+1,n}$.
+\end{itemize}
+\end{proof}
+
+\begin{Lemma}
+Für jede Folge $\{x^{(k)}\}_{k=0}^p$ mit $x^{(0)}=0$ und $x^{(k)} \in \L_k$ gilt:
+\begin{align*}
+f_p(x^{(k)}) \geq f_k^*.
+\end{align*}
+\end{Lemma}
+
+\begin{proof}
+Aus $x^{(k)} \in \L_k$ folgt $f_p(x^{(k)}) = f_k(x^{(k)}) \geq f_k^*$.
+\end{proof}
+
+%%%%%%%%%%
+
+\begin{Theorem}
+Für jedes $k$ mit $1\leq k \leq \frac{1}{2} (n - 1)$ und jedes $x^{(0)} \in \R^n$ existiert eine Funktion $f \in \F_L^{\infty, 1}$, so dass für jede iterative Methode 1. Ordnung gilt:
+\begin{align*}
+f(x^{(k)}) - f^* &\geq \frac{3L \norm{x^*-x^{(0)}}^2}{32 (k + 1)^2}\\
+\norm{x^{(k)} - x^*}^2 &\geq \frac{1}{8} \norm{x^* - x^{(0)}}^2,
+\end{align*}
+wobei $x^*$ das Minimum von $f(x)$ und $f^* = f(x^*)$ ist.
+\end{Theorem}
+
+\begin{proof}
+Offensichtlich sind Methoden dieses Typs invariant unter Verschiebung.
+
+Wähle o.B.d.A. $x^{(0)} = 0 \in \R^n$.
+Sei $k$ fest gewählt. Es wird nun der Algorithmus angewandt auf:
+\begin{align*}
+f(x) &= f_{2k + 1}(x)\\
+x^* &= x_{2k+1}^*\\
+f^* &= f_{2k+1}^*
+\intertext{Aus vorherigem Lemma folgt:}
+f(x^{(k)}) &= f_{2k + 1}(x^{(k)}) = f_k(x^{(k)}) \geq f_k^*.
+\intertext{Wegen $x^{(0)} = 0$ folgt:}
+\frac{f(x^{(k)}) - f^*}{\norm{x^{(0)} - x^*}^2} &\geq \frac{\frac{L}{8}(-1 + \frac{1}{k+1} + 1 - \frac{1}{2k + 2})}{\frac{1}{3}(2k + 2)}
+= \frac{\frac{L}{8}\cdot\frac{1}{2}(\frac{1}{k + 1})}{\frac{2}{3}(k + 1)}
+=\frac{3 L}{32 (k + 1)^2}
+\intertext{2. Ungleichung:}
+\lVert x^{(0)} - x^* \rVert^2 &\ge \sum_{i = k + 1}^{2k + 1}(x_i)^2
+= \sum_{i = k + 1}^{2k + 1}(1 - \frac{i}{2k + 2})^2\\
+&=k + 1 - \frac{1}{k + 1} \cdot \sum_{i = k + 1}^{2k + 1} i + \frac{1}{4(k + 1)^2} \sum_{i = k + 1}^{2k + 1} i^2.
+\intertext{Es gilt:}
+\sum_{i = k + 1}^{2k + 1} i^2 &= \frac{1}{6}((2k+1)(2k+2)(4k+3)-k(k+1)(2k+1))\\
+&=\frac{1}{6}((2k+1)(k+1)(2(4k+3)-k))\\
+&=\frac{1}{6}(2k+1)(k+1)(7k+6).
+\intertext{Damit ergibt sich}
+\norm{x^{(k)} - x^*}^2 &\geq k+1 - \frac{1}{k+1}\frac{(3k+2)(k+1)}{2} + \frac{1}{24(k+1)^2} \cdot (2k+1)(k+1)(7k+6)\\
+&=k+1 - \frac{3k+2}{2} + \frac{(2k+1)(7k+6)}{24(k+1)}\\
+&=\frac{2k+1)(7k+6)}{24(k+1)}-\frac{k}{2}\\
+&=\frac{(2k+1)(7k+6)-12(k+1)k}{24(k+1)}\\
+&=\frac{14k^2 + 12k + 7k + 6 - 12k^2 - 12 k}{24(k+1)}\\
+&=\frac{2k^2 + 7k + 6}{24(k+1)}\\
+&\geq \frac{2k^2 + 7k + 6}{16(k + 1)^2} \norm{x^{(k)} - x^*}^2\\
+&\geq \frac{1}{8} \norm{x^{(0)} - x^*}^2.
+\end{align*}
+\end{proof}
+
+\begin{Bemerkung}
+Die Schritte sind nur gültig, solange $k \leq \frac{1}{2} (n - 1)$ gilt (wobei $n$ die Dimension ist).
+Komplexitätsschranken von diesem Typ heißen uniform in der Dimension der Variablen.
+Sie geben Informationen darüber, wie schnell ein Gradientenverfahren bei großen Problemen konvergiert.
+Aber: ohne endlichdimensionale Argumente gibt es keine Verbesserung.
+\end{Bemerkung}
+
+\begin{Bemerkung}
+Die Konvergenz zum optimalen Punkt kann beliebig langsam sein.
+Dies behebt man mit der Funktionsklasse $\mathcal{S}$ der gleichmäßig konvexen Funktionen.
+\end{Bemerkung}
+
+\section{Untere Schranken für $\mathcal{S}_{\mu, L}^{\infty, 1}$}
+\textit{Modell:}
+\begin{align*}
+\min_{x \in \R^n}; f \in \mathcal{S}_{\mu, L}^{\infty, 1} \quad , \mu > 0
+\end{align*}
+
+\textit{Orakel:} Orakel 1. Ordnung ($f(x)$ und $f'(x)$ sind gegeben).
+
+\textit{approximative Lösung $\bar{x}$:}
+\begin{align*}
+f(\bar{x}) - f^* &\leq \varepsilon\\
+\norm{\bar{x} - x^*}^2 &\leq \varepsilon
+\end{align*}
+
+Wir haben bisher keine Annahme über die Dimension $n$ des Definitionsbereichs von ${f:\R^n \rightarrow \R}$ getroffen.
+Da das einfacher geht, betrachten wir jetzt den unendlich-dimensionalen Definitionsbereich $\R^\infty$.
+
+Erinnerung: $\R^\infty \equiv l_2$ ist der Raum aller Folgen $\lbrace x_i \rbrace_{i = 1}^\infty$ mit endlicher Norm, d.h.
+\begin{align*}
+\norm{x}^2 = \sum_{i = 1}^{\infty} x_i^2 < \infty.
+\end{align*}
+
+Sei $\mu > 0$ und $L > \mu$ gegeben, d.h. $Q_f = \frac{L}{\mu} > 1$.
+\begin{align*}
+f_{\mu, Q_f} &= \frac{\mu(Q_f - 1)}{8}(x\tr Ax-2e_1\tr x)+\frac{\mu}{2}\norm{x}^2
+\quad \text{mit}\,A =
+\begin{pmatrix}
+2 & -1 & \\
+-1 & \ddots & \ddots\\
+ & \ddots & \ddots\\
+\end{pmatrix}\\
+f''(x) &= \frac{\mu(Q_f - 1)}{4} \cdot A + \mu \cdot I,
+\end{align*}
+wobei $I$ der 1-Operator im $\R^\infty$ ist.
+
+Es gilt
+\begin{align*}
+4 I \succeq A \succeq 0
+\end{align*}
+und damit folgt
+\begin{align*}
+\mu  Q_f I = (\mu (Q_f - 1) + \mu) I \succeq f''(x) \succeq \mu I
+\Longrightarrow f \in \mathcal{S}_{\mu, \mu Q_f}^{\infty, 1}
+\end{align*}
+Die Kondition von $f$ ist dann $\frac{\mu \cdot Q_f}{\mu} = Q_f$.
+
+Wir wollen nun das Minimum $x^*$ bestimmen, es muss also gelten:
+\begin{align*}
+\nabla f_{\mu, Q_f}(x) &= \left( \frac{\mu(Q_f-1)}{4} A + \mu I\right) x - \frac{\mu(Q_f - 1)}{4}e_1 \overset{!}{=} 0\\
+&\Leftrightarrow \left(A + \frac{4}{Q_f -1}\right)x \overset{!}{=} e_1.
+\end{align*}
+In Koordinatenschreibweise:
+\begin{align*}
+2\frac{Q_f + 1}{Q_f -1}x_1 - x_2 &= 1\\
+2_{k+1} - 2 \frac{Q_f + 1}{Q_f - 1}x_k + x_{k-1} &= 0 \quad \text{für}\, k = 2, 3,…
+\end{align*} % ??
+
+\begin{Theorem}
+Für jedes $x^{(0)} \in \mathbb{R}^\infty$ und jede Konstante $\mu > 0$ und $Q_f > 1$ existiert eine Funktion $f \in \S_{\mu, \mu Q_f}^{\infty, 1}$, sodass für jedes iterative Optimierungsverfahren, welches die obige Annahme erfüllt, gilt:
+\begin{align*}
+\norm{x^{(k)} - x^*}^2 &\geq \left(\frac{\sqrt{Q_f} - 1}{\sqrt{Q_f} + 1}\right)^{2k} \norm{x^{(0)} - x^*}^2\\
+f(x^{(k)}) - f(x^*) &\geq \frac{\mu}{2} \left(\frac{\sqrt{Q_f} - 1}{\sqrt{Q_f} + 1}\right)^{2k} \norm{x^{(0)} - x^*}^2,
+\end{align*}
+wobei $x^*$ das Minimum von $f$ ist.
+\end{Theorem}
+\begin{proof}
+(entfällt.)
+\end{proof}
+\begin{Bemerkung}
+Für gleichmäßig konvexe Funktionen stimmt diese untere Schranke mit dem Gradientenverfahren überein.
+\end{Bemerkung}
+
+\section{Optimale Methoden für das Gradientenverfahren (Nesterov 1983)}
+\begin{itemize}
+\item Das Standard-Gradientenverfahren ist nicht optimal.
+\item Das Standard-Gradientenverfahren will immer die größte Reduktion pro Iteration („greedy“), was häufig nicht die beste Methode ist.
+\end{itemize}
+
+\subsection{Nesterov's Accelerated Gradient Method (NAGM)}
+\begin{enumerate}
+\item Starte mit $x^{(0)} \in \mathbb{R}^n, \alpha_0 \in (0, 1)$, sei $y^{(0)} = x^{(0)}, q = \frac{\mu}{L}$
+\item In der k-ten Iteration:
+\begin{itemize}
+	\item Berechne $x^{(k + 1)} = y^{(k)} - \frac{1}{L} \nabla f(y^{(k)})$
+	\item Berechne $\alpha_{k+1} \in (0, 1)$ als Lösung der Gleichung
+	\begin{align*}
+	\alpha_{(k + 1)}^2 = (1 - \alpha_{k + 1}) \alpha_k^2 + q \alpha_{k + 1}
+	\end{align*}
+	\item Setze $\beta_k = \frac{\alpha_k(1 - \alpha_k)}{\alpha_k^2 + \alpha_{k + 1}}$
+	\item $y^{(k + 1)} = x^{(k + 1)} + \beta_k ( x^{(k + 1)} - x^{(k)})$
+\end{itemize}
+\end{enumerate}
+
+\begin{Theorem}
+Für $\alpha_0 \in (0,1)$ und $\alpha_0^2 L = (1 - \alpha_0)L + \alpha_0 \mu$ generiert NAGM eine Folge $\lbrace x^{(k)} \rbrace$ mit 
+\begin{align*}
+f(x^{(k)}) - f(x^*) \leq L \cdot \min\Biggl\{\underbrace{\left(1 - \sqrt{\frac{\mu}{L}}\right)^k}_{c^k\rightarrow\log(\frac{1}{\varepsilon})}, \underbrace{\frac{4}{(k + 2)^2}}_{\frac{1}{k^2}\rightarrow\frac{1}{\varepsilon}}\Biggl\} \norm{x^{(0)} - x^*}^2.
+\end{align*}
+\end{Theorem}
+\begin{proof}
+(entfällt.)
+\end{proof}

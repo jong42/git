@@ -1,0 +1,240 @@
+\ifglsentryexists{par:program}{}%
+{%
+\gls@defglossaryentry{par:program}%
+{%
+name={$\ldots $ program},%
+sort={$\ldots $ program},%
+type={main},%
+first={$\protect \ldots $ program},%
+firstplural={$\protect \ldots $ programs},%
+text={$\protect \ldots $ program},%
+plural={$\protect \ldots $ programs},%
+description={Optimierungsproblem. Der Begriff \emph {programming} f\"ur \emph {mathematische Optimierung} r\"uhrt daher, dass Optimierungsmodule typischerweise die ersten Module sind, in denen Mathematikstudenten gezwungen sind, zu programmieren. Dies ist nat\"urlich nicht richtig. Tats\"achlich stammt der Begriff von der englischen \"Ubersetzung von Einsatzplan, bzw. Einsatzplanung. Die ersten spezifischen Optimierungsmethoden wurden im Milit\"ar entwickelt, weswegen sich insbesondere im englischen Sprachraum der Begriff \emph {programming} eingeb\"urgert hat. Ein \emph {program} ist daher ein \emph {Optimierungsproblem}. In j\"ungerer Zeit wird allerdings \emph {optimisation}, respektive \emph {optimization} immer st\"arker verwendet},%
+descriptionplural={Optimierungsproblem. Der Begriff \emph {programming} f\"ur \emph {mathematische Optimierung} r\"uhrt daher, dass Optimierungsmodule typischerweise die ersten Module sind, in denen Mathematikstudenten gezwungen sind, zu programmieren. Dies ist nat\"urlich nicht richtig. Tats\"achlich stammt der Begriff von der englischen \"Ubersetzung von Einsatzplan, bzw. Einsatzplanung. Die ersten spezifischen Optimierungsmethoden wurden im Milit\"ar entwickelt, weswegen sich insbesondere im englischen Sprachraum der Begriff \emph {programming} eingeb\"urgert hat. Ein \emph {program} ist daher ein \emph {Optimierungsproblem}. In j\"ungerer Zeit wird allerdings \emph {optimisation}, respektive \emph {optimization} immer st\"arker verwendet},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:conv}{}%
+{%
+\gls@defglossaryentry{par:conv}%
+{%
+name={convex},%
+sort={convex},%
+type={main},%
+first={convex},%
+firstplural={convexs},%
+text={convex},%
+plural={convexs},%
+description={konvex},%
+descriptionplural={konvex},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:set}{}%
+{%
+\gls@defglossaryentry{par:set}%
+{%
+name={set},%
+sort={set},%
+type={main},%
+first={set},%
+firstplural={sets},%
+text={set},%
+plural={sets},%
+description={Menge},%
+descriptionplural={Menge},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:func}{}%
+{%
+\gls@defglossaryentry{par:func}%
+{%
+name={function},%
+sort={function},%
+type={main},%
+first={function},%
+firstplural={functions},%
+text={function},%
+plural={functions},%
+description={Funktion, Abbildung},%
+descriptionplural={Funktion, Abbildung},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:map}{}%
+{%
+\gls@defglossaryentry{par:map}%
+{%
+name={mapping, map},%
+sort={mapping, map},%
+type={main},%
+first={mapping, map},%
+firstplural={mapping, maps},%
+text={mapping, map},%
+plural={mapping, maps},%
+description={Abbildung, Funktion},%
+descriptionplural={Abbildung, Funktion},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:cone}{}%
+{%
+\gls@defglossaryentry{par:cone}%
+{%
+name={cone},%
+sort={cone},%
+type={main},%
+first={cone},%
+firstplural={cones},%
+text={cone},%
+plural={cones},%
+description={Kegel. \textsl {conic} -- kegelförmig.},%
+descriptionplural={Kegel. \textsl {conic} -- kegelförmig.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:hull}{}%
+{%
+\gls@defglossaryentry{par:hull}%
+{%
+name={hull},%
+sort={hull},%
+type={main},%
+first={hull},%
+firstplural={hulls},%
+text={hull},%
+plural={hulls},%
+description={H\"ulle, H\"ullenoperator.},%
+descriptionplural={H\"ulle, H\"ullenoperator.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{par:conti}{}%
+{%
+\gls@defglossaryentry{par:conti}%
+{%
+name={continuous},%
+sort={continuous},%
+type={main},%
+first={continuous},%
+firstplural={continuouss},%
+text={continuous},%
+plural={continuouss},%
+description={stetig. \emph {continuity} -- Stetigkeit.},%
+descriptionplural={stetig. \emph {continuity} -- Stetigkeit.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%

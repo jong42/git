@@ -1,0 +1,55 @@
+\BOOKMARK [0][-]{chapter.1}{Einf\374hrung in die Optimierung}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Grundlagen}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Beispiele}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Portfolio-Optimierung}{section.1.2}% 4
+\BOOKMARK [2][-]{subsection.1.2.2}{Optimale Steuerung - Raketenauto}{section.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.2.3}{Lineare Regression}{section.1.2}% 6
+\BOOKMARK [0][-]{chapter.2}{Konvexe Optimierungsprobleme}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Konvexe Mengen}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.1.1}{Beispiele}{section.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.1.2}{Schnitt, Skalierung und Verschiebung}{section.2.1}% 10
+\BOOKMARK [1][-]{section.2.2}{Konvexe Funktionen}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.2.1}{Charakterisierungen konvexer Funktionen}{section.2.2}% 12
+\BOOKMARK [1][-]{section.2.3}{Globale L\366sungen und Eindeutigkeit}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.4}{Existenz von L\366sungen}{chapter.2}% 14
+\BOOKMARK [2][-]{subsection.2.4.1}{Karush-Kuhn-Tucker-Bedingungen \(KKT-Bed.\)}{section.2.4}% 15
+\BOOKMARK [0][-]{chapter.3}{Optimierungsverfahren: Grundlagen}{}% 16
+\BOOKMARK [1][-]{section.3.1}{Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}{chapter.3}% 17
+\BOOKMARK [0][-]{chapter.4}{Das Gradientenverfahren f\374r quadratische Optimierungsprobleme}{}% 18
+\BOOKMARK [1][-]{section.4.1}{Problemstellung und Abstiegsrichtung}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.2}{Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.3}{Das Gradientenverfahren}{chapter.4}% 21
+\BOOKMARK [2][-]{subsection.4.3.1}{Funktionenklassen}{section.4.3}% 22
+\BOOKMARK [2][-]{subsection.4.3.2}{Konvergenz des Gradientenverfahrens}{section.4.3}% 23
+\BOOKMARK [1][-]{section.4.4}{Die Richtung des steilsten Abstiegs}{chapter.4}% 24
+\BOOKMARK [1][-]{section.4.5}{Das Schrittweitenverfahren von Armijo}{chapter.4}% 25
+\BOOKMARK [2][-]{subsection.4.5.1}{Konvergenz des Verfahrens}{section.4.5}% 26
+\BOOKMARK [1][-]{section.4.6}{Gradientenverfahren f\374r quadratische Probleme}{chapter.4}% 27
+\BOOKMARK [1][-]{section.4.7}{Die exakte Schrittweite}{chapter.4}% 28
+\BOOKMARK [1][-]{section.4.8}{Gradientenverfahren f\374r quadratische Probleme}{chapter.4}% 29
+\BOOKMARK [2][-]{subsection.4.8.1}{Konvergenz des Verfahrens}{section.4.8}% 30
+\BOOKMARK [2][-]{subsection.4.8.2}{Das Verfahren konjugierter Gradienten}{section.4.8}% 31
+\BOOKMARK [2][-]{subsection.4.8.3}{Q-orthogonale Vektoren}{section.4.8}% 32
+\BOOKMARK [2][-]{subsection.4.8.4}{CG-Verfahren}{section.4.8}% 33
+\BOOKMARK [2][-]{subsection.4.8.5}{Konvergenz des CG-Verfahren}{section.4.8}% 34
+\BOOKMARK [1][-]{section.4.9}{Optimierungsverfahren f\374r allgemeine Probleme}{chapter.4}% 35
+\BOOKMARK [0][-]{chapter.5}{Untere Schranken f\374r das Gradientenverfahren}{}% 36
+\BOOKMARK [1][-]{section.5.1}{Untere Schranken f\374r FL, 1}{chapter.5}% 37
+\BOOKMARK [1][-]{section.5.2}{Untere Schranken f\374r S, L, 1}{chapter.5}% 38
+\BOOKMARK [1][-]{section.5.3}{Optimale Methoden f\374r das Gradientenverfahren \(Nesterov 1983\)}{chapter.5}% 39
+\BOOKMARK [2][-]{subsection.5.3.1}{Nesterov's Accelerated Gradient Method \(NAGM\)}{section.5.3}% 40
+\BOOKMARK [0][-]{chapter.6}{Newton-Verfahren}{}% 41
+\BOOKMARK [1][-]{section.6.1}{Das Newton-Verfahren}{chapter.6}% 42
+\BOOKMARK [1][-]{section.6.2}{Das ged\344mpfte Newton-Verfahren}{chapter.6}% 43
+\BOOKMARK [2][-]{subsection.6.2.1}{Konvergenz des ged\344mpften Newton-Verfahrens}{section.6.2}% 44
+\BOOKMARK [2][-]{subsection.6.2.2}{Vergleich des ged\344mpften Newton-Verfahrens mit dem Gradientenverfahren}{section.6.2}% 45
+\BOOKMARK [1][-]{section.6.3}{Das Quasi-Newton-Verfahren}{chapter.6}% 46
+\BOOKMARK [1][-]{section.6.4}{Das BFGS-Verfahren}{chapter.6}% 47
+\BOOKMARK [0][-]{chapter.7}{Nichtglatte Optimierung}{}% 48
+\BOOKMARK [1][-]{section.7.1}{Einleitung}{chapter.7}% 49
+\BOOKMARK [1][-]{section.7.2}{Probleme}{chapter.7}% 50
+\BOOKMARK [1][-]{section.7.3}{Operationen mit konvexen Funktionen}{chapter.7}% 51
+\BOOKMARK [1][-]{section.7.4}{Das Subdifferential}{chapter.7}% 52
+\BOOKMARK [1][-]{section.7.5}{Das Subgradientenverfahren}{chapter.7}% 53
+\BOOKMARK [1][-]{section.7.6}{Laufzeitanalyse}{chapter.7}% 54
+\BOOKMARK [0][-]{appendix.A}{Mathematische Grundlagen}{}% 55

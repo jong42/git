@@ -42,7 +42,7 @@ def subgradientenverfahren(c,y,x,subgrad,start,tolx,tolg):
     wb_old = start
     while k<1000:
         ## Waehle Subgradient aus
-        s = grad_linfunc(wb_old,c,y,x)
+        s = subgrad(wb_old,c,y,x)
         # Bestimme Schrittweite, Richtung und neuen Startwert
         d = -(s/np.linalg.norm(s,ord=2))
         sigma = 1/np.sqrt(1+k)
@@ -59,41 +59,45 @@ def subgradientenverfahren(c,y,x,subgrad,start,tolx,tolg):
 
     return wb_new;
 
-def newtonverfahren(func,gradient,epsilon,hessematrix,delta,beta):
+def newtonverfahren(func,gradient,hesse_matrix,start,c,y,x,tolx,tolg):
+    delta = 0.5
+    beta = 0.5
 	# Setze Startpunkt und Zaehler
-	k = 0
-	finish = False
-	x = np.array([[1]],dtype=np.float);
-	while (finish == False):
-		# Pruefe, ob Minimum bereits erreicht ist
-		if (not np.any(gradient(x))):
-			break
-		# Pruefe, ob Abbruchkriterium bereits erfuellt ist
-		if (np.linalg.norm(gradient(x))<epsilon):
-			break
-		# Pruefe, ob maximale Iterationszahl erreicht ist
-		if (k>1000):
-			break
+    k = 0
+    finish = False
+    wb_old = start
+    while (finish == False):
 		# Berechne Newton-Richtung
-		d = np.linalg.solve(-hessematrix(x),gradient(x))
+		d = np.linalg.solve(-hesse_matrix(wb_old,c,y,x),gradient(wb_old,c,y,x))
 		# Berechne Armijo-Schrittweite
 		sigma = 1
 		finish_2 = False
 		while (finish_2 == False):
         	# Pruefe, ob Bedingung erfuellt ist
-			x_new = x+sigma*d
-			if(func(x_new) <= func(x)+(delta*sigma*(gradient(x).T)).dot(d)):
+			wb_armijo = wb_old+sigma*d
+			if(func(wb_armijo,c,y,x) <= func(wb_old,c,y,x)+(delta*sigma*(gradient(wb_old,c,y,x).T)).dot(d)):
 				break
 			sigma = beta*sigma
 		# Berechne naechsten Versuchs-Punkt
-		x = x + sigma*d
+		wb_new = wb_old + sigma*d
+	    # Pruefe, ob Minimum bereits erreicht ist
+		if (not np.any(gradient(wb_new,c,y,x))):
+			break
+		# Pruefe, ob Abbruchkriterium bereits erfuellt ist
+		if (np.linalg.norm(gradient(wb_new,c,y,x))<=tolg):
+			break
+		elif (np.linalg.norm(wb_new-wb_old,ord=2)<=tolx):
+		    break
+		# Pruefe, ob maximale Iterationszahl erreicht ist
+		if (k>1000):
+			break
 		# inkrementiere Zaehlvariable
 		k+=1
 
 	#print("k:"+str(k))
-	return x;
+    return wb_new;
 
-def linfunc(z,c,y,x):
+def lin_func(z,c,y,x):
     interim_res = 0
     A = np.array([[1,0,0],[0,1,0],[0,0,0]])
     for i in range(0, len(x.T)):
@@ -101,7 +105,7 @@ def linfunc(z,c,y,x):
     res = 0.5 * (z.T).dot(A.dot(z)) + c * interim_res
     return res
     
-def quadfunc(z,c,y,x):
+def quad_func(z,c,y,x):
     interim_res = 0
     A = np.array([[1,0,0],[0,1,0],[0,0,0]])
     for i in range(0, len(x.T)):
@@ -109,15 +113,15 @@ def quadfunc(z,c,y,x):
     res = 0.5 * (z.T).dot(A.dot(z)) + c * interim_res
     return res
 
-def logfunc(z,c,y,x):
+def log_func(z,c,y,x):
     interim_res = 0
     A = np.array([[1,0,0],[0,1,0],[0,0,0]])
     for i in range(0, len(x.T)):
-        interim_res += log(1+ math.exp(-y[i]*np.array([x.T[i]]).dot(z)))
+        interim_res += math.log(1+ math.exp(-y[i]*np.array([x.T[i]]).dot(z)))
     res = 0.5 * (z.T).dot(A.dot(z)) + c * interim_res
     return res
 
-def grad_quadfunc(z,c,y,x):
+def grad_quad(z,c,y,x):
     def h(z,i,x,y):
         h_res = 2*max(0,1-y[i]*np.array([x.T[i]]).dot(z))
         return h_res
@@ -128,7 +132,7 @@ def grad_quadfunc(z,c,y,x):
     res = A.dot(z) +c*sum([h(z,i,x,y)*g(z,i,x,y) for i in range(0,len(x[1]))])
     return res
     
-def grad_linfunc(z,c,y,x):
+def grad_lin(z,c,y,x):
     
     def g(z,i,x,y):
         res = 1-y[i]*np.array([x.T[i]]).dot(z)
@@ -151,7 +155,7 @@ def grad_linfunc(z,c,y,x):
     res = A.dot(z) +c*sum([h(z,i,x,y) for i in range(0,len(x[1]))])
     return res
 
-def grad_logfunc(z,c,y,x):
+def grad_log(z,c,y,x):
   
   def h(z,i,x,y):
     res_h= ((1+math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**-1)
@@ -165,8 +169,18 @@ def grad_logfunc(z,c,y,x):
   res = A.dot(z) +c*sum([h(z,i,x,y)*g(z,i,x,y)*(-y[i])*np.array([x.T[i]]).T for i in range(0,len(x[1]))])
   return res
 
-def hessemat_logfunc():
-  res = 1
+def hesse_log(z,c,y,x):
+
+  A = np.array([[1,0,0],[0,1,0],[0,0,0]])
+  def h(z,i,x,y):
+      res_h = -((1+math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**-2) * (math.exp(-y[i]*np.array([x.T[i]]).dot(z)))**2 * (y[i]*np.array([x.T[i]]).T)
+      return res_h
+  
+  def g(z,i,x,y):    
+      res_g = math.exp(-y[i]*np.array([x.T[i]]).dot(z))* ((-y[i])*np.array([x.T[i]]).T)
+      return res_g
+ 
+  res = A + c * sum([(-y[i]*np.array([x.T[i]]).T).T * (h(z,i,x,y)+g(z,i,x,y))  for i in range(0,len(x[1]))])
   return res
 
 def main():
@@ -192,27 +206,32 @@ def main():
     x = np.array([x1,x2,x_offset])
     
     ## Linearer Fehler
-    ret_lin = subgradientenverfahren(c,y,x,grad_linfunc,start,tolx,tolg)
-    w = np.array([ret_lin[0],ret_lin[1]])
-    b = ret_lin[2]
+    ret_lin = subgradientenverfahren(c,y,x,grad_lin,start,tolx,tolg)
+    w_lin = np.array([ret_lin[0],ret_lin[1]])
+    b_lin = ret_lin[2]
     #print(ret_lin)
     t = np.arange(-5, 5, 1)
-    plt.plot(t,-w[0]/w[1]*t-b/w[1],'g',label='Subgradientenverfahren')
+    plt.plot(t,-w_lin[0]/w_lin[1]*t-b_lin/w_lin[1],'g',label='Subgradientenverfahren')
     
 
     ## Quadratischer Fehler
-    ret_quad = gradientenverfahren(c,y,x,grad_quadfunc,start,tolx,tolg)
-    w = np.array([ret_quad[0],ret_quad[1]])
-    b = ret_quad[2]
+    ret_quad = gradientenverfahren(c,y,x,grad_quad,start,tolx,tolg)
+    w_quad = np.array([ret_quad[0],ret_quad[1]])
+    b_quad = ret_quad[2]
     #print(ret_quad)
     t = np.arange(-5, 5, 1)
-    plt.plot(t,-w[0]/w[1]*t-b/w[1],'r',label='Gradientenverfahren')
-    plt.legend(loc=0)
+    plt.plot(t,-w_quad[0]/w_quad[1]*t-b_quad/w_quad[1],'r',label='Gradientenverfahren')
+
     
     ## Logistischer Fehler
-    print(grad_logfunc(start,c,y,x))
-    print(grad_quadfunc(start,c,y,x))
-    #plt.show()
+    ret_log = newtonverfahren(log_func,grad_log,hesse_log,start,c,y,x,tolx,tolg)
+    w_log = np.array([ret_log[0],ret_log[1]])
+    b_log = ret_log[2]
+    plt.plot(t,-w_log[0]/w_log[1]*t-b_log/w_log[1],'b',label='Newtonverfahren')
+    
+    ## plot result
+    plt.legend(loc=0)
+    plt.show()
 
 if __name__ == '__main__':
     main()

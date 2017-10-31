@@ -1,0 +1,139 @@
+\chapter{Optimierungsverfahren: Grundlagen}
+\begin{itemize}
+\item Nichtlineare Optimierungsprobleme können i.\,d.\,R. nicht analytisch gelöst werden $\Rightarrow$ \textbf{numerische Lösung}
+\item Berechne für das Problem \eqref{eq:P} ausgehend von einem Startpunkt $x^{(0)}$ eine Folge ${x^{(k)}}, k = 1, 2,\ldots, $ mit dem Ziel, dass die Folge gegen die Lösung $x^*$ konvergiert
+\item Naheliegendes Ziel bei den Iterationen:
+\begin{align*}
+f(x^{(k+1)}) < f (x^{(k)}) \,,
+\end{align*}
+solche Verfahren nennt man \textbf{Abstiegsverfahren}, da die Folge der Funktionswerte $\lbrace f(x^{(k)})\rbrace_{k \in N}$ eine absteigende Folge ist
+\item Wenn möglich startet man mit einem zulässigen Punkt $x^{(0)} \in \F$ und versucht, dass $x^{(k)} \in \F$ für alle $k \in N$ gilt - \textbf{Verfahren zulässigen Punkte}
+\item Abstiegsverfahren benutzen zur Berechnung von $x^{(k+1)}$ eine \textbf{Abstiegsrichtung} $d^{(k)}$ mit der Eigenschaft
+\begin{align*}
+f(x^{(k)} + \sigma_k d^{(k)}) < f(x^{(k)})
+\end{align*}
+für eine hinreichend kleine \textbf{Schrittweite} $\sigma_k$
+\item Die Schrittweite $\sigma_k$ ist so zu bestimmen, dass man eine möglichst große Abnahme des Zielfunktionswertes erhält
+\item Neuer Iterationspunkt: $x^{(k+1)} = x^{(k)} + \sigma_k d^{(k)}$
+\end{itemize}
+
+Mit einer \textbf{differenzierbaren Zielfunktion} $f: \R^n \rightarrow \R$ betrachten wir das unrestringierte Optimierungsproblem
+	\begin{gather*} 
+	\label{eq:PU}
+  		\tag{PU}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x)
+  			\end{aligned}
+	\end{gather*}
+Zur Herleitung und Untersuchung numerischer Verfahren zur Lösung des Problems \eqref{eq:PU} benötigen wir die folgende Standard-Voraussetzung:
+(V) Mit gegebenem $x^{(0)} \in \R^n$ ist die Niveaumenge
+\begin{align*}
+N_0 = N (f, f(x^{(0)})) = {x \in \R^n | f (x)  \leq f(x^{(0)})}
+\end{align*}
+kompakt.
+Damit existiert eine globale Lösung $x^*$ von \eqref{eq:PU} und es gilt 
+\begin{align*}
+\nabla f(x^* ) = 0_n \,.
+\end{align*}
+
+\begin{Lemma}
+Die Funktion $f : \R^n \rightarrow \R$ sei differenzierbar in $x$. Weiter sei $d \in \R^n$ mit
+\begin{align*}
+\nabla f(x)^Td < 0\,.
+\end{align*}
+Dann gibt es ein $\sigma > 0$ mit $f(x + \sigma d) < f (x)$ für alle $\sigma \in ]0, \sigma[$.
+\end{Lemma}
+\begin{proof}
+$f$ ist differenzierbar in $x$:
+\begin{align*}
+\nabla f(x)^Td=\lim_{\sigma\searrow 0 \frac{f(x+\sigma d)-f(x)}{\sigma}}
+\end{align*}
+Nach Voraussetzung ist $\nabla f(x)^T<0$.
+\begin{align*}
+&\Rightarrow f(x+\sigma d)-f(x)< 0\\
+&\Leftrightarrow f(x+\sigma d)<f(x) \text{für hinreichend kleines } \sigma \,.
+\end{align*}
+\end{proof}
+Ein solcher Vektor $d$ heißt \textbf{Abstiegsrichtung} von $f$ im Punkt $x$.
+
+\paragraph{Beispiele}
+\begin{enumerate}[label=\emph{\alph*})]
+\item Ist $f : \R^n \rightarrow \R$ differenzierbar in $x$ und ist $\nabla f(x) \neq 0_n$ , dann gilt
+\begin{align*}
+\nabla f(x)^T (-\nabla f(x)) = - \norm[\nabla f(x)]^2< 0 \,,
+\end{align*}
+d.\,h., der \textbf{negative Gradient} ist eine Abstiegsrichtung in $x$.
+\item Ist $A$ eine beliebige positiv definite $n \times n$-Matrix, dann ist die Richtung
+\begin{align*}
+d = -A-1 \nabla f(x)
+\end{align*}
+eine Abstiegsrichtung in $x$.
+\end{enumerate}
+
+\section{Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}
+\begin{itemize}
+\item[1.] Wähle einen Startpunkt $x^{(0)} \in \R^n$ und setze $k = 0$.
+\item[2.] Ist $\nabla f(x^{(k)}) = 0_n$, dann stoppe das Verfahren.
+\item[3.] Berechne eine Abstiegsrichtung $d^{(k)}$, eine Schrittweite $\sigma_k > 0$ mit
+\begin{align*}
+f (x^{(k)} + \sigma_k d^{(k)}) < f (x^{(k)})
+\end{align*}
+und setze $x^{(k+1)} = x^{(k)} + \sigma_k d^{(k)}$.
+\item[4.] Setze $k = k + 1$ und gehe zu 2.
+\end{itemize}
+
+Ist Voraussetzung (V) erfüllt, dann ist $\N_0$ beschränkt, und $f$ ist auf $\N_0$ beschränkt. Da für das allgemeine Abstiegsverfahren
+\begin{align*}
+f (x^{(k+1)}) < f(x^{(k)})
+\end{align*}
+ist, folgt $x^{(k)} \in \N_0$ für alle $k \in \mathbb N$. Daher sind die Folgen ${x^{(k)}}$ und
+${f(x^{(k)}}$ beschränkt.
+\subsection*{Abbruchkriterien}
+Das Abbruchkriterium $\nabla f(x^{(k)}) = 0_n$ in Schritt 2 ist nur für theoretische Zwecke sinnvoll. Praktisch gibt man \textbf{Toleranzen} $\varepsilon_i > 0$ vor, wobei man $\varepsilon_i = 10^{-p}$ wählt, wenn das Ergebnis auf $p$ Stellen genau sein soll. \textbf{Typische Abbruchkriterien} sind:
+\begin{itemize}
+\item $f(x^{(k)}) - f (x^{(k+1)})  \leq \varepsilon_1 \max\lbrace 1, |f (x^{(k)})|\rbrace$
+\item $ \norm{x^{(k+1)} - x^{(k)}}  \leq \varepsilon_2 \max\lbrace 1, \norm{x^{(k)}}\rbrace$ mit $\varepsilon_2 = \sqrt{\varepsilon_1}$
+\item $\norm{\nabla f(x^{(k)})}  \leq \varepsilon_3 \max\lbrace1, |f (x^{(k)})|\rbrace$ mit $\varepsilon_3 =\sqrt{\varepsilon_1}$
+Da die Abbruchkriterien nicht immer erfüllt werden können, sollte man zusätzlich eine \textbf{maximale Iterationszahl} vorgeben.
+\end{itemize}
+
+Wir betrachten zunächst das Lösen \textbf{unrestringierter, quadratischer Optimierungsprobleme}
+der Form
+\begin{gather*} 
+	\label{eq:QU}
+  		\tag{QU}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x)=\frac{1}{2}x^TQx+q^Tx \,.
+  			\end{aligned}
+	\end{gather*}
+Hierfür verwenden wir das \textbf{Gradientenverfahren}, welches auf eine Arbeit von \textbf{Louis Augustin Cauchy} aus dem Jahr \textbf{1847} zurückgeht.
+Für Probleme vom Typ \eqref{eq:QU} geben wir eine Abstiegsrichtung $d^{(k)}$ und eine \textbf{Schrittweitenstrategie} $\sigma_k$ an, welche wir in das allgemeine Abstiegsverfahren von Folie 6-6 einsetzen. Wir beweisen anschließend die \textbf{Konvergenz} des resultierenden Verfahrens.
+
+Der \textbf{negative Gradient $\nabla f(x)$} ist nicht nur eine Abstiegsrichtung der Zielfunktion im Punkt $x$, sondern definiert sogar die \textbf{Richtung des steilsten Abstiegs}
+wie folgendes Resultat zeigt.
+\begin{Lemma}
+Sei $f: \R^n \rightarrow \R$ in $x$ differenzierbar mit $\nabla f(x) \neq 0_n$. Dann ist
+\begin{align*}
+\overline{d}=-\frac{\nabla f(x)}{\norm{\nabla f(x)}}
+\end{align*}
+Lösung des Optimierungsproblems
+\begin{gather*} 
+  			\begin{aligned}
+    			\min_{d \in \R^n}
+    			& & & \nabla f(x)^Td \\
+    			s.t. 
+    			& & & \norm{d}=1
+  			\end{aligned}
+	\end{gather*}
+\end{Lemma}
+
+\begin{proof}
+Für beliebiges $d\in\R^n$ ist $\nabla f(x)^T d \geq -\norm{\nabla f(x)} \norm{d}$ (Chauchy-Schwarz). Daher ist $\nabla f(x)^T d \geq \underbrace{-\norm{\nabla f(x)}}_{\text{Untere Schranke der ZF}} \forall d\in\R^n, \norm{d}=1$.\\
+Für $\overline{d}$ gilt:
+\begin{align*}
+\nabla f(x)^Td=-\frac{f(x)^T \nabla f(x)}{\norm{\nabla f(x)}}=-\frac{\norm{\nabla f(x)}^2}{\norm{\nabla f(x)}}=-\norm{\nabla f(x)}\,.
+\end{align*}
+Damit ist die Behauptung bewiesen.
+\end{proof}

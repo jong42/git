@@ -1,0 +1,569 @@
+\chapter{Das Gradientenverfahren für quadratische Optimierungsprobleme}
+
+\section{Problemstellung und Abstiegsrichtung}
+
+Mit einer \textbf{differenzierbaren Zielfunktion}\ $f:\mathbb{R}^n \rightarrow \mathbb{R}$ betrachten wir das \textbf{unrestringierte Optimierungsproblem}
+\begin{gather}
+\label{eq:P}
+\tag{PU}
+\begin{aligned}
+\min_{x\in \mathbb{R}^n}
+& & & f(x)
+\end{aligned}
+\end{gather}
+\begin{Lemma}
+	Die Funktion $f:\mathbb{R}^n \rightarrow \mathbb{R}$ sei differenzierbar in $x$. Weiter sei $d \in \mathbb{R}^n$ mit $\nabla f(x)^Td < 0$. Dann gibt es ein $\bar\sigma > 0$ mit $f(x + \sigma d) < f(x)$ f\"ur alle $\sigma \in\ ]0, \bar\sigma [$. Ein solcher Vektor $d$ heißt \textbf{Abstiegsrichtung} von $f$ im Punkt $x$.
+\end{Lemma}
+
+\section{Allgemeines Abstiegsverfahren mit Schrittweitensteuerung}
+
+\begin{enumerate}
+	\item Wähle einen Startpunkt $x(0) \in \mathbb{R}^n$ und setze $k = 0$.
+	\item Ist $\nabla f(x(k)) = 0_n$, dann stoppe das Verfahren.
+	\item Berechne eine \textbf{Abstiegsrichtung} $d(k)$, eine \textbf{Schrittweite} $\sigma k > 0$ mit\\
+	$f(x(k)+\sigma k d(k)) < f(x(k))$ und setze $x(k+1) = x(k) + \sigma kd(k)$ .
+	\item Setze $k = k + 1$ und gehe zu $2$.
+\end{enumerate}
+
+\section{Das Gradientenverfahren}
+
+Suchrichtung: $d^{(k)} = -\nabla f(x^{(k)})$
+\begin{itemize}
+	\item Wähle einen Startpunkt $x^{(0)} \in R^n$ und setze k = 0.
+	\item Ist $\nabla f(x^{(k)}) = 0_n$ , dann stoppe das Verfahren.
+	\item Berechne eine effiziente Schrittweite $\sigma_k$ (bspw. Armijo) und setze
+	$x^{(k+1)} = x{(k)} - \sigma_k \nabla f(x^{(k)})$ .
+	\item Setze $k = k + 1$ und gehe zu 2.
+\end{itemize}
+Der negative Gradient ist die eindeutig bestimmte Lösung des quadratischen Problems
+\begin{equation}
+	\min_{d\in\R^n} \underbrace{f(x^{(k)}) + \nabla f(x^{(k)})^Td}_{Taylor-Approximation 1. Ordnung} + \underbrace{1/2 d^Td}_{\underbrace{1/(2\sigma)||x^{(k+1)} - x^{(k)}||^2}_{Abstand  x^{(k+1)} zu  x^{(k)}}}
+\end{equation}
+$x^{(k+1)} = x^{(k)} + \sigma d$\\
+$d = (x^{(k+1)}-x^{(k)})/\sigma$
+\\
+\\	
+für $Q=I_n$\\
+$q = \nabla f(x^{(k)})$\\
+$Qd + q = 0$\\
+$Id + \nabla f(x^{(k)}) = 0$   <=> $d=-\nabla f(x^{(k)})$
+
+\subsection{Funktionenklassen}	
+
+$\mathcal{F}_L^{k,l} (R^n) \Rightarrow$
+Menge aller konvexen Funktionen	$\mathcal{F}:R^n \Rightarrow R$, die k mal stetig differenzierbar sind und deren l-te ABleitung lipschitz-stetig mit Konstante L ist, d.h.
+
+\begin{equation}
+||f^{(l)} (x) - f^{(l)} (y)|| \leq L ||x-y|| \forall x,y \in R^n
+\end{equation}
+
+\begin{itemize}
+	\item Offensichtlich ist $k \geq l$
+	\item $\mathcal{F}_L^{k_1,l} \leq \mathcal{F}_L^{k_2,l}, k_1 \geq k_2$
+	\item $f_1 \in \mathcal{F}_{L_1}^{k,l}, f_2 \in \mathcal{F}_{L_2}^{k,l}, \alpha, \beta \geq 0$
+\end{itemize}
+
+$\Rightarrow \alpha f_1 + \beta f_2 \in \mathcal{F}_{\alpha L_1 + \beta L_2}^{k,l}$\\
+
+
+$\mathcal{F}^k \Rightarrow$ Menge aller konvexen Funktionen, die k mal stetig differenzierbar sind.
+
+Eigenschaft von $\mathcal{F}^1$: Für $f \in \mathcal{F}^1$ gilt:\\
+\begin{equation}
+	f(y) \geq f(x+ \nabla f(x)^T (y-x)
+\end{equation}\\
+
+Eigenschaften von $\mathcal{F}^{1,1}_L$: Für $f \in \mathcal{F}^{1,1}_L$ gilt:\\
+\begin{itemize}
+	\item $f(y) \leq f(x) + \nabla f(x)^T (y-x) + L/2 ||x-y||^2$
+	\item $f(x) + \nabla f(x)^T (y-x) + 1/(2L) || \nabla f(x) - \nabla f(y)||^2 \leq f(y)$
+	\item $ 1/L || \nabla f(x) - \nabla f(y)||^2 \leq (\nabla f(x) - \nabla f(y))^T (x-y)$
+	\item $(\nabla f(x) - \nabla f(y))^T (x-y) \leq L ||x-y||^2$
+	\item $ \alpha f(x) + (1-\alpha) f(y) \geq f(\alpha x + (1-\alpha)y) + (\alpha(1-\alpha))/(2L) || \nabla f(x) - \nabla f(y)||^2$
+	\item $\alpha f(x) + (1-\alpha) f(y) \geq f(\alpha x + (1-\alpha)y) + \alpha (1-\alpha) L/2 ||x-y||^2$
+\end{itemize}
+
+\begin{Definition}
+Eine stetig differenzierbare Funktion f heißt gleichmäßig konvex mit Konvexitätsparameter $\mu > 0 (f \in S_\mu^1)$, wenn $f(y) \geq \nabla f(x)^T (y-x) + (1/2) \mu ||y-x||^2 $
+\end{Definition}\mbox{}\\ Wir definieren den Raum $S_{\mu,L}^{k,l}$ analog zu$ \mathcal{F}_L^{k,l} $\\
+Eigenschaften:
+$f_1 \in S_{\mu_1}^1, f_2 \in S_{\mu_2}^1, \alpha, \beta \geq 0 $
+
+$\Rightarrow  \alpha f_1 + \beta f_2 \in S^{1}_{\alpha mu_1 + \beta mu_2}$
+
+
+\begin{Lemma}
+	Eine zweimal stetig differenzierbare Funktion f gehört zu $S^{2}_{\mu}\\
+	 \Leftrightarrow f^n(x) \geq \mu*I_n  \forall x \in R^n$\\
+Für $f \in S_{\mu,L}^{2,1}$ gilt:\\
+$\mu I_n \leq f''(x) \leq L I_n$
+\end{Lemma}
+
+\begin{Definition}
+$Q = L/\mu$ ist die Kondition der Funktion f.
+\end{Definition}\mbox{}\\Bei kleinen Q führen kleine Änderungen im Problem zu kleinen Änderungen im Funktionswert.
+
+	
+\subsection{Konvergenz des Gradientenverfahrens}
+
+Nachfolgend wird die Konvergenz des Gradientenverfahrens für (gleichmäßig) konvexe, stetig differenzierbare und in der Ableitung Lipschitz-stetige Funktionen gezeigt.\\\\
+Die Lipschitz-Konstante $L$ folgt der Ungleichung zwischen der Norm der Divergenz-Differenzen zweier Punkte und der Norm zwischen diesen zwei Punkten (Wiederholung):
+
+\begin{equation*}
+  \norm{\nabla f(x) - \nabla f(y)} \leq L\,\norm{x-y} \text{ , } \quad \forall x,y \in \mathcal{N}_0
+\end{equation*}
+Sei die Schrittweitenstrategie in den folgenden Beweisen $\sigma_k = \sigma$ konstant gewählt.
+\begin{Satz}[Konvergenz des Gradientverfahrens für konvexe Funktionen]
+\label{thm:konvergenz_grad_verfahren_konvex}
+	Sei $f: \mathbb{R}^n \rightarrow \mathbb{R}$ konvex und stetig differenzierbar und die Ableitung $\nabla f$ Lipschitz-stetig mit Lipschitzkonstante $L>0$. Dann gilt für das Gradientenverfahren mit konstanter Schrittweite $0<\sigma<\frac{1}{L}$
+  \begin{equation*}
+    f(x^{(k)})-f(x^\ast) \leq \frac{\norm{x^{(0)}-x^\ast}^2}{2\sigma k} \text{.}
+  \end{equation*}
+\end{Satz}
+\begin{proof}
+  Aus der Lipschitz-Stetigkeit der Ableitung $\nabla f$ folgt
+  \begin{equation*}
+      f(y) \leq f(x) + \nabla f(x)^\top (y-x) + \frac{L}{2} \norm{y-x}^2_2 \text{ , } \forall x,y \text{.}
+  \end{equation*}
+  Seien $x$ und $y$ die Punkte der $k$-ten bzw. $(k-1)$-ten Iteration des Gradientenverfahrens, d.h.
+  \begin{align*}
+     & x = x^{(k)} \text{ ,}\\
+    \text{sowie} \qquad & y = x^{(k+1)} = x^{(k)} - \sigma \nabla f(x^{(k)}) \text{.}\\
+  \end{align*}
+  Aus der Ungleichung ergibt für diese zwei gewählten Punkte:\\
+    \begin{gather*}
+      			\begin{aligned}
+              f(x^{(k+1)}) & \leq f(x^{(k)}) + \nabla f(x^{(k)})^\top \left(x^{(k+1)}-x^{(k)}\right) + \frac{L}{2} \norm{x^{(k+1)}-x^{(k)}}^2_2 \\
+              & =f(x^{(k)}) + \nabla f(x^{(k)})^\top \left(-\sigma \nabla f(x^{(k)})\right) + \frac{L}{2} \norm{-\sigma \nabla f(x^{(k)})}^2_2 \\
+              & = f(x^{(k)}) + -\sigma \norm{\nabla f(x^{(k)})}^2_2 + \frac{\sigma ^2 L}{2} \norm{\nabla f(x^{(k)})}^2_2 \\
+              & = f(x^{(k)}) - \sigma \left(1 - \frac{\sigma L}{2}\right)\norm{\nabla f(x^{(k)})}^2_2 \\
+              & \leq f(x^{(k)}) - \frac{\sigma}{2} \norm{\nabla f(x^{(k)})}^2_2 \qquad \qquad \text{  ,   da } 0 < \frac{\sigma L}{2} \leq \frac{1}{2} \\
+      			\end{aligned}
+    	\end{gather*}
+      Es gilt demnach
+      \begin{equation*}
+        f(x^{(k+1)}) < f(x^{(k)}) \text{ , } \qquad \forall k \quad (\text{solange} \nabla f(x^{(k)}) \neq 0)\text{.}
+      \end{equation*}
+      Aufgrund der Konvexität, sowie der stetigen Differenzierbarkeit von $f$ gilt
+      \begin{equation*}
+        f(y) \geq f(x) + \nabla f(x)^\top (y-x) \text{ , }\qquad \forall x,y \text{.}
+      \end{equation*}
+      Sei nun $x=x^{(k)}, y=x^\ast$, so folgt
+      \begin{equation*}
+        f(x^{(k)}) \leq f(x^\ast) - \nabla f(x^{(k)})^\top \left(x^\ast - x^{(k)}\right) \text{.}
+      \end{equation*}
+      Eingesetzt in die Ungleichung aus der Lipschitz-Stetigkeit ergibt sich
+      \begin{gather*}
+        			\begin{aligned}
+                f(x^{(k+1)}) &  \leq f(x^{(k)}) - \frac{\sigma}{2} \norm{\nabla f(x^{(k)})}^2_2 \\
+                & \leq f(x^\ast) + \nabla f(x^{(k)})^\top \left(x^{(k)}-x^\ast\right) - \frac{\sigma}{2} \norm{\nabla f(x^{(k)})}^2_2\\
+                & = f(x^\ast) + \frac{1}{2\sigma} \bigg[ \underbrace{\norm{x^{(k)}-x^\ast}^2_2-\norm{x^{(k)}-x^\ast}^2_2}_{=0} - \sigma^2 \norm{\nabla f(x^{(k)})}^2_2 \\
+                & \qquad + 2\sigma \nabla f(x^{(k)})^\top \left(x^{(k)}-x^\ast\right) \bigg] \\
+                & = f(x^\ast) + \frac{1}{2\sigma} \bigg[ \norm{x^{(k)}-x^\ast}^2_2- \bigg\{ \norm{x^{(k)}-x^\ast}^2_2 + \sigma^2 \norm{\nabla f(x^{(k)})}^2_2 \\
+                & \qquad - 2\sigma \nabla f(x^{(k)})^\top \left(x^{(k)}-x^\ast\right) \bigg\} \bigg] \\
+                & = f(x^\ast) + \frac{1}{2\sigma} \left[ \norm{x^{(k)}-x^\ast}^2_2 - \norm{x^{(k)}-\sigma \nabla f(x^{(k)})-x^\ast}^2_2\right] \\
+                & = f(x^\ast) + \frac{1}{2\sigma} \left[ \norm{x^{(k)}-x^\ast}^2_2 - \norm{x^{(k+1)}-x^\ast}^2_2\right] \text{.}\\
+        			\end{aligned}
+      	\end{gather*}
+        Diese Ungleichung lässt sich schreiben als
+        \begin{equation*}
+          f(x^{(k+1)})-f(x^\ast) \leq \frac{1}{2\sigma} \left[ \norm{x^{(k)}-x^\ast}^2_2 - \norm{x^{(k+1)}-x^\ast}^2_2\right] \text{.} \end{equation*}
+        Die Summe dieses Ausdruckes über die Iterationsschritte 1 bis $k$ ist eine Teleskopsumme
+        \begin{gather*}
+          			\begin{aligned}
+                  \sum_{i=1}^k f(x^{(i)})-f(x^\ast) & \leq \sum_{i=1}^k \frac{1}{2\sigma} \left[ \norm{x^{(i-1)}-x^\ast}^2_2 - \norm{x^{(i)}-x^\ast}^2_2\right] \\
+                  & = \frac{1}{2\sigma} \left[ \norm{x^{(0)}-x^\ast}^2_2 - \underbrace{\norm{x^{(k)}-x^\ast}^2_2}_{\geq 0}\right] \\
+                  & \leq \frac{1}{2\sigma} \norm{x^{(0)}-x^\ast}^2_2 \text{.}\\
+          			\end{aligned}
+        	\end{gather*}
+        Weiterhin gilt Aufgrund der Monotonie von $f(x^{(i)})$
+        \begin{equation*}
+          \sum_{i=1}^k f(x^{(i)})-f(x^\ast) \geq \sum_{i=1}^k f(x^{(k)})-f(x^\ast) = k \left[ f(x^{(k)})-f(x^\ast) \right] \text{.}
+        \end{equation*}
+        Demnach folgt aus der Ungleichung der Teleskopsumme die zu beweisende Ungleichung
+        \begin{equation*}
+          f(x^{(k)})-f(x^\ast) \leq \frac{1}{2\sigma k} \norm{x^{(0)}-x^\ast}^2_2
+        \end{equation*}
+\end{proof}
+\noindent
+Sofern eine Vorgabe vorliegt, wie groß die Differenz zwischen den beiden Funktionswerten des $k$-ten Interationsschrittes und der Minimalstelle maximal sein darf, um das Verfahren abzubrechen, kann eine Abschätzung der Anzahl an Iterationsschritten $k$ durchgeführt werden. \\
+Sei $\epsilon > 0$, so gilt
+\begin{gather*}
+        \begin{aligned}
+          & f(x^{(k)})-f(x^\ast)  \leq \frac{1}{2\sigma k} \norm{x^{(0)}-x^\ast}^2_2  = \epsilon\\
+          \Leftrightarrow \qquad & k  = \frac{1}{2\sigma \epsilon} \norm{x^{(0)}-x^\ast}^2_2 \\
+          \Rightarrow \qquad & k = \mathcal{O}(\frac{1}{\epsilon})\\
+        \end{aligned}
+  \end{gather*}
+
+\begin{Satz}[Konvergenz des Gradientverfahrens für gleichmäßig konvexe Funktionen]
+\label{thm:konvergenz_grad_verfahren_glchm_konvex}
+  Sei $f: \mathbb{R}^n \rightarrow \mathbb{R}$ gleichmäßig konvex (mit Parameter $\mu$), stetig differenzierbar und die Ableitung $\nabla f$ Lipschitz-stetig mit Lipschitzkonstante $L>0$. Dann gilt für das Gradientenverfahren mit konstanter Schrittweite $0<\sigma\leq\frac{2}{\mu + L}$
+  \begin{equation*}
+    \norm{x^{(k)}-x^\ast}^2 \leq \left( 1 - \frac{2\sigma \mu L}{\mu + L}\right)^k \norm{x^{(0)}-x^\ast} \text{ ,}
+  \end{equation*}
+  sowie für $\sigma = \frac{2}{\mu + L}$
+  \begin{gather*}
+          \begin{aligned}
+            \norm{x^{(k)}-x^\ast} & \leq \left(\frac{Q_f-1}{Q_f+1}\right)^k \norm{x^{(0)}-x^\ast} \\
+            f(x^{(k)}) - f(x^ \ast)& \leq \frac{L}{2}\left(\frac{Q_f-1}{Q_f+1}\right)^{2k} \norm{x^{(0)}-x^\ast}^2 \\
+          \end{aligned}
+    \end{gather*}
+    wobei $Q_f = \frac{L}{\mu}$ (Kondition).
+\end{Satz}
+\begin{proof}
+  Sei die Variable $r^{(k)}$ als Norm zwischen dem Punkt des $k$-ten Iterationsschrittes und dem Minimalpunkt eingeführt
+  \begin{equation*}
+    r^{(k)} = \norm{x^{(k)}-x^\ast} \text{.}
+  \end{equation*}
+  So folgt für das Quadrat von $r^{(k+1)}$
+  \begin{gather*}
+          \begin{aligned}
+            \left(r^{(k+1)}\right)^2 & = \norm{x^{(k+1)}-x^\ast}^2_2\\
+            & = \norm{x^{(k)}-\sigma \nabla f(x^{(k)})-x^\ast}^2_2 \\
+            & = \left(r^{(k)}\right)^2 - 2\sigma \underbrace{\nabla f(x^{(k)})^\top}_{= \left[\nabla f(x^{(k)}-\underbrace{\nabla f(x^\ast)}_{=0}\right]^\top} \left[x^{(k)}-x^\ast\right] + \sigma^2 \norm{\nabla f(x^{(k)})}^2_2
+          \end{aligned}
+    \end{gather*}
+    Der Term $\left[\nabla f(x^{(k)})-\nabla f(x^\ast)\right]^\top \left[x^{(k)}-x^\ast\right]$ kann mithilfe der Ausdrücke $\left(r^{(k)}\right)^2$ und $\norm{\nabla f(x^{(k)})}^2_2$ nach unten abgeschätzt werden. Dazu werden folgende Relation benutzt:
+    \begin{gather*}
+            \begin{aligned}
+              \left[\nabla f(x^{(k)})-\nabla f(x^\ast)\right]^\top & \geq \mu \left(r^{(k)}\right)^2 \\
+              \left[\nabla f(x^{(k)})-\nabla f(x^\ast)\right]^\top & \geq \frac{1}{L} \norm{\nabla f(x^{(k)})-\nabla f(x^\ast)}^2_2 \\
+            \end{aligned}
+    \end{gather*}
+    Weiterhin gilt für die Konditionszahl der Funktion $f$ die Relation $Q_f = \frac{L}{\mu} \geq 1$. \\
+    Somit folgt
+    \begin{gather*}
+            \begin{aligned}
+              & \left[\nabla f(x^{(k)})-\nabla f(x^\ast)\right]^\top & \\
+              = \quad & \left(\frac{1}{2}+\frac{1}{2}\right) \left[\nabla f(x^{(k)})-\nabla f(x^\ast)\right]^\top & \\
+              \geq \quad & \frac{\mu}{2} \left(r^{(k)}\right)^2 + \frac{1}{2L}\norm{\nabla f(x^{(k)})-\nabla f(x^\ast)}^2_2 & \\
+              = \quad & \frac{\mu L}{L+L} \left(r^{(k)}\right)^2 + \frac{1}{L+L}\norm{\nabla f(x^{(k)})-\nabla f(x^\ast)}^2_2 & \text{, nun gilt:} L \geq \mu\\
+              \geq \quad & \frac{\mu L}{\mu+L} \left(r^{(k)}\right)^2 + \frac{1}{\mu+L}\norm{\nabla f(x^{(k)})-\nabla f(x^\ast)}^2_2 & \text{ .}\\
+            \end{aligned}
+    \end{gather*}
+    Demnach folgt für die Abschätzung für $\left(r^{(k+1)}\right)^2$
+    \begin{gather*}
+            \begin{aligned}
+              \left(r^{(k+1)}\right)^2 & \leq \left(r^{(k)}\right)^2 - \frac{2\sigma \mu L}{\mu+L} \left(r^{(k)}\right)^2 - \frac{2\sigma}{\mu+L}\norm{\nabla f(x^{(k)})-\nabla f(x^\ast)}^2_2 + \sigma^2 \norm{\nabla f(x^{(k)})}^2_2\\
+              & = \left( 1 - \frac{2\sigma \mu L}{\mu+L}\right) \left(r^{(k)}\right)^2 + \sigma \left(\sigma - \frac{2}{\mu + L}\right) \norm{\nabla f(x^{(k)})}^2_2 \text{ .} \\
+            \end{aligned}
+      \end{gather*}
+      Aus der Voraussetzung $0<\sigma\leq\frac{2}{\mu + L}$ lässt sich der zweite Term abschätzen. Setze $k\rightarrow k-1$, so folgt die zu beweisende Ungleichung
+      \begin{gather*}
+              \begin{aligned}
+                \left(r^{(k)}\right)^2 & \leq \left( 1 - \frac{2\sigma \mu L}{\mu+L}\right) \left(r^{(k-1)}\right)^2 + \sigma \underbrace{\left(\sigma - \frac{2}{\mu + L}\right)}_{\leq 0} \norm{\nabla f(x^{(k-1)})}^2_2 \\
+                & \leq \left( 1 - \frac{2\sigma \mu L}{\mu+L}\right) \left(r^{(k-1)}\right)^2 \\
+                & \leq \left( 1 - \frac{2\sigma \mu L}{\mu+L}\right)^2 \left(r^{(k-2)}\right)^2 \\
+                & \dots \\
+                & \leq \bigg(1 - \frac{2\sigma \mu L}{\mu+L}\bigg)^k \left(r^{(0)}\right)^2
+              \end{aligned}
+        \end{gather*}
+      Wird nun $\sigma = \frac{2}{\mu + L}$ festgelegt, ergibt sich
+      \begin{gather*}
+              \begin{aligned}
+                \left(r^{(k)}\right)^2 & \leq \bigg(1 - \frac{2 \frac{2}{\mu + L} \mu L}{\mu+L}\bigg)^k \left(r^{(0)}\right)^2 \\
+                & = \bigg(\frac{(\mu + L)^2 - 4\mu L}{(\mu + L)^2}\bigg)^k \left(r^{(0)}\right)^2 \\
+                & = \bigg(\frac{(\mu - L)^2}{(\mu + L)^2}\bigg)^k \left(r^{(0)}\right)^2 \\
+                & = \bigg(\frac{Q_f - 1}{Q_f + 1}\bigg)^{2k} \left(r^{(0)}\right)^2 \\
+              \end{aligned}
+      \end{gather*}
+      Daher gilt nach Wurzelziehen der Ungleichung
+      \begin{equation*}
+        \norm{x^{(k)}-x^\ast}  \leq \left(\frac{Q_f-1}{Q_f+1}\right)^k \norm{x^{(0)}-x^\ast} \\
+      \end{equation*}
+      Aus der Lipschitz-Bedingung $f(x^{(k)})-f(x^\ast) \leq \frac{L}{2} \left(r^{(k)}\right)^2$ folgt die letzte zu zeigende Ungleichung
+      \begin{gather*}
+        \begin{aligned}
+          \frac{2}{L} \left[ f(x^{(k)})-f(x^\ast) \right] & \leq \left(r^{(k)}\right)^2 \\
+          \Leftrightarrow \qquad  f(x^{(k)})-f(x^\ast) & \leq \frac{L}{2} \left(\frac{Q_f-1}{Q_f+1}\right)^{2k} \norm{x^{(0)}-x^\ast}^2
+        \end{aligned}
+      \end{gather*}
+\end{proof}
+
+\section{Die Richtung des steilsten Abstiegs}
+
+Der \textbf{negative Gradient $-\nabla f(x)$} ist nicht nur eine Abstiegsrichtung der Zielfunktion im Punkt x, sondern definiert sogar die \textbf{Richtung des steilsten Abstiegs} wie folgendes Resultat zeigt.
+
+\begin{Lemma}
+	Sei $f:\mathbb{R}^n \leftarrow \mathbb{R} \text{in} x$ differenzierbar mit $\nabla f(x) \neq 0_n$ . Dann ist \\
+	\begin{gather}
+	\begin{aligned}
+	\bar d = \frac{-\nabla f(x)}{||\nabla f(x)||}
+	\end{aligned}
+	\end{gather}
+Lösung des Optimierungsproblems
+\begin{gather}
+	\begin{aligned}
+	\min_{d\in \mathbb{R}^n}
+	& & & \nabla f(x)^T d \\
+	s.t.
+	& & & |d| = 1
+\end{aligned}
+\end{gather}
+\end{Lemma}
+
+\section{Das Schrittweitenverfahren von Armijo}
+
+Seien x und eine Abstiegsrichtung d von f in x gegeben. Weiter sei
+$c_1 \in ]0, 1[$ eine von x und d unabhängige Konstante. Zur Berechnung
+einer effizienten Schrittweite $\sigma$ soll die Abstiegsbedingung
+$f(x + \sigma d) \leq f(x) + c_1 \sigma \nabla f(x)^Td$
+erfüllt werden. Damit die Schrittweite nicht zu klein wird, fordert man
+zusätzlich mit einer von x und d unabhängigen Konstante $c_2 > 0$, dass
+
+\begin{equation}
+\sigma \geq -c_2 (\nabla f(x)^Td) / ||d||^2 
+\end{equation}
+Gegeben seien von x und d unabhängige Konstanten:
+$\delta \in ]0, 1[$, $\gamma > 0$ und $0 < \beta_1 \leq \beta_2 < 1$
+
+\begin{enumerate}
+	\item  Wähle eine Startschrittweite $\sigma_0$, für die mit $c_2 = \gamma$ gilt:
+	\begin{equation}
+	\sigma \geq - \gamma (\nabla f(x)^Td)/||d||^2
+	\end{equation}
+	Setze $j = 0$.
+	\item Ist die Abstiegsbedingung
+	 $f(x + \sigma d) \leq f(x) + \delta \sigma_j \nabla f(x)^Td$
+	 erfüllt, dann setze $\sigma_A = \sigma_j$ und stoppe das Verfahren.
+	\item Wähle $\sigma_j+ 1 \in [\beta_1 \sigma_j , \beta_2 \sigma_j ]$.
+	\item Setze $j = j + 1$ und gehe zu 2.
+\end{enumerate}
+
+
+Praktisch haben sich folgende Werte bewährt:
+\begin{itemize}
+\item $\delta$ sollte klein sein; Größenordnung: $\delta = 0.01$
+\item$\gamma$ sollte so gewählt werden, dass die Schrittweite 1 und die exakte
+Schrittweite nicht ausgeschlossen werden. $\gamma = 10^{-4}$
+\item $\sigma_0 = 1$ oder als Approximation der exakten Schrittweite:
+\begin{equation}
+\sigma_0 = - (\nabla f(x)^T d) / (2 (f(x + d) - f(x) - \nabla f(x)^T d))
+\end{equation}
+\item Zur Berechnung von $\sigma_j,j \geq 1$ kann man $\beta_1 = \beta_2 = \beta$ wählen:
+\begin{equation}
+\sigma_j = \beta^j \sigma_0 
+\end{equation}
+$j = 1, 2, . . .$
+
+\end{itemize}
+Oft wählt man $\beta = 1/2$
+
+\subsection{Konvergenz des Verfahrens}
+
+Die theoretische Version des Armijo-Verfahrens konvergiert nach endlich
+vielen Schritten, falls die Standard-Voraussetzung erfüllt ist und die
+Ableitung der Zielfunktion Lipschitz-stetig ist, d. h., es gibt ein $L > 0$ mit
+\begin{equation}
+|| \nabla f(x) - \nabla f(y)|| \leq L ||x - y|| \forall x,y \in N_0
+\end{equation}
+Bei einer praktischen Implementierung mit der diskutierten
+Parameterwahl ist jedoch endliche Konvergenz nicht sichergestellt.
+Daher sollte eine maximale Iterationszahl vorgegeben werden. Sollte
+keine Konvergenz eintreten, kann das Verfahren mit anderen Parametern
+neugestartet werden.
+
+\paragraph{Beispiel zur Lipschitz-Stetigkeit}\mbox{}\\
+\\
+$f(x_1,x_2) = (x_1)^2 + (x_2)^2 $\\
+$\nabla f(x_1,x_2) = \begin{bmatrix}2x_1\\2x_2\end{bmatrix}$\\
+$\nabla f(x_1,x_2)$ ist $\infty$ mal stetig differenzierbar\\
+
+\begin{equation}
+\norm{\nabla f(x) - \nabla f(y)} = \norm{2 \begin{bmatrix}x_1\\x_2\end{bmatrix} -2 \begin{bmatrix}y_1\\y_2\end{bmatrix}}\\
+= \norm{2 \begin{bmatrix}x_1 -y_1\\x_2 - y_2\end{bmatrix}}\\
+\leq 2 \norm{x-y}
+\end{equation}
+$\nabla f$ ist lipschitz-stetig mit L=2\\
+Die Lipschitz-Stetigkeit kann als ein Verhältnis zwischen Funktionswerten und Argumenten interpretiert werden.
+
+\section{Gradientenverfahren für quadratische Probleme}
+Wir betrachten zunächst das Lösen \textbf{unrestringierter, quadratischer Optimierungsprobleme} der Form
+\begin{gather}
+\label{eq:P}
+\tag{QU}
+\begin{aligned}
+\min_{x\in \mathbb{R}^n}
+& & & f(x) = \frac{1}{2}x^TQx+q^Tx
+\end{aligned}
+\end{gather}
+Hierfür verwenden wir das \textbf{Gradientenverfahren}, welches auf eine Arbeit von \textbf{Louis Augustin Cauchy} aus dem Jahr \textbf{1847} zurückgeht.Für Probleme vom Typ (QU) geben wir eine  \textbf{Abstiegsrichtung $d(k)$} und
+eine \textbf{Schrittweitenstrategie} $\sigma k$ an, welche wir in das allgemeine Abstiegsverfahren von ? einsetzen. Wir beweisen anschließend die \textbf{Konvergenz} des resultierenden Verfahrens.
+
+\section{Die exakte Schrittweite}
+Für einen gegebenen Punkt $x \in \mathbb{R}^n$ und die zugehörige Abstiegsrichtung $d = -\nabla f(x) \neq 0_n$ soll nun eine geeignete \textbf{Schrittweite} berechnet werden. \\
+Dazu betrachten wir die Funktion $ \psi:[0, \infty[ \leftarrow \mathbb{R}$ mit $$ \psi(s) = f(x+sd) = \frac{1}{2}s^2d^TQd + s(Qx+q)^Td+\frac{1}{2}x^TQx+q^Tx.$$
+Diese Funktion ist in s quadratisch. Es gilt $\psi(0) = f(x)$ und $\phi_0(0) = \nabla f(x)^Td < 0$.\\
+D. h., geht man von $x$ aus in Richtung $d$, dann nehmen die Funktionswerte zunächst ab.
+Wir wollen die Schrittweite $\sigma_E$ so bestimmen, dass der Zielfunktionswert maximal abnimmt. Dies ist offensichtlich der Fall, wenn $\sigma_E$ der eindeutig
+bestimmte Minimalpunkt von $\psi$ ist und damit die Optimalitätsbedingung $\psi(0) = (\sigma_E) = 0$ erfüllt. Dadurch erhalten wir
+$$ \sigma_E = \frac{d^Td}{d^TQd}.$$
+Man nennt $\sigma_E$ die \textbf{exakte Schrittweite}.
+
+\begin{equation}
+\begin{aligned}
+	\min_{s\in \mathbb{R}} \psi(s) &= f(x+sd) \\
+	f(x+sd) & = \frac{1}{2}(x+sd)^TQ(x+sd)+q^T(x+sd)\\
+	& = \frac{1}{2}x^TQd+\frac{1}{2}s^2d^TQd+sx^TQd+q^Tx+sq^Td \\
+	\psi'(s) &= sd^TQd+(Qx+q)^Td \\
+	\psi'(0)&= (Qx+q)^Td \\ 
+	&= \nabla f(x)^Td \\
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+	\sigma_E\text{ ist Min von }\psi \Leftrightarrow \psi'(\sigma_E) = 0\\
+	\sigma_Ed^TQd=(Qx=q)^Td = 0 \\
+	\Leftrightarrow \sigma_E = - \frac{(Qx+q)^Td}{d^TQd} = \frac{d^Td}{d^TQd}\\
+	-\nabla f(x) = d
+\end{aligned}
+\end{equation}
+
+\section{Gradientenverfahren für quadratische Probleme}
+\begin{enumerate}
+	\item Wähle einen Startpunkt $x(0) \in \mathbb{R}^n$ und setze $k = 0$.
+	\item Ist $\nabla f(x(k)) = Qx^{(k)} + q = 0_n$, dann stoppe das Verfahren.
+	\item Berechne zu $d(k) = -\nabla f(x(k))$, die exakte Schrittweite $$\sigma_k = \frac{(d^{k})^Td^{(k)}}{(d^{(k)})^TQd^{(k)}}$$
+	und setze $x^{(k+1)} = x^{(k)} + \sigma_kd(k)$.
+	\item  Setze $k = k + 1$ und gehe zu $2$.	
+\end{enumerate}
+\subsection{Konvergenz des Verfahrens}
+\begin{Theorem}
+Ist die Matrix $Q$ positiv definit, dann konvergiert die mit dem Gradientenverfahren für quadratische Optimierungsprobleme berechnete Folge {$x^{(k)}$} für jeden Startpunkt $x(0) \in \mathbb{R}^n$ gegen den eindeutig
+bestimmten Minimalpunkt $x^{*}$ von $f$.
+\end{Theorem}
+\begin{proof}
+$x^{*}$ sei globaler Minalmalpunkt von $f \Leftrightarrow \nabla f(x^{*}=Qx+q= 0_n) $
+\begin{align*}
+\Rightarrow (i) d^{(k)} &= - \nabla f(x^{(k)})\\
+ &= -q-Qx^{(k)} = Q(x^{*}-x^{(k)})\\
+Qx^{*} &\leftrightarrow x^{*} - x^{k} = q^{-1}d^{(k)}\\
+\intertext{Wir definieren $F(x) = (x-x^{*})^TQ(x-x^{*})$}
+F(x^{(k)} - F(x^{(k+1)}) &= 2[x^{(k)}-x^{(k+1)}]^TQ[x^{(k)}-x^{(k)}]-[x^{(k+1)}-x^{(k)}]^T[x^{(k+1)}-x^{(k)}]\\
+\intertext{Wegen $x^{(k+1)}-x^{(k)} =\sigma_kd^{(k)}$ und $(i)$:}
+F(x^{(k)})-F(x^{(k+1)}) &= -2\sigma_k(d^{(k)})^T\underbrace{QQ^{-1}}_{=I_n}d^{(k)}-\sigma_k(d^{(k)})^TQd^{(k)} \\
+&= 2\sigma_k(d^{(k)})^Td^{(k)}-\sigma^2_k(d^{(k)})^TQd^{(k)}\\
+\intertext{Mit $\sigma_k = \frac{(d^{(k)})^Td^{(k)}}{(d^{(k)})^T-F(x^{(k+1)})}$ folgt}
+F(x^{(k)})-F(x^{(k+1)}) &= 2\cdot\frac{[(d^{(k)})^Td^{(k)}]^2}{(d^{(k)})^TQd^{(k)}}-\frac{[(d^{(k)})^Td^{(k)}]^2}{(d^{(k)})^TQd^{(k)}}\\
+&= \frac{[(d^{(k)})^Td^{(k)}]^2}{(d^{(k)})^TQd^{(k)}}\\
+(i):F(x^{(k)}) &= (x^{(k)}-x^{*})^TQ(x^{(k)}-x^{*})\\
+&= -Q^{-1}d^{(k)} = -Q^{-1}d^{(k)}\\
+&= (d^{(k)})^T(Q^{-1})^TQQ^{-1}d^{(k)}\\
+&= (d^{(k)})^TQ^{-1}d^{(k)} \\
+\intertext{Damit folgt:}
+\frac{F(x^{(k)})-F(x^{(k+1)})}{F(x^{(k)})} &= \frac{(d^{(k)})^Td^{(k)}}{(d^{(k)})^TQd^{(k)}} - \frac{(d^{(k)})^Td^{(k)}}{(d^{(k)})^TQ{-1}d^{(k)}} \\
+\intertext{Sei $\lambda_1$ der kleinste und $\lambda_n$ der groesste Ew von $Q$:}
+\lambda_1||d||^2 \in d^TQ^{-1}d&\geq \lambda_n||d||^2\\
+\intertext{Damit sind $\lambda_n^{-1} $ der kleinste und $\lambda_1^{-1}$ der groesste Ew von $Q^{-1}$ und }
+\frac{1}{\lambda_n} ||d||^2 \in d^TQ^{-1}d &\geq \frac{1}{\lambda_1}||d||^2\\
+\intertext{Damit }
+\frac{F(x^{(k)})-F(x^{(k+1)})}{F(x^{(k)})} &= 1-\frac{F(x^{(k+1)})}{F(x^{(k)})}\leq \frac{\lambda_1}{\lambda_n}\\
+\Rightarrow \frac{F(x^{(k+1)})}{F(x^{(k)})} &=1-\frac{\lambda_1}{\lambda_n}\\
+\intertext{Mit $L:=1-\frac{\lambda_1}{\lambda_n}$ folg $0\leq L\leq 1$ und}
+F(x^{(k+1)})&\leq L\cdot F(x^{(k)})\\
+\intertext{Wiederholte Anwendung der Formel ergibt:}
+F(x^{(k+1)}) \leq L^k\cdot F(x^{(k)}) &\Leftrightarrow \underbrace{(x^{(k)}-x^{*})^TQ(x^{(k)}-x^{*})}_{\geq \lambda_1\cdot||x^{(k)}-x^{*}||^2}\leq L^k\cdot F(x^{(0)})\\
+\Rightarrow ||x^{(k)}-x^{*}|| &\leq \frac{1}{\lambda_1}L^k\cdot F(x^{(k)})\\
+\intertext{Sei $\Gamma := \sqrt{L}$, dann ist $0 \leq \Gamma \le 1$ und}
+||x^{(k)}-x^{*}|| &\leq \underbrace{(\lambda_1^{-1}F(x^{(0)}))^\frac{1}{2}\cdot \Gamma^k}_{\xrightarrow[]{k \rightarrow \infty} 0} \hfill k=0,1,2,3,\cdots
+\end{align*}
+Dies zeigt $x^{(k)} \xrightarrow[]{k \rightarrow \infty} x^{*}$
+\end{proof}
+Das Gradientenverfahren erzeugt \textbf{orthogonale Suchrichtungen}:
+$$0 = \psi'(\sigma_k) = \nabla f(x(k) + \sigma_k d(k))Td(k) = \nabla f(x^{(k+1)})^Td^{(k)} = -(d^{(k+1)})^T d^{(k)}$$
+Das beeinträchtigt die Konvergenz des Verfahrens.
+Die Konvergenzgeschwindigkeit ist abhängig von der \textbf{Kondition} der Matrix $Q$,
+$k(Q) = \lambda_n /\lambda_1$.
+Je kleiner die Kondition der Matrix $Q$ ist, desto besser ist das Problem konditioniert, desto besser ist die Konvergenz.
+\begin{Beispiel}
+	Wenn $Q=I_n$\\
+	$\rightarrow$ Problem konvergiert in einem Schritt zur Loesung
+\end{Beispiel}
+\subsection{Das Verfahren konjugierter Gradienten}
+Äquivalent zum Lösen des Problems (QU) mit positiv definiter Matrix $Q$
+ist das Lösen des linearen Gleichungssystems
+$$Qx = -q$$.
+Das \textbf{Verfahren konjugierter Gradienten} (engl. conjugate gradient method, daher \textbf{CG-Verfahren}) wurde \textbf{1952} von \textbf{Hestenes und Stiefel} zum Lösen solcher Gleichungssysteme entwickelt.
+\begin{itemize}
+	\item Schrittweiten: exakt (wie im Gradientenverfahren)
+	\item Suchrichtungen: \textbf{Orthogonalisierung} der Richtungen $\nabla f(x^{(k)}$ bzgl.der Matrix $Q$
+\end{itemize}
+\subsection{Q-orthogonale Vektoren}
+\begin{Definition}
+	Sei $Q$ eine symmetrische, positiv definite $n x n$-Matrix. Die Vektoren $d^{(0)} , \dots , d^{(k)}$, $k < n$, heißen \textbf{zueinander konjugiert (orthogonal) bezüglich $Q$ oder $Q$-konjugiert ($Q$-orthogonal)}, wenn sie vom
+	Nullvektor verschieden sind und $$(d^{(i)})^TQd^{(j)} = \langle Qd^{(i)} \text{, }d^{(j)}\rangle = 0 \text{, } 0 \leq i \le j \leq k$$ gilt.
+
+\end{Definition}
+
+\subsection{CG-Verfahren}
+\begin{enumerate}
+	\item Wähle einen Startpunkt $x^{(0)} \in \mathbb{R}^n$ , berechne $\nabla f(x^{(0)}) = Qx^{(0)} + q$, $d^{(0)} = -\nabla f(x^{(0)})$, und setze $k = 0$.
+	\item Ist $\nabla f(x^{(k)}) = 0_n$ , dann stoppe das Verfahren.
+	\item Berechne zu $d^{(k)}$ die exakte Schrittweite \\
+	$	\sigma_k =\nabla -\frac{f(x^{(k)})^T d^{(k)}}{(d^{(k)})^TQd^{(k)}}$ und setze
+	$x^{(k+1)} = x^{(k)} + \sigma_k d^{(k)}$ .\\
+	Berechne die neue Suchrichtung $d^{(k+1)}$ durch
+$$\nabla f(x^{(k+1)}) = Qx^{(k+1)}+q = \nabla f(x^{(k)})+\sigma_kQd{(k)}$$
+$$\beta_k = \frac{||\nabla f(x^{(k+1)})||^2}{\nabla f(x^{(k)})}\text{, } d^{(k+1)} = -\nabla f(x^{(k+1)}) + \beta_kd^{(k)}$$
+	\item Setze $k = k + 1$ und gehe zu Schritt 2.
+\end{enumerate}
+
+
+\subsection{Konvergenz des CG-Verfahren}
+\begin{Theorem}
+Ist die Matrix $Q \in \mathbb{R}^{n x n}$ positiv definit, dann berechnet das CG-Verfahren in $m \geq n$ Iterationsschritten den eindeutig bestimmten Minimalpunkt $x^{*}$ von $f$. Die berechneten Richtungen $d^{(k)}$ sind $Q$-konjugierte Abstiegsrichtungen von $f$ in $x^{*}$.
+\end{Theorem}
+\begin{proof}
+Satz 4.2.14, Nichtlineare Optimierung (Walter Alt). 
+\end{proof}
+Wesentlich für die Konvergenz des Verfahrens ist, dass die Folge von
+Suchrichtungen orthogonal bzgl. $Q$ und damit linear unabhängig ist. Im
+Vergleich zum Gradientenverfahren passt sich das CG-Verfahren durch
+die Orthogonalisierung besser an die Zielfunktion an.
+\section{Optimierungsverfahren für allgemeine Probleme}
+
+Allgemeine, unrestringierte Probleme mit \textbf nichtlinearer, differenzierbarer Zielfunktion vom Typ
+$
+			\begin{aligned}
+				\min_{x\in\R^n}
+				& & & f(x) & & &
+			\end{aligned} $ lassen sich mit den im vorigen Kapitel behandelten Verfahren nicht lösen. Der negative Gradient als Richtung des steilsten Abstiegs ist immer noch als Abstiegsrichtung geeignet, allerdings kann keine exakte Schrittweite mehr bestimmt werden.\\
+Sei $x^{(k)}$ ein Iterationspunkt mit einer Abstiegsrichtung $d^{(k)}$. Bei hinreichend kleiner Schrittweite $\sigma_k$ gilt:
+\begin{equation}
+	f(x^{(k+1)}) = f(x^{(k)} + \sigma_kd^{(k)}) < f(x^{(k)})
+\end{equation}
+Die Folge ${f(x^{(k)})}$ ist streng monoton fallend. Das muss jedoch nicht bedeuten, dass das Problem konvergiert.
+\paragraph{Beispiel für nicht konvergierende Probleme}\mbox{}\\
+\\
+$f(x)= x^2, x^{(0)} = 1, d^{(0)} = -1$ \\
+
+\input{tikz/parabel}
+
+
+
+\begin{align*}
+\intertext{Abstiegsrichtung: $\nabla f(x^{(k)})^T d^{(k)} =  -2x^{(k)} < 0 \, \, \, \, \forall x^{(k)} > 0$}
+\intertext{Betrachte Schrittweite $\sigma_k = 1/2^{k+2} \, \, \, \, \forall k \geq 0$}
+x^{(k-1)} &= x^k + \sigma_k d^{(k)} \\
+&= x^{(k)} - \sigma_k \\
+&= x^{(k)} - (1/2)^{(k+2)} \\
+&= x^{(0)} - \sum\limits_{i=1}^k (1/2)^{(i+2)} \\
+&= 1 - \sum\limits_{i=1}^k (1/2)^{(i+2)} \\
+&= 1/2 + (1/2)^{(k+2)}  \xrightarrow[]{k \rightarrow \infty} 1/2
+\intertext{Die Folge $x^{(k)}$ konvergiert nicht gegen $x^{*} = 0$.}
+\end{align*}
+
+
+\paragraph{Mögliche Schrittweitenstrategien}
+
+\begin{itemize}
+	\item Konstante Schrittweite $\sigma_k = \sigma > 0$
+	\item Kleiner werdende Schrittweiten, z.B. $\sigma_k = 1/k$
+	\item Exakte Schrittweiten, z.B. $\sigma_k = arg \min {\sigma \geq 0} f(x^{(k)} + \sigma d^{(k)})$
+	\item  Armijo-Verfahren
+\end{itemize}
+
+
+
+
