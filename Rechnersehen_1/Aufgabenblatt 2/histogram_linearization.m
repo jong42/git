@@ -1,5 +1,5 @@
+function img_linearized = histogram_linearization(img)
 
-img = imread('Bilder/Aerial.jpg');
 [counts,colorvals] = imhist(img);
 
 img_linearized = double(img);
@@ -11,6 +11,8 @@ for row = 1:size(img,1)
     end
 end
 
-[counts_cumulated,colorvals] = imhist(img_linearized);
-
 % Rescale values
+
+img_linearized = uint8((img_linearized/max(img_linearized(:)))*255);
+
+end
