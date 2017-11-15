@@ -3,8 +3,17 @@
 %% Aufgabe 1
 
 img = imread('Bilder/Aerial.jpg');
-figure('Name','histogram of image');
-imhist(img);
+%%figure('Name','histogram of image');
+%%imhist(img);
+
+counts = ones(255,1,'double');
+
+for i = 1:256
+    counts(i)= sum(img(:) == i-1);
+end
+figure('Name','histogram of image self implemented');
+bar(counts)
+
 
 %% Aufgabe 2
 
@@ -12,7 +21,7 @@ imshow(img);
 img_linearized = histogram_linearization(img);
 figure('Name','histogram of linearized image');
 imhist(img_linearized);
-imshow(img_linearized);
+%imshow(img_linearized);
 
 %%
 img = imread('Bilder/Mars.jpg');
@@ -69,12 +78,29 @@ imshow(img_filtered_7);
 
 %% Aufgabe 5
 
-D_Gauss_1 = create_gauss_matrix(3,1);
-D_Gauss_2 = create_gauss_matrix(1,3);
+D_Gauss_1 = create_gauss_matrix(13,1);
+D_Gauss_2 = create_gauss_matrix(1,13);
 
 img_filtered = apply_faltung(img,D_Gauss_1);
 img_filtered = apply_faltung(img_filtered,D_Gauss_2);
+figure('Name','original image');
+imshow(img);
 figure('Name','Gauss filtered image separiert');
 imshow(img_filtered);
 
 %% Aufgabe 6
+
+tic
+img_toolbox = histeq(img);
+disp('toolbox equalization')
+toc
+tic
+img_linearized = histogram_linearization(img);
+disp('self implemented equalization')
+toc
+figure('Name','Original Histogramm');
+imhist(img);
+figure('Name','linearisiertes Histogramm self implemented');
+imhist(img_linearized);
+figure('Name','linearisiertes Histogramm Image Processing Toolbox');
+imhist(img_toolbox);
