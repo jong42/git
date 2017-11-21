@@ -1,4 +1,4 @@
-%cd ('git/git/Rechnersehen_1/Aufgabenblatt 1')
+cd ('C:/users/xi86xev/desktop/git/Rechnersehen_1/Aufgabenblatt 1')
 
 %% Aufgabe 2
 

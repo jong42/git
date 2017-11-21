@@ -1,0 +1,404 @@
+
+\documentclass[11pt]{scrreprt}
+ 
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+ 
+ 
+\begin{document}
+\tableofcontents
+\chapter{Matrizenrechnung}
+
+\section{Grundrechenregeln}
+
+\subsection{Addition/Subtraktion}
+\label{sec:Addition/Subtraktion}
+Die Summe zweier Matrizen heißt Matrixsumme, Matrizensumme oder Summenmatrix und ergibt sich durch komponentenweise Addition der entsprechenden Zellen.
+Matrizenaddition ist kommutativ und assoziativ, und mit der Matrizenmultiplikation distributiv. \\
+\\
+Beispiel:
+
+\begin{equation}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end {bmatrix}
++
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end {bmatrix}
+=
+\begin{bmatrix}
+2 & 4 & 6 \\
+8 & 10 & 12 \\
+14 & 16 & 18
+\end {bmatrix}
+\end{equation}
+\\
+Die Subtraktion zweier Matrizen funktioniert analog zur Addition. Die Addition einer Matrix mit einem Vektor oder mit einem Skalar ist nicht ohne Weiteres möglich.
+
+\subsection{Multiplikation}
+Matrizen können sowohl mit Skalaren als auch mit Vektoren und Matrizen multipliziert werden.
+\paragraph{Multiplikation einer Matrix mit einem Skalar}
+Eine Matrix wird mit einem Skalar multipliziert, indem alle Einträge der Matrix mit dem Skalar multipliziert werden.\\
+\\
+Beispiel:
+
+\begin{equation}
+3*
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end {bmatrix}
+=
+\begin{bmatrix}
+3 & 6 & 9 \\
+12 & 15 & 18 \\
+21 & 24 & 27
+\end {bmatrix}
+\end{equation}
+
+\paragraph{Multiplikation einer Matrix mit einem Vektor}
+Das Produkt zwischen einer Matrix und einem Vektor kann nur gebildet werden, wenn die Spaltenanzahl der Matrix mit der Zeilenanzahl des Vektors übereinstimmt. Das Ergebnis ist ein Vektor, der dieselbe Anzahl an Zeilen wie die verwendete Matrix besitzt. Das Matrix-Vektor-Produkt kann als Spezialfall des Matrix-Matrix-Produkts angesehen werden. Das Matrix-Vektor-Produkt bildet sich wie folgt: Der erste Eintrag der ersten Matrixzeile wird mit dem ersten Eintrag des Vektors multipliziert, der zweite Eintrag der ersten Matrixzeile wird mit dem zweiten Vektoreintrag multipliziert. usw... Alle diese Produkte werden aufsummiert und das Ergebnis bildet den ersten Eintrag des Ergebnisvektors. Für den zweiten Eintrag des Ergebnisvektors wird die zweite Zeile der Matrix auf die gleiche Weise mit dem Vektor verbunden, für alle folgenden Einträge werden die entsprechenden Matrixzeilen verwendet.\\
+\\
+Beispiel:
+
+\begin{equation}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 \\
+10 & 11 & 12
+\end {bmatrix}
+*
+\begin{bmatrix}
+1 \\
+2 \\
+3
+\end {bmatrix}
+=
+\begin{bmatrix}
+14  \\
+32  \\
+50 \\
+68
+\end {bmatrix}
+\end{equation}
+\\
+\\
+Das Matrix-Vektor-Produkt ist nicht kommutativ, erfüllt jedoch das Assoziativ- und das Distributivgesetz in der Art, dass für $A \in R^{l x m}, B \in R^{m x n}, x \in R^n, a \in R$ gilt:\\
+$A*(B*x) = (A*B)*x$\\
+$a*(A*x) = (a*A)*x = A*(a*x)$\\
+$(A+B)*x = A*x + B*x$\\
+$A*(x+y) = A*x + A*y$
+
+
+\paragraph{Matrix-Matrix-Multiplikation}
+Die Multiplikation zweier Matrizen ist nur möglich, wenn die Spaltenanzahl der ersten Matrix mit der Zeilenanzahl der zweiten Matrix übereinstimmt. Das Ergebnis ist wieder eine Matrix mit der Zeilenanzahl der ersten Matrix und der Spaltenanzahl der zweiten Matrix. Das Matrix-Matrix-Produkt wird folgendermaßen gebildet: Der erste Eintrag der ersten Zeile der ersten Matrix wird mit dem ersten Eintrag der ersten Spalte der zweiten Matrix multipliziert. Der zweite Eintrag der ersten Zeile der ersten Matrix wird mit dem zweiten Eintrag der ersten Spalte der zweiten Matrix multipliziert, usw. Alle Produkte aus den Einträgen der ersten Zeile der ersten Matrix und der ersten Spalte der zweiten Matrix werden aufsummiert und bilden den ersten Eintrag (erste Spalte, erste Zeile) der Ergebnismatrix. Um einen Eintrag in einer anderen Spalte der Ergebnismatrix zu berechnen, wird das selbe gemacht, nur das dieses Mal nicht mehr die erste Spalte der zweiten Matrix verwendet wird, sondern diejenige Spalte, für die in der Ergebnismatrix der Eintrag berechnet werden soll. Um einen Eintrag der Ergebnismatrix für eine andere Zeile zu berechnen, muss analog die entsprechende Zeile der ersten Matrix in der Rechnung verwendet werden.\\
+\\
+Beispiel:
+\begin{equation}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 \\
+10 & 11 & 12
+\end {bmatrix}
+*
+\begin{bmatrix}
+1 &  2 & 3 & 4 & 5\\
+6 &  7 & 8 & 9 & 10\\
+11&12&13&14& 15 
+\end {bmatrix}
+=
+\begin{bmatrix}
+46 & 52 & 58 & 64 & 70  \\
+100 & 115  & 130 & 145 & 160\\
+154 & 178 & 202 & 226 & 250\\
+208 & 241 & 274 & 307 & 340
+\end {bmatrix}
+\end{equation}
+\\
+Die Matrix-Matrix-Multiplikation ist assoziativ und, wie in \ref{sec:Addition/Subtraktion} beschrieben, distributiv, aber nicht kommutativ. Man muss deshalb immer darauf achten, ob man eine Matrix von rechts oder von links multipliziert, da dabei unterschiedliche Ergebnisse entstehen.
+
+\subsection{Division}
+Die Division einer Matrix mit einem Skalar erfolgt analog zur Multiplikation, indem jeder Eintrag der Matrix durch den Skalar dividiert wird.\\
+Die Division einer Matrix mit einem Vektor ist, soweit ich weiß, nicht allgemein definiert. Für die Linksdivision einer Matrix A mit einem Vektor b: $A^{-1}b$ ist es aber möglich, aus den einzelnen Matrix- und Vektorkomponenten ein Gleichungssystem aufzustellen und zu lösen, und dadurch ein Ergebnis zu erhalten.\\
+Die Division zweier Matrizen ist das selbe wie die Multiplikation mit der Inversen.
+
+\section{Spezielle Matrizen}
+\subsection{Die Einheitsmatrix}
+Eine Einheitsmatrix ist eine quadratische Matrix, bei der die Hauptdiagonalenelemente eins und alle anderen Elemente null sind.
+Die Einheitsmatrix wird auch Identitätsmatrix genannt und meistens mit $E$ oder $I$ bezeichnet. Das Produkt einer Matrix A mit der Einheitsmatrix ergibt wieder die Matrix A.\\
+\\
+Beispiel:
+\begin{equation}
+E =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 
+\end {bmatrix}
+\end{equation}\\
+\begin{equation}
+E*A = A*E = A
+\end{equation}
+\subsection{Die Transponierte einer Matrix}
+Beim Transponieren einer Matrix werden deren Zeilen und Spalten vertauscht.\\
+\\
+Beispiel:
+\begin{equation}
+A =
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 
+\end {bmatrix}\\
+\\
+\\
+\\
+A^T = 
+\begin{bmatrix}
+1 & 4 & 7 \\
+2 & 5 & 8 \\
+3 & 6 & 9 
+\end {bmatrix}
+\end{equation}
+Wenn die Einträge einer Matrix spiegelsymmetrisch zu ihrer Hauptdiagonalen sind, die Transponierte der Matrix also wieder die Matrix selbst ist, ist die Matrix spiegelsymmetrisch.\\
+Rechenregel:
+\begin{equation}
+(AB)^T =B^T * A^T
+\end{equation}
+\subsection{Die Inverse einer Matrix}
+Die Inverse einer Matrix ist eine Matrix, die multipliziert mit der ursprünglichen Matrix die Einheitsmatrix ergibt. Nur quadratische Matrizen können invertiert werden, und nicht für jede quadratische Matrix muss eine Inverse existieren. Matrizen, für die eine Inverse existiert, werden reguläre Matrizen genannt.\\
+\\
+\begin{equation}
+A * A^{-1} = E
+\end{equation}
+Von Hand kann die Inverse einer Matrix mittels des Gauß-Jordan-Algorithmus berechnet werden.
+\subsection{Diagonalmatrix}
+Eine Diagonalmatrix ist eine quadratische Matrix, bei der alle Elemente außerhalb der Hauptdiagonale null sind. Es ist deshalb möglich, Diagonalmatrizen nur durch die Angabe ihrer Hauptdiagonalenelemente zu bestimmen. Auch eine Einheitsmatrix ist eine Diagonalmatrix.\\
+\\
+Beispiel:
+\begin{equation}
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3 
+\end {bmatrix}
+= diag(1,2,3)
+\end{equation}
+
+\subsection{Frobeniusmatrix}
+Eine Forbeniusmatrix ist eine Matrix, auf deren Hauptdiagonale nur Einsen stehen, und bei der in höchstens einer Spalte unter der Hauptdiagonalen beliebige Werte stehen und in allen anderen EInträgen die Null steht: Beispiel:
+\begin{equation}
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 4 & 1 & 0 \\
+0 & 2 & 0 & 1
+\end {bmatrix}
+\end{equation}
+
+\subsection{Weitere spezielle Matrizen}
+\begin{itemize}
+\item Tridiagonalmatrix
+\item Obere/Untere Bidiagonalmatrix
+\item Obere/Untere Dreiecksmatrix
+\item Normierte obere/untere Dreiecksmatrix
+\item Obere/Untere Hessenberg-Matrix
+\item Bandmatrix
+\item Permutationsmatrix
+\end{itemize}
+\section{Matrix-Eigenschaften und Kenngrößen}
+\subsection{Idempotenz}
+Eine Matrix heißt idempotent, wenn sie mit sich selbst multipliziert wieder sich selbst als Ergebnis hat.
+\begin{equation}
+A * A = A
+\end{equation}
+\subsection{Eigenwerte und Eigenvektoren}
+ Ein Eigenvektor einer Matrix ist ein vom Nullvektor verschiedener Vektor, dessen Richtung durch Multiplikation mit der Matrix nicht verändert wird, d.h. der Vektor nach der Multiplikation ist ein Vielfaches des Vektors vor der Multiplikation. Das dazugehörige Vielfache ist der Eigenwert:\\
+\\
+\begin{equation}
+A * x = \lambda * x
+\end{equation}
+wobei x ein Eigenvektor und  $\lambda$  der Eigenwert ist.\\
+\\
+Beispiel:
+\begin{equation}
+\begin{bmatrix}
+3  & 0\\
+-9 & 6 
+\end {bmatrix}
+*
+\begin{bmatrix}
+1 \\ 
+3  
+\end {bmatrix}
+=
+\begin{bmatrix}
+3 \\
+9  
+\end {bmatrix}
+\end{equation}
+\\
+$\begin{bmatrix}
+1 \\ 
+3  
+\end {bmatrix}$ ist Eigenvektor der Matrix $\begin{bmatrix}
+3  & 0 \\
+-9 & 6 
+\end {bmatrix}$, und der dazugehörige Eigenwert ist 3, da \\
+\\
+$3*\begin{bmatrix}
+1 \\ 
+3  
+\end {bmatrix} 
+=
+\begin{bmatrix}
+3  \\
+9  
+\end {bmatrix}
+$.\\
+\\
+Ein Eigenwert hat unendlich viele zugehörige Eigenvektoren, während ein Eigenvektor immer nur zu einem Eigenwert gehören kann. Eigenwerte und Eigenvektoren können nur für quadratische Matrizen berechnet werden. Eigenwerte werden berechnet, indem man die Formel $A*x = \lambda * x$ als Gleichungssystem schreibt, alle Terme auf die linke Seite bringt, dann die Determinante der Koeffizienten angibt und diese gleich null setzt. Die Lösungen sind die Eigenwerte der Matrix.
+\subsection{Kern und Bild}
+Der Kern einer Matrix $A \in R^{(mxn)}$ ist definiert als: \\
+$Kern(A) := \{x \in R^m|Ax=0\}$,\\ also alle x, für die gilt: Ax = 0.\\
+\\
+Das Bild einer Matrix $A \in R^{(mxn)}$ ist definiert als \\
+$Bild(A) := \{y \in R^m|\exists x \in R^n: Ax=y\}$,\\ also alle y, für die es mindestens ein x gibt, für das gilt: Ax = y.
+
+\subsection{Rang einer Matrix}
+Der Rang einer Matrix gibt die Anzahl an linear unabhängigen Zeilenvektoren (und Spaltenvektoren) an. Man kann den Rang einer Matrix bestimmen, indem man sie in die Zeilenstufenform bringt. Der Rang einer Matrix ändert sich nicht, wenn man sie in diese Form bringt. In der Zeilenstufenform entspricht der Rang einer Matrix der Anzahl an Zeilenvektoren, die ungleich null sind.\\
+\\
+Beispiel:
+\begin{equation}
+A = \begin{bmatrix}
+1 & 2 & 3\\
+0 & 6 & 4\\
+0 & 3 & 2
+\end{bmatrix}
+\Rightarrow
+\begin{bmatrix}
+1 & 2 & 3\\
+0 & 5 & 4\\
+0 & 0 & 0
+\end{bmatrix}
+\Rightarrow rang(A) = 2
+\end{equation}
+Übliche Schreibweisen für den Rang sind rang(f),rg(f),rank(f) und rk(f).
+\subsection{Normen einer Matrix}
+Eine Norm ordnet einem Objekt, beispielsweise einer Matrix, eine Zahl zu, die in gewisser Weise die Größe des Objekts beschreiben soll.
+Die p-Norm einer Matrix A ist definiert als
+\begin{equation}
+||A|| = (\Sigma_{i=1}^m \Sigma_{j=1}^n |a_{ij}|^p)^{1/p}
+\end{equation}
+, also die Summe über die Beträge aller Einträge der Matrix exponiert mit p,  exponiert mit 1/p. p ist dabei eine reelle Zahl zwischen 1 und unendlich. Wichtige Normen sind die 1-Norm(Summennorm) für p=1 und die 2-Norm(euklidische Norm) für p=2.
+\subsection{Determinante}
+Die Determinante ordnet einer quadratischen Matrix einen Skalar zu. Die Determinante einer Matrix A wird mit $|A|$ bezeichnet.
+Für 2x2- und 3x3- Matrizen gibt es einfache Formeln, mit denen sich die Determinante berechnen lässt. Für eine 2x2- Matrix mit $
+A =
+\begin{bmatrix}
+a & b \\
+c & d \\
+\end{bmatrix}
+$ gilt:
+
+\begin{equation}
+|A| = a*d - c*b
+\end {equation}
+\\
+Für eine 3x3-Matrix mit $
+A = 
+\begin{bmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{bmatrix}
+$  gilt:
+\\
+\\
+\begin {equation}
+|A| = a*e*i + b*f*g + c*d*h - g*e*c - h*f*a - i*d*b
+\end {equation}
+Determinanten für Matrizen größerer Dimensionen kann man berechnen, indem man die Matrix zu einer oberen Dreiecksmatrix umformt. Die Determinante einer oberen Dreiecksmatrix ist durch das Produkt ihrer Hauptdiagonalenelemente gegeben, allerdings ist diese nicht mehr identisch mit der Determinante der ursprünglichen Matrix. Für jede Rechenoperation, die während der Umformung gemacht wurde, muss eine entsprechende Rechenoperation auf die Determinante erfolgen, um den richtigen Wert für die ursprüngliche Matrix zu erhalten.
+Die Determinante einer Matrix und die Determinante ihrer Transponierten sind identisch.
+\subsection{Orthogonalität}
+Eine quadratische Matrix heißt orthogonal, wenn das Produkt mit ihrer Transponierten die Einheitsmatrix ergibt:
+\begin{equation}
+A^T * A = E
+\end{equation}
+Bei orhtogonalen Matrizen sind sowohl die Zeilen- als  auch die Spaltenvektoren linear unabhängig zueinander.
+\subsection{Konditionszahl einer Matrix}
+Die Konditionszahl einer Matrix gibt an, wie stark bei der Lösung des Gleichungssystems $Ax=b$ Änderungen in der Matrix A sich auf das Ergebnis x auswirken. Allgemein bezeichnet die Kondition die Robustheit gegenüber Störungen.
+\subsection{Positive Definitheit}
+Eine quadratische Matrix ist positiv definit, wenn alle Eigenwerte größer als null sind. Wenn alle Eigenwerte größer gleich null sind, ist die Matrix positiv semidefinit.
+
+
+\section{Matrizen-Zerlegung}
+\subsection{Gauss-Verfahren}
+
+Das Gauss-Verfahren ist ein Algorithmus zur Lösung eines Gleichungssystems der Form $Ax=b$. Es macht sich die Eigenschaft zunutze, dass bei elementaren Umformungen der Matrix die Lösung erhalten bleibt. Das Gauss-Verfahren besteht daraus, die Matrix zuerst auf Stufenform zu bringen und dann die Lösungen von unten nach oben einzusetzen.
+
+\subsection{LR-Zerlegung}
+
+Das Lösen des für das Gauss-Verfahren genannten LGS lässt sich als Computerprogramm besser umsetzen, wenn die Matrix A in die zwei Matrizen L und R zerlegt wird. Dabei ist L eine untere Dreiecksmatrix mit Einsen auf der Diagonalen und R eine obere Dreiecksmatrix. Nicht für jede Matrix A ist diese Zerlegung möglich, jedoch kann jede reguläre Matrix A durch Multiplikation mit einer Permutationsmatrix P so abgeändert werden, dass die Zerlegung möglich ist. Es gilt also für jede reguläre Matrix A:
+\begin{equation}
+P * A = L * R
+\end{equation}
+
+P besteht nur aus Nullen und Einsen.
+
+
+\subsection{Cholesky-Zerlegung}
+
+Eine symmetrische positiv definite Matrix kann mit der Cholesky-Zerlegung in das Produkt einer unteren Dreiecksmatrix und deren Transponierter zerlegt werden: \\
+\\
+$A = GG^T$ \\
+\\
+Dabei ist A eine beliebige symmetrische positiv definite Matrix und G der sogenannte Cholesky-Faktor, eine untere Dreiecksmatrix. Jedes Element von A lässt sich  also folgendermaßen schreiben: \\
+\\
+$a_{ij} =\sum\nolimits_{k=1}^j g_{ik}g_{jk} , i >= j$ \\
+
+\end{document}
+
+\chapter{Differentialgleichungen}
+
+Eine Differentialgleichung ist eine Gleichung, in der die gesuchte Größe von Ableitungen dieser Größe abhängt. Differentialgleichungen können numerisch oder (manchmal) analytisch gelöst werden. Im Allgemeinen reicht eine Differentialgleichung allein nicht zur Bestimmung einer eindeutigen Lösung aus, es ist oft zusätzlich noch eine Randbedingung nötig.
+
+\section{Eigenschaften von Differentialgleichungen}
+
+\begin{itemize}
+\item Homogenität: Eine Differentialgleichung mit der gesuchten Variablen y(x) ist homogen, wenn sie nicht von x abhängt.
+\item explizit/implizit: Eine DGL n-ter Ordnung ist explizit, wenn die Gleichung nach der höchsten Ableitungsordnung auflösbar ist.
+\item Linearität
+\end{itemize}
+
+
+
+\section{Arten von Differentialgleichungen}
+
+\subsection{Gewöhnliche Differentialgleichungen}
+Gewöhnliche Differentialgleichungen enthalten nur eine Variable. Eine gewöhnliche Differentialgleichung F, bei der y(x) gesucht ist, hat im Allgemeinen die Form:
+\begin{equation}
+F(x,y',y'',...,y^(n)) = 0
+\end{equation}
+
+
+
+\subsection{Partielle Differentialgleichungen}
+Partielle Differentialgleichungen enthalten mehrere Variablen.
+
+
+\section{Lösungsstrategien}
+
+
+Trennen der Variablen: Differentialgleichungen 1. Ordnung lassen sich oft durch Trennen der Variablen und anschließendes Integrieren lösen.
