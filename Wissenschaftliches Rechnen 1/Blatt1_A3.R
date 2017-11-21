@@ -8,8 +8,14 @@ create_band_matrix = function(h){
   return (A_tridiag)
 }
 
+create_b_vector = function(h){
+  b = vector(length = 1/h**2)
+  return(b)
+  for(x in 0,1,by=1/h)
+}
 
 A = create_band_matrix(0.1)
+b = create_b_vector(0.1)
 
 laplace_operator = - (x*(1-x)+y*(1-y))
 u_rand = 0
