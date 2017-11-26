@@ -1,0 +1,310 @@
+\section{Globale Lösungen und Eindeutigkeit}
+
+\begin{Satz}[Lokale L"osungen sind global]
+F\"ur eine konvexe Optimierungsaufgabe ist jede lokale L\"osung eine globale L\"osung, und die L\"osungsmenge von \eqref{eq:P}
+\begin{equation*}
+	\mathcal{S}=\{ x\in\F ~\vert~ f(x)\leq f(y)~\forall y\in\F\}
+\end{equation*}
+ist konvex.
+\end{Satz}
+
+\begin{proof}
+Sei $x^*$ eine lokale L"osung von \eqref{eq:P}, d.\,h. $\exists r > 0$:
+\begin{equation}
+ \label{eq:lok1}
+ \tag{*}
+f(x)>f(x^*) \text{ f"ur alle } x \in B(x^*,r) \cap \F \,.
+\end{equation}
+Sei $y \in \F$ beliebig, $y \neq x^*$. Wir müssen zeigen, dass $f(y)\geq f(x^*)$ ist.
+
+Da $\F$ konvex ist, gilt 
+\begin{equation}
+x^*+t(y-x^*)= (1-t) x^* + ty \in \F \text{ f"ur alle }  t \in [0,1] \,.
+\end{equation}
+Nach der Definition von $B(x^*,r)$ ist
+\begin{equation*}
+x^*+t(y-x^*)= (1-t) x^* + ty \in B(x^*,r) \text{ f"ur alle }  t \in [0,\frac{r}{\norm[y-x^*]}] \,.
+\end{equation*}
+Wegen \eqref{eq:lok1} gilt
+\begin{equation*}
+f(x^*)\leq f(x^*+t(y-x^*))=f((1-t)x^*+ty)\overset{\text{f konvex}}{\leq} (1-t)f(x^*)+tf(y) \\
+\Rightarrow f(x^*)\leq f(y) \,.
+\end{equation*}
+Da $y\in \F$, $y \neq x^*$, beliebig war, ist $x^*$ globale Lösung von \eqref{eq:P}.
+
+Seien $x,z \in \mathcal{S}$, $t \in [0,1]$ beliebig.
+Es gilt $f(x)=f(z)$.
+\begin{equation*}
+f((1-t)x+tz)\overset{\text{f konvex}}{\leq} (1-t)f(x)+tf(z)\overset{f(x)=f(z)}{=} f(x)
+\end{equation*}
+Also ist auch $(1-t)x+tz \in \mathcal{S}$, d.\,h. $\mathcal{S}$ ist konvex.
+\end{proof}
+
+\begin{Satz}[Eindeutigkeit von L"osungen]
+Die zul"assige Menge $\F$ des Problems \eqref{eq:P} sei nichtleer und konvex, und die Zielfunktion $f$ sei strikt konvex auf $\F$. Hat \eqref{eq:P} eine L"osung $x^*$ , dann ist $x^*$ eindeutig bestimmt und strikte globale L"osung von \eqref{eq:P}.
+\end{Satz}
+
+\begin{proof}
+Ist $y \in \F$ ebenfalls L"osung von \eqref{eq:P}, dann sind $x^*$ und $y$ globale L"osungen, also $f(x^*)=f(y)$.
+Aus $\F$ konvex folgt $z:=\frac{1}{2}(x^*+y) \in \F$. \\
+Wäre $y\neq x^*$:
+\begin{equation*}
+f(z)=f(\frac{1}{2}(x^*+y)) \overset{\text{f strikt konvex}}{<} \frac{1}{2}f(x^*) + \frac{1}{2}f(y)\overset{f(x^*)=f(y)}{=} f(x^*)
+\end{equation*}
+Das steht aber im Widerspruch zur Optimalit"at von $x^*$ dar. Also ist $y=x^*$, und für alle $y\neq x^*$ gilt $f(y)<f(x^*)$.
+\end{proof}
+
+\begin{Bemerkung}
+	Über die \textbf{Existenz einer L\"osung} haben wir hier noch keine Aussage getroffen! Es kann also sein, dass es keine Lösung gibt.
+\end{Bemerkung}
+
+\section{Existenz von L"osungen}
+
+Nach dem \textbf{Satz von Weierstraß} nimmt eine stetige Funktion $f : D \rightarrow \R, D \subseteq \R^n$ auf einer kompakten Menge $K \subseteq D$ ihr Supremum und ihr Infimum an. Beim Problem
+	\begin{gather*} 
+  		\tag{P}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x) \\
+    			\text{s.t.}
+    			& & & x\in \F
+  			\end{aligned}
+	\end{gather*}
+ist die zulässige Menge $\F$ im Allgemeinen aber nicht kompakt.\\
+Betrachtet man Niveaumengen, erhält man aus dem Satz von Weierstraß jedoch sofort ein Existenzkriterium für eine Lösung von \eqref{eq:P}.
+\begin{Definition}(Niveaumenge)
+Ist $f : D \rightarrow \R, D \subseteq \R^n$, eine Funktion und $\alpha \in \R$, dann heißen die Mengen
+\begin{align*}
+N(f,\alpha)={x \in D | f8x)\leq \alpha}
+\end{align*}
+\textbf{Niveaumengen} zum Niveau $\alpha$ der Funktion $f$.
+\end{Definition}
+
+\begin{Satz}
+Ist beim Problem \eqref{eq:P} die Zielfunktion $f$ stetig auf $\F$, und ist für ein $w \in \F$ die Menge 
+\begin{align*}
+N(f, f (w))\cap \F = {x \in \F | f(x) \leq f(w)}
+\end{align*}
+kompakt, dann gibt es (mindestens) eine globale Lösung von \eqref{eq:P}.
+\end{Satz}
+
+\begin{proof}
+Sei $N := N (f, f(w)) \cap \F$. Nach dem Satz von Weierstraß gibt es ein $x^* \in N$ mit $f(x^*) \leq f(x)$ für alle $x \in N$ . Für $x \in \F \setminus N$ ist $f(x) > f(w) \geq f(x^*)$. Damit gilt
+\begin{align*}
+f (x^*) \leq f(x) \forall x \in \F \,,
+\end{align*}
+d.\,h., $x^*$ ist globale Lösung von \eqref{eq:P}.
+\end{proof}
+
+\begin{Lemma}
+Die zulässige Menge des Problems \eqref{eq:P} sei nichtleer und abgeschlossen, die Zielfunktion $f$ sei stetig auf $\F$, und es gelte
+\begin{align*}
+lim_{\norm[x] \rightarrow \infty, x \in \F} f(x) = + \infty .
+\end{align*}
+Dann ist für beliebiges $w \in \F$ die Menge $N(f, f(w))\cap \F$ kompakt,d. h., es gibt (mindestens) einen globalen Minimalpunkt von $f$ auf $\F$.
+\end{Lemma}
+
+\paragraph{Beispiel}
+	\begin{gather*} 
+  			\begin{aligned}
+    			\min_{x \in \R^n}
+    			& & & f(x)=\frac{1}{2}x^tQx+q^tx+c \\
+    			& & & \F=\R^n \text{konvex}
+  			\end{aligned}
+	\end{gather*}
+$Q$ positiv semidefinit $\overset{\text{Nr. 8}}\Rightarrow$ f konvex $\Rightarrow$ Konvexes Optimierungsproblem, jede Lösung ist global und die Lösungsmenge konvex
+
+$Q$ positiv definit $\overset{\text{Nr. 8}}\Rightarrow$ f strikt konvex $\Rightarrow$ Konvexes Optimierungsproblem\\
+Lösung ist strikt global und eindeutig bestimmt, wenn sie existiert\\
+Existenz einer Lösung: $\frac{1}{2}\underbrace{x^tQx}_{\geq\alpha\norm{x}^2}+\underbrace{q^tx}_{\geq-\norm{q}\norm{x}}+c\geq \alpha\norm{x}^2-\norm{q}\norm{x}-|c|\overset{\norm{x}\rightarrow\infty}{\rightarrow}+\infty$\\
+$\Rightarrow$ für beliebige $w\in\R^n$ ist $\N(f,f(w))$ kompakt\\
+$\Rightarrow$ es existiert mindestens eine globale Lösung\\
+$\Rightarrow$ Das Problem hat eine eindeutig bestimmte globale Lösung\\
+%\begin{Satz}
+%Sei $D \subset \R^n$ offen, $\F \subset D$ nichtleer und konvex, und $f: D \rightarrow \R$ sei differenzierbar auf $D$. Dann ist $f$ konvex auf $\F$ genau dann, wenn
+%\begin{align*}
+%f(y) \geq f(x) + \nabla f(x)^T(y - x) \forall x, y \in \F
+%\end{align*}
+%gilt.
+%\end{Satz}
+\section*{Optimalitätskriterien}
+\begin{itemize}
+\item notwendig: Wenn $x^*$ Lösung ist, dann muss das Kriterium erfüllt sein.
+\item hinreichend: Ist das Kriterium erfüllt, so muss $x^*$ Lösung sein.
+\end{itemize}
+In der konvexen Optimierung sind notwendige Bedingungen auch hinreichend.
+\begin{Satz}[Optimalitätsbedingung erster Ordnung]
+\label{opt1}
+Ist $f$ differenzierbar auf $D$, dann ist $x^* \in \F$ globale Lösung der konvexen Optimierungsaufgabe \eqref{eq:P} genau dann, wenn
+\begin{align*}
+\nabla f(x^*)^T(x - x^*) \geq 0  \forall x \in \F
+\end{align*}
+oder äquivalent
+\begin{align*}
+-\nabla f(x^*) \in N(\F, x^*)
+\end{align*}
+gilt.
+\end{Satz}
+\begin{proof}
+\begin{itemize}
+\item[$\Rightarrow$] Sei $x^*$ globales Minimum von $f$ auf $\F$. Sei $x\in \F$ beliebig.
+\begin{align*}
+\F \text{ konvex } &\Rightarrow x^*+t(x-x^*) \in \F \forall t \in [0,1]\\
+&\Rightarrow f(x^*+t(x-x^*)) \geq f(x^*) \forall t \in [0,1] \\
+f \text{ ist diff'bar } &\Rightarrow \nabla f(x^*)^T(x-x^*)=\lim_{t\searrow 0}\frac{f(x^*+t(x-x^*))-f(x^*)}{t} \geq 0\,.
+\end{align*}
+\item[$\Leftarrow$] Es gelte $\nabla f(x^*)^T(x - x^*) \geq 0$.
+\begin{align*}
+\text{Es ist } f(x) &\geq f(x^*)+\underbrace{\nabla f(x^*)^T(x-x^*)}_{\geq 0} \forall x \in \F \\
+\Rightarrow f(x) &\geq f(x^*)  \forall x\in \F \\
+\N(\F, x^*)&=\lbrace s\in\R^n | s^T(y-x^*)\leq 0 \forall y\in\F \rbrace \\
+-\nabla f(x^*)&\in\N(\F,x^*)\Leftrightarrow -\nabla f(x^*)^T(y-x^*)\leq 0 \forall y\in\F
+\end{align*}
+Der negative Gradient ist im Minimum $x^*$ eine Normalenrichtung von $\F$ in $x^*$.
+\end{itemize}
+\end{proof}
+
+Zur Erinnerung: $D \in \R^n$ sei eine offene Menge, und die Funktion $f: D \rightarrow \R$ sei konvex. Für das unrestringierte Problem
+	\begin{gather*} 
+	\label{eq:PU}
+  		\tag{PU}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x)
+  			\end{aligned}
+	\end{gather*}
+ist $x^* \in D$ genau dann globale Lösung von \eqref{eq:PU}, wenn die Bedingung
+\begin{align*}
+\nabla f(x^*) = 0_n
+\end{align*}
+erfüllt ist.
+
+\begin{Beispiel} 
+  	\begin{align}
+   		\min_{x\in\R^n}
+   		& & & f(x)=\frac{1}{2}x^tQx+q^tx+c, Q\text{ symmetisch, positiv semidefinit} \\
+   		\nabla f(x)=Qx+q
+  	\end{align}
+$x^*$ ist Lösung $\Leftrightarrow \nabla f(x^*)=Qx^*+q \Leftrightarrow Qx^*=-q$ \\
+Annahme $Q$ positiv definit $\Rightarrow$ $Q$ ist invertierbar $\Rightarrow$ $x^*=-Q^{-1}q$ ist Lösung des Problems
+\end{Beispiel} 
+
+Mit einer Matrix $A \in \R^{m\times n}$ und einem Vektor $b \in \R^m$ betrachten wir das Problem
+	\begin{gather*}
+	\label{eq:PLG}
+  		\tag{PLG}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x) \\
+    			\text{s.t.}
+    			& & & Ax=b \,.
+  			\end{aligned}
+	\end{gather*}
+Dann ist $x^* \in \F = {x | Ax = b}$ genau dann globale Lösung von \eqref{eq:PLG},
+wenn mit einem \textbf{Lagrange-Multiplikator} $\lambda^* \in \R^m$
+\begin{align*}
+\nabla f(x^*)+A^T \lambda^* = 0_n
+\end{align*}
+erfüllt ist. Hat $A$ vollen Rang, dann ist $\lambda^*$ eindeutig bestimmt.
+
+\begin{Lemma}
+Die Lagrang-Multiplikatoren kommen durch Satz \ref{opt1} zustande. Dazu betrachten wir folgende Gleichung $K(\F,x^*)=\text{kern}(A)=\lbrace d|Ad=0\rbrace$, $\F=\lbrace x|Ax=b\rbrace$.
+\end{Lemma}
+\begin{proof}
+\begin{itemize}
+\item[$\subseteq$ :]Sei $z\in K(\F,x^*)$, dann gilt $z=\alpha(y-x^*)$, $\alpha\geq 0$, $y\in\F$
+$\Rightarrow Az=A[\alpha(y-x^*)]=\alpha A(y-x^*)=\alpha[Ay-x^*]=\alpha[b-b]=0$
+\item[$\supseteq$ :] Sei $Az=0$. Mit $y:=z+x^*$ gilt $Ay=Az+Ax^*=b \Rightarrow y\in\F$.
+$z=y-x^*\in K(\F,x^*)$
+\end{itemize}
+\end{proof}
+Der Kern ist Unterraum, dann gilt: $N(\F,x^*)=(kern A)^\perp=im A^T=\lbrace A^t\lambda|\lambda\in\R^m$.\\
+Die Optimalitätsbedingung ist dann:
+\begin{align*}
+-\nabla f(x^*)\in N(\F,x^*)=im A^T=\lbrace A^t\lambda|\lambda\in\R^m \\
+\Leftrightarrow 0=A^T \lambda^*+\nabla f(x^*) \text{ mit } \lambda^*\in\R^m
+\end{align*}
+
+\begin{Beispiel} 
+  	\begin{align}
+   		\min_{x\in\R^n}
+   		& & & f(x)=\frac{1}{2}x^TQx+q^Tx+c, Q\text{ symmetisch, positiv semidefinit} \\
+   		s.t. &&& Ax=b, A\in\R^{m\times n}
+  	\end{align}
+$x^*$ ist Lösung $\Leftrightarrow \exists \lambda^*\in\R^m: \nabla f(x^*A^T\lambda^*)=0, Qx^*+q+A^T\lambda^*=0$.
+Lösungssystem:
+\begin{align*}
+Qx^*+A^T\lambda^*&=-q \\
+A^x*&=0
+\end{align*}
+
+\end{Beispiel} 
+
+Definieren wir die \textbf{Lagrange-Funktion} $L: D \times \R^m \rightarrow \R$ durch
+\begin{align*}
+L(x, \lambda) = f(x) + \lambda^T (Ax - b) \,,
+\end{align*}
+dann sind
+\begin{align*}
+\nabla_x L(x, \lambda) = \lambda f(x) + A^tT \lambda \text{und} \nabla_\lambda L(x, \lambda) = Ax - b\,.
+\end{align*}
+Also ist $x^* \in D$ genau dann Lösung des Problems \eqref{eq:PLG}, wenn ein $\lambda^* \in \R^m$ existiert, sodass
+\begin{align*}
+\nabla L(x^* , \lambda ^*) = \begin{matrix}
+\nabla_x L(x^*, \lambda ^* )\\
+\nabla_\lambda L(x^*, \lambda^* )
+\end{matrix}
+= 0_{n+m}
+\end{align*}
+gilt.
+
+Mit Matrizen $A \in \R^{m\times n}$, $G \in \R^{p\times n}$ und Vektoren $b \in \R^m$, $r \in \R^p$ betrachten wir das Problem
+	\begin{gather*}
+	\label{eq:PL}
+  		\tag{PL}
+  			\begin{aligned}
+    			\min_x
+    			& & & f(x) \\
+    			\text{s.t.}
+    			& & & Ax=b \\
+    			& & & Gx \leq r    			\,.
+  			\end{aligned}
+	\end{gather*}
+Eine Restriktion heißt in einem Punkt $x^* \in \F = {x | Ax = b, Gx  \leq r}$ \textbf{aktiv}, wenn sie mit Gleichheit erfüllt ist. Wir bezeichnen mit
+\begin{align*}
+J(x) = {1  \leq j  \leq p | \langle g^j , x \rangle = r_j}
+\end{align*} 	
+die Indexmenge der in $x$ aktiven \textbf{Ungleichungsrestriktionen}.
+
+\subsection{Karush-Kuhn-Tucker-Beding (KKT-Bed.)}
+
+Ein Punkt $x^* \in \F$ ist genau dann Lösung des Problems \eqref{eq:PL}, wenn es
+\textbf{Lagrange-Multiplikatoren} $\lambda ^* \in \R m$ und $\mu^* \in \R^p$ gibt, für welche die
+\textbf{Multiplikatorenregel}
+\begin{align*}
+\nabla f(x^* ) + A^T \lambda^* + G^T \mu^* = 0 \,,
+\end{align*}
+die \textbf{Vorzeichenbedingung}
+\begin{align*}
+\mu^* \geq 0_p
+\end{align*}
+und die \textbf{Komplementaritätsbedingung}
+\begin{align*}
+(\mu^*)^T (Gx^* - r) = 0_p
+\end{align*}
+erfüllt sind. Sind die Vektoren $a^i , i = 1, . . . , m, g^j , j \in J(x^*)$, linear unabhängig, dann sind die Multiplikatoren eindeutig bestimmt.
+
+Wir definieren für das Problem \eqref{eq:PL} die Lagrange-Funktion $L : D \times \R^m \times \R^p \rightarrow \R$ durch
+\begin{align*}
+L(x, \lambda, \mu) = f(x) + \lambda^T(Ax - b) + \mu^T(Gx - r)\,.
+\end{align*}
+Das System bestehend aus den Optimalitätsbedingungen und den Nebenbedingungen heißt \textbf{Karush-Kuhn-Tucker-System}:
+\begin{align*}
+\nabla_x L(x^* , \lambda ^* , \mu ^* ) = \nabla f(x^*) + A^T\lambda ^* + G^T \mu ^* &= 0_n \\
+\nabla_\lambda L(x^*, \lambda ^*, \mu ^*) = Ax^* - b = 0_m \\
+\nabla_\mu L(x^* , \lambda ^* , \mu ^* ) = Gx^* - r  \leq 0_p \\
+\mu^* \geq 0_p \\
+(\mu^*)T (Gx^* - r) = 0_p\,.
+\end{align*}
+
+

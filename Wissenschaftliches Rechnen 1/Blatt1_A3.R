@@ -1,7 +1,7 @@
 library(Matrix)
 
 ################################################
-#####Erstellen des Gleichungssystems Ax=b
+##### Erstellen des Gleichungssystems Ax=b
 ################################################
 
 create_band_matrix = function(h){
@@ -40,14 +40,14 @@ perform_LU_fact = function(h,A) {
   for (i in seq(1,n-1)) {
     print(paste0("Step: ", i))
     for(k in seq(i+1,n)) {
-      #
+      print(k)
       # Berechnung von L
       L[k,i] = R[k,i] / R[i,i]
       #print(L)
       # Spalten der Restmatrix werden durchlaufen
       for (j in seq(i,n)) {
         #Berechnung von R
-        print(k)
+        
         R[k,j] = R[k,j] - L[k,i] * R[i,j]
         #print(R)
       } 
@@ -56,4 +56,18 @@ perform_LU_fact = function(h,A) {
   return (list("L" = L,"R" = R))
 }
 
-perform_LU_fact(h,A)
+res = perform_LU_fact(h,A)
+L = res[[1]]
+R = res[[2]]
+
+################################################
+##### Löse Ly = b
+################################################
+
+y = solve(L,b)
+
+################################################
+##### Löse Rx = y
+################################################
+
+x = solve(R,y)

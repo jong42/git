@@ -53,27 +53,27 @@ def main():
 	epsilon = 0.01
 	delta = 0.01
 	beta = 0.5
-	
-	plt.figure()
 
-	x = np.arange(-10,10,1)
-	y = np.arange(-10,10,1)
-	X, Y = np.meshgrid(x, y)
-	z = []
-	
-	for i in range(0,20):
-		z.append (quadratic_func(np.array([[x[i]],[y[i]]])))
-	
-	Z = np.meshgrid(x,z)
-	print (Z.ndim)
+	#plt.figure()
+
+	#x = np.arange(-10,10,1)
+	#y = np.arange(-10,10,1)
+	#X, Y = np.meshgrid(x, y)
+	#z = []
+
+	#for i in range(0,20):
+	#	z.append (quadratic_func(np.array([[x[i]],[y[i]]])))
+
+	#Z = np.meshgrid(x,z)
+	#print (Z.ndim)
 	#plt.contourf(X,Y,Z)
 
 	#t = np.arange(-10,10,1)
 	#qt = np.array([[t],[t]])
 	#plt.plot(qt,quadratic_func(qt).astype(np.int))
 	#plt.show()
-	#print (gradientenverfahren_armijo(quadratic_func,gradient,epsilon, delta, beta))
-	
+	print (gradientenverfahren_armijo(quadratic_func,gradient,epsilon, delta, beta))
+
 
 if __name__ == '__main__':
     main()
