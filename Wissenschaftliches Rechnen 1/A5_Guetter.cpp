@@ -17,8 +17,8 @@ std::vector<float> gs(int n, float v, int iter){
 	float a_diag = 4/(h*h);
 	float a_left = -1/(h*h) -v_x/(2*h);
 	float a_right = -1/(h*h) +v_x/(2*h);
-	float a_up = -1/(h*h) + v_y/2*h;
-	float a_down = -1/(h*h) - v_y/2*h;
+	float a_up = -1/(h*h) + v_y/(2*h);
+	float a_down = -1/(h*h) - v_y/(2*h);
 	std::vector<float> u((n+2)*(n+2),0.0);
 	std::vector<float> x((n+2)*(n+2),0.0);
 	// Begin iterations
@@ -49,8 +49,8 @@ std::vector<float> jacobi(int n, float v, int iter){
 	float a_diag = 4/(h*h);
 	float a_left = -1/(h*h) -v_x/(2*h);
 	float a_right = -1/(h*h) +v_x/(2*h);
-	float a_up = -1/(h*h) + v_y/2*h;
-	float a_down = -1/(h*h) - v_y/2*h;
+	float a_up = -1/(h*h) + v_y/(2*h);
+	float a_down = -1/(h*h) - v_y/(2*h);
 	std::vector<float> u((n+2)*(n+2),0.0);
 	std::vector<float> x((n+2)*(n+2),0.0);
 	// Begin iterations
@@ -71,8 +71,10 @@ std::vector<float> jacobi(int n, float v, int iter){
 int main() {
 	std::ofstream fs;
 	int n = 25;	
+	int v = 50;
 	float h =(float)1/(n+1);
 	std::vector<float> res = gs(n,50,200);
+	
 	std::string name = "25_50_result.dat";
 	fs.open(name);
 	for(int i=0; i<(n+2); i++){
