@@ -71,9 +71,13 @@ std::vector<float> jacobi(int n, float v, int iter){
 int main() {
 	std::ofstream fs;
 	int n = 25;	
+	//int n = 50;
+	//int n = 100;		
 	int v = 50;
+	int v = 200;
 	float h =(float)1/(n+1);
 	std::vector<float> res = gs(n,50,200);
+	//res = jacobi(n,50,200);
 	
 	std::string name = "25_50_result.dat";
 	fs.open(name);
