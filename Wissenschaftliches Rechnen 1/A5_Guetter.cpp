@@ -137,10 +137,10 @@ int main() {
 	//int v = 50;
 	int v = 200;
 	float h =(float)1/(n+1);
-	std::vector<float> res = gs(n,50,200);
+	//std::vector<float> res = gs(n,50,200);
 	//std::vector<float> res = jacobi(n,50,200);
 	//std::vector<float> res = gs_upwind(n,50,200);
-	//std::vector<float> res = jacobi_upwind(n,50,200);
+	std::vector<float> res = jacobi_upwind(n,50,200);
 	
 	std::string name = "25_50_result.dat";
 	fs.open(name);
