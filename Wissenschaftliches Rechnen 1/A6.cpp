@@ -17,6 +17,7 @@ float scalar_vectorized (std::vector<float> a, std::vector<float> b){
 	float c = 0.0;
 
 	// Unterteilung der Daten in Blöcke von je 4 Elementen
+	//test git
 	
 	return c;
 
