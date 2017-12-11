@@ -62,8 +62,8 @@ int main(int argc, char* argv[]) {
 	float * a;
 	float * b;
 	
-	posix_memalign((void**)&a, 128, sizeof(float)*n);
-	posix_memalign((void**)&b, 128, sizeof(float)*n);
+	posix_memalign((void**)&a, 16, sizeof(float)*n);
+	posix_memalign((void**)&b, 16, sizeof(float)*n);
 
 	for (int i=0;i<n;i++) {
 		a[i] = i+1;
