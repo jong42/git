@@ -10,6 +10,7 @@ using std::chrono::duration;
 
 #define NUM_THREADS 8
 
+pthread_mutex_t mtx; 
 double sum = 0.0;
 
 struct messagetype{
@@ -30,7 +31,9 @@ double scalar_product(double * a,double * b, int length){
 void *thread_func(void *param){
 	messagetype message= *(messagetype*) param;
 	
+	pthread_mutex_lock(&mtx);
 	sum += scalar_product(message.a,message.b,message.n);
+	pthread_mutex_unlock(&mtx);
 }
 
 
@@ -50,6 +53,9 @@ void threaded_scalar_product(double* a, double* b, int n){
 	// Korrigiere Anzahl der Elemente für letzten Thread falls Threadanzahl nicht ganzzahlig teilbar durch Vektorgröße ist
 	message[NUM_THREADS-1].n = n - (NUM_THREADS-1) * (n/NUM_THREADS);
 
+	// Initialisiere mutex
+	pthread_mutex_init(&mtx,NULL);
+	
 	// Starte Threads
 	//printf("Threads starten:\n");
 	for(i=0; i<NUM_THREADS; i++){
@@ -78,6 +84,7 @@ main(){
 	double res;
 	auto start = system_clock::now();
 	for (int i=0;i<2000;i++){
+		sum = 0.0;
 		threaded_scalar_product(&a[0], &b[0], n);
 	}
 	auto end = system_clock::now();
