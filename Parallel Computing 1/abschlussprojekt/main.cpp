@@ -24,13 +24,14 @@ MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 MPI_Comm_size(MPI_COMM_WORLD, &num);
 
 int n = 10;
-int iter = 1;
+int iter = 18;
 float edge_val = 100.0;
 std::vector<float>img_input(n*n);
 std::vector<float>img_output(n*n,edge_val);
 std::srand(std::time(nullptr));
 int lines_per_process = n/num;
 int cells_per_process = (n*n)/num;
+int ghost_zone_width = 5;
 
 // Initialisiere Ausgangsbild
 for (int i=0; i<n; ++i){
@@ -59,40 +60,51 @@ if (rank==0){
 
 
 // Führe Wärmeleitungs-Iterationen aus. Behandle dabei ersten und letzten Prozess unterschiedlich
+int start_position;
+int nr_of_lines;
 for(int i=0;i<iter;++i){
 	if (rank==0){
-		waermeleitung_iteration(&img_input[rank*cells_per_process],
-		&img_output[rank*cells_per_process],n,lines_per_process,1,0,1,1);
+		start_position = 0;
+		nr_of_lines = lines_per_process + ghost_zone_width;
+		waermeleitung_iteration(&img_input[start_position],
+		&img_output[start_position],n,nr_of_lines,1,0,1,1);
 	} else if (rank==num-1){
-		waermeleitung_iteration(&img_input[rank*cells_per_process],
-		&img_output[rank*cells_per_process],n,lines_per_process,0,1,1,1);
+		start_position = rank*cells_per_process - ghost_zone_width*n;
+		nr_of_lines = lines_per_process + ghost_zone_width;
+		waermeleitung_iteration(&img_input[start_position],
+		&img_output[start_position],n,nr_of_lines,0,1,1,1);
 	} else {
-		waermeleitung_iteration(&img_input[rank*cells_per_process],
-		&img_output[rank*cells_per_process],n,lines_per_process,0,0,1,1);
+		start_position = rank*cells_per_process - ghost_zone_width*n;
+		nr_of_lines = lines_per_process + 2*ghost_zone_width;
+		waermeleitung_iteration(&img_input[start_position],
+		&img_output[start_position],n,nr_of_lines,0,0,1,1);
 	}
-	
-	// Schicke Teilergebnisse an Root-Prozess
-	MPI_Gather(&img_output[rank*cells_per_process],
-		cells_per_process,
-		MPI_FLOAT,
-		&img_output[rank*cells_per_process],
-		cells_per_process,
-		MPI_FLOAT,
-		0,
-		MPI_COMM_WORLD);
 
-	img_input.swap(img_output);
 
-	// Schicke Gesamtgebniss zurück an alle Teilprozesse
-	MPI_Scatter(&img_input[0],
-		n*n,
-		MPI_FLOAT,
-		&img_input[0],
-		n*n,
-		MPI_FLOAT,
-		0,
-		MPI_COMM_WORLD);
+	if(i % ghost_zone_width ==0 || i==iter-1){
+		// Schicke Teilergebnisse an Root-Prozess
+		MPI_Gather(&img_output[rank*cells_per_process],
+			cells_per_process,
+			MPI_FLOAT,
+			&img_output[rank*cells_per_process],
+			cells_per_process,
+			MPI_FLOAT,
+			0,
+			MPI_COMM_WORLD);
 
+		img_input.swap(img_output);
+		// Schicke Gesamtgebnis zurück an alle Teilprozesse
+		MPI_Scatter(&img_input[0],
+			n*n,
+			MPI_FLOAT,
+			&img_input[0],
+			n*n,
+			MPI_FLOAT,
+			0,
+			MPI_COMM_WORLD);
+	}else{
+		img_input.swap(img_output);
+	}
 }
 
 
