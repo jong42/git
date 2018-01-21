@@ -24,7 +24,7 @@ MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 MPI_Comm_size(MPI_COMM_WORLD, &num);
 
 int n = 10;
-int iter = 18;
+int iter = 3;
 float edge_val = 100.0;
 std::vector<float>img_input(n*n);
 std::vector<float>img_output(n*n,edge_val);
@@ -93,11 +93,9 @@ for(int i=0;i<iter;++i){
 			MPI_COMM_WORLD);
 
 		img_input.swap(img_output);
+
 		// Schicke Gesamtgebnis zurück an alle Teilprozesse
-		MPI_Scatter(&img_input[0],
-			n*n,
-			MPI_FLOAT,
-			&img_input[0],
+		MPI_Bcast(&img_input[0],
 			n*n,
 			MPI_FLOAT,
 			0,
@@ -109,7 +107,7 @@ for(int i=0;i<iter;++i){
 
 
 // Gebe Werte aus
-if (rank==0){
+if (rank==1){
 	for (int i=0; i<n; ++i){
 		std::cout << std::endl;
 		for (int j=0; j<n; ++j){
