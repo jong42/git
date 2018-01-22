@@ -1,7 +1,9 @@
+#include <mpi.h>
 #include<vector>
 #include<ctime>
 #include<cstdlib>
 #include<iostream>
+
 
 
 void waermeleitung_iteration(float* input, float* output, int size_x, int size_y){
@@ -30,7 +32,7 @@ for (int i=0; i<n; ++i){
 		if (i==0 || j==0 || i==n-1 || j==n-1){
 			img_input[i*n+j] = edge_val;
 		}else{
-			img_input[i*n+j] = std::rand()/10000000;
+			img_input[i*n+j] = std::rand()/100;
 		}
 	}
 }
@@ -53,7 +55,7 @@ for(int i=0;i<iter;++i){
 }
 std::cout << std::endl;
 	
-}
+
 
 
 // Gebe Werte aus
