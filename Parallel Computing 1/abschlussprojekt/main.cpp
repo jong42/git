@@ -4,6 +4,10 @@
 #include<cstdlib>
 #include<iostream>
 
+// Anzahl der Prozesse muss ganzzahlig durch n teilbar sein (die Zeilen- und Spaltenanzahl
+// der Matrix). Die Breite der Geisterzone ghost_zone_width darf nicht höher sein als die
+// Anzahl der Zeilen pro Prozess 
+
 
 void waermeleitung_iteration(float* input, float* output, int size_x, int size_y, 
 	int edge_size_up, int edge_size_down, int edge_size_left, int edge_size_right){
@@ -23,15 +27,15 @@ int rank, num;
 MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 MPI_Comm_size(MPI_COMM_WORLD, &num);
 
-int n = 10;
-int iter = 3;
+int n = 12;
+int iter = 42;
 float edge_val = 100.0;
 std::vector<float>img_input(n*n);
 std::vector<float>img_output(n*n,edge_val);
 std::srand(std::time(nullptr));
 int lines_per_process = n/num;
 int cells_per_process = (n*n)/num;
-int ghost_zone_width = 5;
+int ghost_zone_width = 3;
 
 // Initialisiere Ausgangsbild
 for (int i=0; i<n; ++i){
@@ -62,6 +66,7 @@ if (rank==0){
 // Führe Wärmeleitungs-Iterationen aus. Behandle dabei ersten und letzten Prozess unterschiedlich
 int start_position;
 int nr_of_lines;
+
 for(int i=0;i<iter;++i){
 	if (rank==0){
 		start_position = 0;
@@ -80,6 +85,8 @@ for(int i=0;i<iter;++i){
 		&img_output[start_position],n,nr_of_lines,0,0,1,1);
 	}
 
+	// barrier
+	MPI_Barrier(MPI_COMM_WORLD);
 
 	if(i % ghost_zone_width ==0 || i==iter-1){
 		// Schicke Teilergebnisse an Root-Prozess
@@ -106,7 +113,7 @@ for(int i=0;i<iter;++i){
 }
 
 // Gebe Werte aus
-if (rank==1){
+if (rank==0){
 	for (int i=0; i<n; ++i){
 		std::cout << std::endl;
 		for (int j=0; j<n; ++j){
