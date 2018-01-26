@@ -4,16 +4,20 @@
 #include<cstdlib>
 #include<iostream>
 
+
+// Das Programm erzeugt eine Matrix und führt die Wärmeleitungs-Simulation darauf aus. Die Größe der
+// Matrix wird durch die Variable n definiert.
 // Anzahl der Prozesse muss ganzzahlig durch n teilbar sein (die Zeilen- und Spaltenanzahl
 // der Matrix). Die Breite der Geisterzone ghost_zone_width darf nicht höher sein als die
-// Anzahl der Zeilen pro Prozess 
+// Anzahl der Zeilen pro Prozess. 
 
 
 void waermeleitung_iteration(float* input, float* output, int size_x, int size_y, 
 	int edge_size_up, int edge_size_down, int edge_size_left, int edge_size_right){
-
+	// Iteriere über alle Zellen
 	for (int i=edge_size_up;i<size_y-edge_size_down;++i){
 		for (int j=edge_size_left;j<size_x-edge_size_right;++j){
+			// Führe die Mittelwertbildung auf einer Zelle aus
 			*(output+(i*size_x+j)) = (*(input+(i*size_x+j-1)) + *(input+(i*size_x+j+1)) + 
 				*(input+((i+1)*size_x+j)) + *(input+((i-1)*size_x+j)) )/4;
 		}	
