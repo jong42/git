@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir inter_classes
+javac -classpath /usr/lib/hadoop-mapreduce/*:/usr/lib/hadoop/* -d inter_classes IterationIntroduction.java
+jar -cvf IterationIntroduction.jar -C inter_classes/ .
+rm -r inter_classes

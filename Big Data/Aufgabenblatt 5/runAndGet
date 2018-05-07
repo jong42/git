@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -r numbers_out
+hadoop jar ./IterationIntroduction.jar de.c3e.IterationIntroduction numbers numbers_out 3
+hdfs dfs -get numbers_out 
+hdfs dfs -rm -r numbers_out

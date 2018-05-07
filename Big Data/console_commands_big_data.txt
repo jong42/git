@@ -1,0 +1,28 @@
+1.2
+
+kleinste Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -n | head -1 | awk '{print $1}'
+
+größte Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -rn | head -1 | awk '{print $1}'
+oder
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -n | tail -1 | awk '{print $1}'
+
+seltenste Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -n -k2 | head -1 | awk '{print $1}'
+
+häufigste Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -n -k2 | tail -1 | awk '{print $1}'
+
+durchschnittliche Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | awk '{letters= letters + $1 * $2; words=words+$2} END {print letters/words}'
+
+Median der Wortlänge
+hadoop fs -cat gutenberg_output_pattern_v3/* | sort -n | awk '{count[NR]=$1;
+							END
+							if (NR %2) {
+								print count[(NR+1)/2];
+							} else {
+								print (count[NR/2]+ count[(NR/2)+1])/2.0;
+							}
+						     }'

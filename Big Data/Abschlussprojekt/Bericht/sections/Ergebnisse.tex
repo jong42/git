@@ -1,0 +1,35 @@
+\chapter{Ergebnisse}
+
+Das Kern-Ergebnis besteht aus einer vollbesetzten Matrix, in der für jede Film-Nutzer-Kombination eine Bewertung vorliegt. Tabelle \ref{table:confusion_matrix} zeigt die Konfusionsmatrix für den Test-Datensatz.
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|}
+& Empfohlen & Nicht empfohlen \\
+\hline 
+Gut bewertet & \hspace{1cm} 0.31 \hspace{1cm} & \hspace{1cm} 0.09 \hspace{1cm} \\
+\hline 
+Schlecht bewertet & 0.14 & 0.44 \\
+\hline 
+\end{tabular}
+\caption{Konfusionsmatrix des Modells}
+\label{table:confusion_matrix}
+\end{table}
+Wichtig für die vorliegende Anwendung ist hier eine hohe  Genauigkeit bei den empfohlenen Filmen. Diese berechnet sich durch:
+\\
+\begin{equation}
+True positives / (True Positives + False Positives)
+\end{equation}
+,also
+\begin{equation}
+0.31 / (0.31 + 0.14) = 0.69
+\end{equation}
+Somit werden 69\% der empfohlenen Filme auch tatsächlich von den Nutzern bevorzugt.
+\\
+\\
+Anhang \ref{table:top20mostrec} zeigt die zwanzig am häufigsten empfohlenen Filme, Anhang \ref{table:top10bestrated} die zehn am meisten in den Top-Bewertungen vorkommenden Filme. In Anhang \ref{table:top20bestrec} sind die zwanzig Filme mit den besten vorhergesagten Bewertungen zu sehen. Zwischen \ref{table:top10bestrated} und \ref{table:top20mostrec} lassen sich Gemeinsamkeiten erkennen, vier der zehn Filme sind in beiden Auflistungen zu finden. Zwischen \ref{table:top10bestrated} und \ref{table:top20bestrec} dagegen sind keinerlei gemeinsame Filme vorhanden.
+\\
+Die Ergebnisse wurden außerdem dazu genutzt, um für zwei zufällig ausgewählte Nutzer deren Top 10 der am besten bewerteten mit den Top 10 der empfohlenen Filme zu vergleichen, wie in Anhang XXX dargestellt. Beide Male sind keine Übereinstimmungen in den Filmnamen zu finden.
+\\
+Schließlich wurden für künstlich erstellte Nutzerbwewertungen die empfohlenen Filme angezeigt. Es wurde ein künstlicher Nutzer erzeugt, der sämtlichen Filmen der Star Wars Reihe die besten Bewertungen gab. In Anhang XXX sind dessen Film-Empfehlungen dargestellt. Es ist zu sehen, dass ein großer Teil der empfohlenen Filme dem Science-Fiction/Fantasy-Genre zuzuordnen ist und somit der Star Wars - Reihe ähnelt. Das selbe wurde für einen weiteren künstlichen Nutzer durchgeführt, der allen Star Wars - Filmen die schlechtesten Bewertungen gab (\ref{XXX}). Hier sind die beiden genannten Kategorien stark unterrepräsentiert.
+
+

@@ -1,0 +1,97 @@
+// spark-shell  --conf "spark.rdd.compress=true" --conf "spark.serializer=org.apache.spark.serializer.KryoSerializer"
+
+
+import org.apache.spark.mllib.recommendation.ALS
+import org.apache.spark.mllib.recommendation.MatrixFactorizationModel
+import org.apache.spark.mllib.recommendation.Rating
+import org.apache.spark.mllib.util.MLUtils
+import org.apache.spark.storage.StorageLevel._
+import java.io._
+
+val saveModelPath = "/user/jo45cul/proj/model"
+val loadModel = MatrixFactorizationModel.load(sc, saveModelPath)
+// Specify user for which Top 10 have to be displayed
+val user_id = 132
+
+// Setting up our data
+val dataRatingPath = "/user/jo45cul/proj/data/ratings.csv" // "userId,movieId,rating,timestamp"
+val dataMoviesPath = "/user/jo45cul/proj/data/movies.csv" // "movieId,title,genres"
+val txtFile = sc.textFile(dataRatingPath).filter(x => !(x contains "userId,movieId,rating,timestamp"))
+val data = txtFile.map(_.split(",")  match 
+{ case Array(uid, mid, rate, tmp) => Array(uid.toInt, mid.toInt, rate.toDouble)})
+val movienames = sc.textFile(dataMoviesPath).filter(x => !(x contains "movieId,title,genres")
+).map(_.split(",") match	{
+	case Array (movieId,title,genre) => (movieId.toDouble,(title,genre)) 
+	case Array (movieId,title1,title2,genre) => (movieId.toDouble,(title1,genre))
+	case Array (movieId,title1,title2,title3,genre) => (movieId.toDouble,(title1,genre))
+	case Array (movieId,title1,title2,title3,title4,genre) => (movieId.toDouble,(title1,genre))
+	case Array (movieId,title1,title2,title3,title4,title5,genre) => (movieId.toDouble,(title1,genre))  
+})
+
+
+
+//
+
+
+// Filter out MID with less than 1000 ratings and average rating of less than 1.5
+val boundMID = 1000
+val minAVG = 1.5
+val filterMID = data.map(x => (x(1),(x(2).toDouble,1))).reduceByKey { 
+case ((value1, count1), (value2, count2)) => (value1 + value2, count1 + count2)
+}.filter{case(mid,(avg,count)) => count >= boundMID
+}.mapValues {case (value, count) =>  value.toDouble / count.toDouble}.filter(x => x._2 > minAVG).sortByKey()
+
+
+// Filter UIDs with less than 10 ratings
+val boundUID = 400
+val filterUID = data.map{case Array(uid, mid, rate) => (mid,(uid,rate.toDouble))}.join(filterMID).map{
+case(mid,((uid,rate),avg)) => (uid,1)}.reduceByKey(_ + _).filter(x => x._2 >= boundUID
+).map{case(uid,count) => uid}
+//Array[(Double, Array[((Double, Double), Double)])]
+val filteredData  = data.map{case Array(uid, mid, rate) => (uid, (mid,rate))
+}.join(filterUID.map(x => (x, x))).map{case(uid,((mid,rate),uid2)) => (mid,(uid,rate))}.join(filterMID)
+
+
+// Get Top 10 of recommended movies for one user which where not already rated by this user
+val mid_user_132_local = filteredData.filter{case(mid,((uid,rate),avgrate)) => uid == user_id
+}.map{case(mid,((uid,rate),avgrate)) => mid}.collect()
+val toptenrec = loadModel.recommendProducts(user_id,50).map{case(Rating(uid,mid,rate)) => (mid.toDouble)
+}.filter{case(mid) => !(mid_user_132_local contains mid)}.take(10) 
+
+val toptenrec_res = sc.parallelize(toptenrec).map{case (mid) => (mid,mid)}.join(movienames).map{case (mid,(mid2,(title,genre)))=> (title,genre)}.collect()
+
+// Get Top 10 of rated movies for one user
+val toptenrate = filteredData.filter{case(mid,((uid,rate),avgrate)) => uid == user_id
+}.map{case(mid,((uid,rate),avgrate)) => (rate,mid)}.sortByKey(ascending=false
+).map{case(rate,mid) => (mid)}take(10)
+
+val toptenrate_res = sc.parallelize(toptenrate).map{case (mid) => (mid,mid)}.join(movienames).map{case (mid,(mid2,(title,genre)))=> (title,genre)}.collect()
+
+
+// Write results to output file
+val pw = new PrintWriter(new File("output.txt" ))
+pw.write("user ID: " + user_id.toString)
+pw.write("\n")
+pw.write("\n")
+pw.write("Top 10 rated movies:")
+pw.write("\n")
+pw.write("\n")
+for (i <- 0 until 10){
+pw.write(toptenrate_res.take(i+1)(i)._1)
+pw.write("\n")
+}
+pw.write("\n")
+pw.write("\n")
+pw.write("Top 10 recommended movies:")
+pw.write("\n")
+pw.write("\n")
+for (i <- 0 until 10){
+pw.write(toptenrec_res.take(i+1)(i)._1)
+pw.write("\n")
+}
+pw.close
+
+
+//def compare_rec_rate(Int:user_id) :Int = {
+//return 1
+//}

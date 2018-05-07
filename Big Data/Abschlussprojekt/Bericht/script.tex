@@ -1,0 +1,25 @@
+\documentclass[11pt]{scrreprt}
+ 
+\usepackage{graphicx} % für graphics
+\usepackage[utf8]{inputenc} % Umlaute
+\usepackage{caption, booktabs} % Tabellenüberschriften
+\usepackage{hyperref} %urls
+ %
+\begin{document}
+
+\begin{titlepage}
+		\centering
+		\input{sections/titlepage}
+\end{titlepage}
+
+%\tableofcontents
+
+\include{sections/Einleitung}
+\include{sections/Methoden}
+\include{sections/Ergebnisse}
+
+\appendix
+\include{sections/Anhang}
+
+
+\end{document}
