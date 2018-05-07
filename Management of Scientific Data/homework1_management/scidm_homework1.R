@@ -1,4 +1,4 @@
-setwd("/home/xi86xev/Schreibtisch/homework1_management")
+#setwd("/home/xi86xev/Schreibtisch/git/Management of Scientific Data/homework1_management")
 
 
 d = read.csv("00_smallaphiddataset.csv",sep=";",header=TRUE,skip=1)
@@ -71,11 +71,3 @@ d$count[which(d$count=="<3"|d$count=="?"|d$count=="??"|d$count=="")] = NA
 # convert to numeric
 d$count = as.numeric(as.character(d$count))
 
-###############################
-### split up species names
-###############################
-
-d$species = as.character(d$species)
-
-d$genus = sapply(d$genus,function(x) {strsplit(x,"\\.")[1]})
-strsplit(d$species,"\\.")
